@@ -1,20 +1,20 @@
 #if !defined(__S12_ATD_H)
 #define __S12_ATD_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
 #include "ISR.h"
 
 #include "S12_Crg.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
 /*
-**	Offsets der ATD-Register.
+**      Offsets der ATD-Register.
 */
 
 #define ATDCTL0             ((uint8)0x00)
@@ -232,7 +232,7 @@ typedef struct tagS12Atd_ConfigType {
 S12Atd_StatusType S12Atd_Init(S12Atd_ConfigType const * const Cfg);
 S12Atd_StatusType S12Atd_GetChannel(S12Atd_ConfigType const * const Cfg,uint8 chn,uint16 *result);
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

@@ -9,13 +9,13 @@
 /******************************************************************************************
 *                                     INCLUDE-FILES                                       *								
 *******************************************************************************************/
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 #include "Utl.h"
 #include "ISR.h"
 #include "S12_Crg.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
@@ -219,7 +219,7 @@ S12Sci_StatusType SCI_TxBufFlush(S12Sci_ConfigType const * const Cfg);
 
 S12Sci_StatusType SCI_Handler(S12Sci_ConfigType const * const Cfg);
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

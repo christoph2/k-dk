@@ -1,23 +1,35 @@
 #if !defined(__S12_FLS_H)
 #define __S12_FLS_H
 
+#include "S12_Mmc.h"
+
+/*
+**  Global Defines.
+*/
+
+/*
+**
+**  todo: Return-Codes!!!
+**
+*/
+
 /*
 **  Command-Codes.
 */
-#define FE_ERASE_VERIFY     ((uint8)0x05)
-#define FE_WORD_PROGRAM     ((uint8)0x20)
-#define FE_SECTOR_ERASE     ((uint8)0x40)
-#define FE_MASS_ERASE       ((uint8)0x41)
+#define S12FLS_ERASE_VERIFY     ((uint8)0x05)
+#define S12FLS_WORD_PROGRAM     ((uint8)0x20)
+#define S12FLS_SECTOR_ERASE     ((uint8)0x40)
+#define S12FLS_MASS_ERASE       ((uint8)0x41)
  
  
 /*
 **  Module-Error-Codes.
 */
-#define FE_ERR_OK           ((uint8)0)
-#define FE_ERR_INIT         ((uint8)1)
-#define FE_ERR_PVIOL        ((uint8)2)
-#define FE_ERR_ACC          ((uint8)3)
-#define FE_ERR_ADDR         ((uint8)4)
+#define S12FLS_ERR_OK           ((uint8)0)
+#define S12FLS_ERR_INIT         ((uint8)1)
+#define S12FLS_ERR_PVIOL        ((uint8)2)
+#define S12FLS_ERR_ACC          ((uint8)3)
+#define S12FLS_ERR_ADDR         ((uint8)4)
 
 /*
 **  Global Types.

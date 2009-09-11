@@ -2,23 +2,29 @@
 #define __S12_EEP_H
 
 /*
+**  todo: Return-Codes!!!
+**  check 'INITEE:EEON' !!!
+**
+*/
+
+/*
 **  Error-Codes.
 */
-#define EE_ERR_OK           ((uint8)0)
-#define EE_ERR_INIT         ((uint8)1)
-#define EE_ERR_PVIOL        ((uint8)2)
-#define EE_ERR_ACC          ((uint8)3)
-#define EE_ERR_ADDR         ((uint8)4)
+#define S12EE_ERR_OK           ((uint8)0)
+#define S12EE_ERR_INIT         ((uint8)1)
+#define S12EE_ERR_PVIOL        ((uint8)2)
+#define S12EE_ERR_ACC          ((uint8)3)
+#define S12EE_ERR_ADDR         ((uint8)4)
 
 
 /*
 **  Command-Codes.
 */
-#define EE_ERASE_VERIFY     ((uint8)0x05)
-#define EE_WORD_PROGRAM     ((uint8)0x20)
-#define EE_SECTOR_ERASE     ((uint8)0x40)
-#define EE_MASS_ERASE       ((uint8)0x41)
-#define EE_SECTOR_MODIFY    ((uint8)0x60)
+#define S12EE_ERASE_VERIFY     ((uint8)0x05)
+#define S12EE_WORD_PROGRAM     ((uint8)0x20)
+#define S12EE_SECTOR_ERASE     ((uint8)0x40)
+#define S12EE_MASS_ERASE       ((uint8)0x41)
+#define S12EE_SECTOR_MODIFY    ((uint8)0x60)
 
 void S12Eep_Init(void);
 void S12Eep_Protect(boolean ena);

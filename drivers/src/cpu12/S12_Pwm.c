@@ -42,7 +42,7 @@ _pwm_tab:
 */
 
 #include "S12_Pwm.h"
-#include "exception.h"
+#include "VM_Excp.h"
 
 /*
 ** AN2612                       - PWM GENERATION USING HCS12 TIMER CHANNELS
@@ -67,7 +67,7 @@ void p_init(void),p_set_tb(void),p_set_pm(void),p_set_pl(void),p_out(void),p_bee
 /*
 **  Sprungtabelle.
 */
-static const PVOID_FUNC FuncTab[PLM_CODE_MAX+1]=
+static const VoidFunctionType FuncTab[PLM_CODE_MAX+1]=
 {
     p_init,p_set_tb,p_set_pm,p_set_pl,p_out,p_beep
 };

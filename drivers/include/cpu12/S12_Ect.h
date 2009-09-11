@@ -1,10 +1,10 @@
 #if !defined(__S12_ECT_H)
 #define __S12_ECT_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
@@ -55,12 +55,12 @@ extern "C"
     #define OC7D1   ((uint8)0x02)
     #define OC7D0   ((uint8)0x01)
 
-#define	TCNT        ((uint8)0x04)
+#define TCNT        ((uint8)0x04)
 #define TCNTH       ((uint8)0x04)
 #define TCNTL       ((uint8)0x05)
 #define TSCR1       ((uint8)0x06)
     /*  TSCR1-Bits. */
-    #define TEN	    ((uint8)0x80)
+    #define TEN     ((uint8)0x80)
     #define TSWAI   ((uint8)0x40)
     #define TSFRZ   ((uint8)0x20)
     #define TFFCA   ((uint8)0x10)
@@ -85,18 +85,18 @@ extern "C"
     #define OM5     ((uint8)0x08)
     #define OL5     ((uint8)0x04)
     #define OM4     ((uint8)0x02)
-    #define OL4	    ((uint8)0x01)
+    #define OL4     ((uint8)0x01)
 
 #define TCTL2       ((uint8)0x09)
     /*  TCTL2-Bits. */
     #define OM3     ((uint8)0x80)
     #define OL3     ((uint8)0x40)
-    #define OM2	    ((uint8)0x20)
+    #define OM2     ((uint8)0x20)
     #define OL2     ((uint8)0x10)
     #define OM1     ((uint8)0x08)
-    #define OL1	    ((uint8)0x04)
+    #define OL1     ((uint8)0x04)
     #define OM0     ((uint8)0x02)
-    #define OL0	    ((uint8)0x01)
+    #define OL0     ((uint8)0x01)
 
 #define TCTL3       ((uint8)0x0A)
     /*  TCTL3-Bits. */
@@ -122,37 +122,37 @@ extern "C"
 
 #define TIE         ((uint8)0x0C)
     /*  TIE-Bits. */
-    #define C7I	    ((uint8)0x80)
-    #define C6I	    ((uint8)0x40)
+    #define C7I     ((uint8)0x80)
+    #define C6I     ((uint8)0x40)
     #define C5I     ((uint8)0x20)
-    #define C4I	    ((uint8)0x10)
-    #define C3I	    ((uint8)0x08)
-    #define C2I	    ((uint8)0x04)
-    #define C1I	    ((uint8)0x02)
-    #define C0I	    ((uint8)0x01)  
+    #define C4I     ((uint8)0x10)
+    #define C3I     ((uint8)0x08)
+    #define C2I     ((uint8)0x04)
+    #define C1I     ((uint8)0x02)
+    #define C0I     ((uint8)0x01)  
 
 #define TSCR2       ((uint8)0x0D)
     /*  TSCR2-Bits. */
-    #define TOI	    ((uint8)0x80)
+    #define TOI     ((uint8)0x80)
     #define TCRE    ((uint8)0x08)
     #define PR2     ((uint8)0x04)
     #define PR1     ((uint8)0x02)
-    #define PR0	    ((uint8)0x01)
+    #define PR0     ((uint8)0x01)
 
 #define TFLG1       ((uint8)0x0E)
     /*  TFLG1-Bits. */
-    #define C7F	    ((uint8)0x80)
+    #define C7F     ((uint8)0x80)
     #define C6F     ((uint8)0x40)
-    #define C5F	    ((uint8)0x20)
-    #define C4F	    ((uint8)0x10)
-    #define C3F	    ((uint8)0x08)
-    #define C2F	    ((uint8)0x04)
-    #define C1F	    ((uint8)0x02)
-    #define C0F	    ((uint8)0x01)   
+    #define C5F     ((uint8)0x20)
+    #define C4F     ((uint8)0x10)
+    #define C3F     ((uint8)0x08)
+    #define C2F     ((uint8)0x04)
+    #define C1F     ((uint8)0x02)
+    #define C0F     ((uint8)0x01)   
 
 #define TFLG2       ((uint8)0x0F)
     /*  TFLG2-Bits  */
-    #define TOF	    ((uint8)0x80)
+    #define TOF     ((uint8)0x80)
 
 #define TC0         ((uint8)0x10)
 #define TC1         ((uint8)0x12)
@@ -171,7 +171,7 @@ extern "C"
     #define CLK1    ((uint8)0x08)
     #define CLK0    ((uint8)0x04)
     #define PAOVI   ((uint8)0x02)
-    #define PAI	    ((uint8)0x01)
+    #define PAI     ((uint8)0x01)
 
 #define PAFLG       ((uint8)0x21)
     /*  PAFLG-Bits. */
@@ -240,8 +240,8 @@ extern "C"
 /*
 **  0x2C Reserved
 */
-#define TIMTST	    ((uint8)0x2D)
-	/*  TIMTST-Bits.  */
+#define TIMTST      ((uint8)0x2D)
+        /*  TIMTST-Bits.  */
     #define TCBYP   ((uint8)0x02)
 
 /*
@@ -275,7 +275,7 @@ typedef struct tagS12Ect_ConfigType {
     uint16 BaseAddr;
 } S12Ect_ConfigType;
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

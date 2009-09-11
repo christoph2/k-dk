@@ -1,8 +1,7 @@
 #if !defined(__VT100_H)
 #define __VT100_H
 
-#include "autosar/Std_Types.h"
-#include "os_util.h"
+#include "Std_Types.h"
 #include "ascii.h"
 #include "S12_Sci.h" /* todo: HW-Independent!!! */
 

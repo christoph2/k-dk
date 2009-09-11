@@ -213,6 +213,7 @@ S12Crg_StatusType S12Crg_ResetMCU(void)
 }
 
 
+#if 0
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
@@ -221,3 +222,4 @@ ISR1(RTI_Vector)
     
     cnt++;
 }
+#endif

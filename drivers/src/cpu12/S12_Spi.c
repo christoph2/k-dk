@@ -1,16 +1,19 @@
 
 #include "S12_Spi.h"
 
-/* REFERENCES */
 /*
 **
-**      S12SPIV3 - HCS12 SERIAL PERIPHERAL INTERFACE (SPI) BLOCK GUIDE
+**  REFERENCES
+**  ==========
+**  S12SPIV3 - HCS12 SERIAL PERIPHERAL INTERFACE (SPI) BLOCK GUIDE
 **
 */
 
 /*
 **
 ** todo: todo evtl. doch 'error()' wg. 'MODF'-Handling???
+**
+**  Return-Codes!!!
 **
 */
 
@@ -33,21 +36,21 @@ void SPI_Init(const SPI_ConfigType *Cfg)
 {
     uint8 ch;
 
-    *_BP(Cfg->BaseAddr,SPICR1)=SPE|MSTR|SSOE;
-    *_BP(Cfg->BaseAddr,SPICR2)=MODFEN|BIDIROE|SPISWAI;
+    BYTE_REG(Cfg->BaseAddr,SPICR1)=SPE|MSTR|SSOE;
+    BYTE_REG(Cfg->BaseAddr,SPICR2)=MODFEN|BIDIROE|SPISWAI;
 
-    ch=*_BP(Cfg->BaseAddr,SPIDR);
+    ch=BYTE_REG(Cfg->BaseAddr,SPIDR);
     
-    *_BP(Cfg->BaseAddr,SPIBR)=(uint8)0x00;  /* todo: Prescaler setzen!!! */
+    BYTE_REG(Cfg->BaseAddr,SPIBR)=(uint8)0x00;  /* todo: Prescaler setzen!!! */
     
-    *_BP(Cfg->BaseAddr,SPICR1)|=SPIE;
+    BYTE_REG(Cfg->BaseAddr,SPICR1)|=SPIE;
 
     /* todo: OpenDrain!!! */
 }
 
 void SPI_SetSpeed(const SPI_ConfigType *Cfg,uint8 prescaler)
 {
-    *_BP(Cfg->BaseAddr,SPIBR)=0x70 | (prescaler & 0x07);
+    BYTE_REG(Cfg->BaseAddr,SPIBR)=0x70 | (prescaler & 0x07);
 }
 
 void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean lsbfe)
@@ -55,7 +58,7 @@ void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean l
     uint8 mask;
     /* todo: Fehlercode, falls SPI 'BUSY' !!! */
     
-    mask=*_BP(Cfg->BaseAddr,SPICR1) & (uint8)0xf2;
+    mask=BYTE_REG(Cfg->BaseAddr,SPICR1) & (uint8)0xf2;
     
     if (cpol==TRUE) {
         mask|=CPOL;
@@ -69,7 +72,7 @@ void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean l
         mask|=LSBFE;
     }    
 
-    *_BP(Cfg->BaseAddr,SPICR1)=mask;
+    BYTE_REG(Cfg->BaseAddr,SPICR1)=mask;
 }
 
 
@@ -81,12 +84,12 @@ void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean l
 
 boolean SPI_Ready(const SPI_ConfigType *Cfg)  /* todo: besserer Name!!! */    /* TransferComplete */
 {
-    return (*_BP(Cfg->BaseAddr,SPISR) & SPIF)!=(uint8)0;
+    return (BYTE_REG(Cfg->BaseAddr,SPISR) & SPIF)!=(uint8)0;
 }
 
 boolean SPI_TxReady(const SPI_ConfigType *Cfg)    /* TransmitterEmpty */
 {
-    if ((*_BP(Cfg->BaseAddr,SPISR) & SPTEF) || (*_BP(Cfg->BaseAddr,SPICR1) & SPTIE)) {
+    if ((BYTE_REG(Cfg->BaseAddr,SPISR) & SPTEF) || (BYTE_REG(Cfg->BaseAddr,SPICR1) & SPTIE)) {
         return FALSE;
     } else {
         return TRUE;
@@ -97,11 +100,11 @@ uint8 SPI_IOByte(const SPI_ConfigType *Cfg,uint8 data)
 {
     WAIT_FOR(SPI_TxReady(Cfg));
     
-    *_BP(Cfg->BaseAddr,SPIDR)=data;
+    BYTE_REG(Cfg->BaseAddr,SPIDR)=data;
     
     WAIT_FOR(SPI_Ready(Cfg));
  
-    return *_BP(Cfg->BaseAddr,SPIDR);
+    return BYTE_REG(Cfg->BaseAddr,SPIDR);
 }
 
 
@@ -130,20 +133,22 @@ void SPI_Handler(const SPI_ConfigType *Cfg)
 {
     uint8 ch;
     
-    if ((*_BP(Cfg->BaseAddr,SPISR) & SPTEF)==SPTEF) {
+    if ((BYTE_REG(Cfg->BaseAddr,SPISR) & SPTEF)==SPTEF) {
         if (Cfg->Vars->IOBufPtr<Cfg->Vars->IOBufLength) {
-            *_BP(Cfg->BaseAddr,SPIDR)=Cfg->Vars->IOBufAddr[Cfg->Vars->IOBufPtr++];
+            BYTE_REG(Cfg->BaseAddr,SPIDR)=Cfg->Vars->IOBufAddr[Cfg->Vars->IOBufPtr++];
         } else {
-            *_BP(Cfg->BaseAddr,SPICR1)&=~SPTIE;
+            BYTE_REG(Cfg->BaseAddr,SPICR1)&=~SPTIE;
         }    
     }
     
-    if ((*_BP(Cfg->BaseAddr,SPISR) & SPIF)==SPIF) {
-        ch=*_BP(Cfg->BaseAddr,SPIDR);
+    if ((BYTE_REG(Cfg->BaseAddr,SPISR) & SPIF)==SPIF) {
+        ch=BYTE_REG(Cfg->BaseAddr,SPIDR);
     }
 }
 
+#if 0
 ISR(SPI0_Handler)
 {
     SPI_Handler(&SPI0);
 }
+#endif

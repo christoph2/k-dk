@@ -1,4 +1,4 @@
-#ifndef	__PWM_H
+#if !defined(__PWM_H)
 #define	__PWM_H
 
 #include "vm.h"

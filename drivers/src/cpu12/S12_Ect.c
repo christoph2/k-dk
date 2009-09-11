@@ -13,6 +13,7 @@
 /*
 **
 **  todo: Header-Datei, in der die Timer-Prescaler (auch RTI) berechnet werden!!!
+**          Return-Codes!!!
 **
 */
 

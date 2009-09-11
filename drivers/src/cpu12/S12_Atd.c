@@ -102,7 +102,9 @@ void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
     conversion_counter++;    
 }
 
+#if 0
 ISR1(ATD0_Vector)
 {
 /*    S12Atd_Handler(&ATD0); */
 }
+#endif

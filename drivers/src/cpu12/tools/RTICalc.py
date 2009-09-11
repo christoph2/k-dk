@@ -4,14 +4,6 @@
 __version__="0.9.0"
 
 
-"""
-
-458B4F  ==> 4557647 Ticks
-70000       Sekunden
-------------------------------------
-65,109242857142857142857142857143 Hz
-"""
-
 COLUMNS=7
 ROWS=16
 DIVIDER=[ [[]] * COLUMNS for x in range(ROWS)]

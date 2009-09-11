@@ -1,9 +1,9 @@
-#ifndef __S12CRG_H
+#if !defined(__S12CRG_H)
 #define __S12CRG_H
 
 #include "S12_Mebi.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
@@ -150,9 +150,8 @@ S12Crg_StatusType S12Crg_GetOscFreq(uint8 *freq);
 
 S12Crg_StatusType S12Crg_ResetMCU(void);
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
 #endif  /*__S12CRG_H */
-

@@ -1,10 +1,10 @@
 #if !defined(__S12_MEBI_H)
 #define __S12_MEBI_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
@@ -80,7 +80,7 @@ typedef struct tagS12Mebi_ConfigType {
 S12Mebi_StatusType S12Mebi_GetMode(S12Mebi_ModeType *mode);
 S12Mebi_StatusType S12Mebi_NormalMode(boolean *flag);
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

@@ -1,18 +1,18 @@
 #if !defined(__S12CAN_H)
 #define __S12CAN_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 #include "Utl.h"
 #include "ISR.h"
 
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
-    /* 
+/* 
 ** Register-Offsets 
 */
 #define CANCTL0         ((uint8)0)
@@ -255,10 +255,10 @@ typedef struct tagS12Can_MessageType {
 } S12Can_MessageType;
 
 typedef enum tagS12Can_FilterMode {
-    S12CAN_ACC_FLT_TWO_32    =   ((uint8)0x00),	/* Two 32 bit Acceptance Filters.               */
-    S12CAN_ACC_FLT_FOUR_16   =   ((uint8)0x10),	/* Four 16 bit Acceptance Filters.              */
-    S12CAN_ACC_FLT_EIGHT_8   =   ((uint8)0x20),	/* Eight 8 bit Acceptance Filters.              */
-    S12CAN_ACC_FLT_CLOSED    =   ((uint8)0x30)	/* Filter Closed.                               */
+    S12CAN_ACC_FLT_TWO_32    =   ((uint8)0x00), /* Two 32 bit Acceptance Filters.               */
+    S12CAN_ACC_FLT_FOUR_16   =   ((uint8)0x10), /* Four 16 bit Acceptance Filters.              */
+    S12CAN_ACC_FLT_EIGHT_8   =   ((uint8)0x20), /* Eight 8 bit Acceptance Filters.              */
+    S12CAN_ACC_FLT_CLOSED    =   ((uint8)0x30)  /* Filter Closed.                               */
 } S12Can_FilterMode;
 
 typedef struct tagS12Can_FilterType {
@@ -327,7 +327,7 @@ DECLARE_ISR1_VECTOR(CAN0RxVector);
 DECLARE_ISR1_VECTOR(CAN0ErrorVector);
 DECLARE_ISR1_VECTOR(CAN0WakupVector);
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

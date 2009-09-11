@@ -1,8 +1,8 @@
 #if !defined(__BITSBUS_H)
 #define __BITSBUS_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
 /*
 **
