@@ -18,7 +18,7 @@
 */
 
 
-#define S12_IIC_ENABLED(Cfg)    ((BYTE_REG((Cfg)->BaseAddr,IBCR) & IBEN)==IBEN)
+#define S12_IIC_ENABLED()   ((S12_REG8(Cfg,IBCR) & IBEN)==IBEN)
 
 typedef enum tagIic_OpcodeType {
     START,RESTART,WRITE,READ,STOP
@@ -33,7 +33,7 @@ typedef struct tagIic_PrimitiveType {
 
 S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg)
 {
-    BYTE_REG(Cfg->BaseAddr,IBCR)=(uint8)0x00;
+    S12_REG8(Cfg,IBCR)=(uint8)0x00;
 
     /* todo: PIM-Modul!!! */
 #if 0
@@ -42,44 +42,44 @@ S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg)
     DDRJ&=(uint8)~0xC0;
 #endif
 
-    BYTE_REG(Cfg->BaseAddr,IBFD)=Cfg->Prescaler;
-    BYTE_REG(Cfg->BaseAddr,IBSR)=IBIF|IBAL;
-    BYTE_REG(Cfg->BaseAddr,IBCR)=IBEN;
+    S12_REG8(Cfg,IBFD)=Cfg->Prescaler;
+    S12_REG8(Cfg,IBSR)=IBIF|IBAL;
+    S12_REG8(Cfg,IBCR)=IBEN;
     
     return S12IIC_OK;
 }
 
 S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg)
 {
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
 
-    WAIT_FOR((BYTE_REG(Cfg->BaseAddr,IBSR) & IBB)!=IBB);
-    BYTE_REG(Cfg->BaseAddr,IBCR)|=(IBEN|MS_SL|TX_RX);                    
-    WAIT_FOR((BYTE_REG(Cfg->BaseAddr,IBSR) & IBB)==IBB);
+    WAIT_FOR((S12_REG8(Cfg,IBSR) & IBB)!=IBB);
+    S12_REG8(Cfg,IBCR)|=(IBEN|MS_SL|TX_RX);                    
+    WAIT_FOR((S12_REG8(Cfg,IBSR) & IBB)==IBB);
     
     return S12IIC_OK;
 }
 
 S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg)
 {
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }    
 
-    BYTE_REG(Cfg->BaseAddr,IBCR)|=RSTA;
+    S12_REG8(Cfg,IBCR)|=RSTA;
     
     return S12IIC_OK;    
 }
 
 S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg)
 {
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
 
-    BYTE_REG(Cfg->BaseAddr,IBCR)=IBEN;
+    S12_REG8(Cfg,IBCR)=IBEN;
     /*  IBCR&=~MS_SL; */
 
     return S12IIC_OK;
@@ -94,35 +94,35 @@ S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg)
 
 S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,boolean *ack)
 {
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
     
-    BYTE_REG(Cfg->BaseAddr,IBDR)=b;
-    WAIT_FOR((BYTE_REG(Cfg->BaseAddr,IBSR) & IBIF)==IBIF);
-    *ack=((BYTE_REG(Cfg->BaseAddr,IBSR) & RXAK)!=RXAK);    
-    BYTE_REG(Cfg->BaseAddr,IBSR)=IBIF;
+    S12_REG8(Cfg,IBDR)=b;
+    WAIT_FOR((S12_REG8(Cfg,IBSR) & IBIF)==IBIF);
+    *ack=((S12_REG8(Cfg,IBSR) & RXAK)!=RXAK);    
+    S12_REG8(Cfg,IBSR)=IBIF;
         
     return S12IIC_OK;
 }
 
 S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,uint8 *b,boolean ack)
 {
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
     
-    BYTE_REG(Cfg->BaseAddr,IBCR)=IBEN|MS_SL;
+    S12_REG8(Cfg,IBCR)=IBEN|MS_SL;
 
     if (ack==FALSE) {
-        BYTE_REG(Cfg->BaseAddr,IBCR)|=TXAK;
+        S12_REG8(Cfg,IBCR)|=TXAK;
     }
 
-    *b=BYTE_REG(Cfg->BaseAddr,IBDR);
-    WAIT_FOR((BYTE_REG(Cfg->BaseAddr,IBSR) & IBIF)==IBIF);
-    BYTE_REG(Cfg->BaseAddr,IBSR)=IBIF;
-    BYTE_REG(Cfg->BaseAddr,IBCR)=IBEN|MS_SL|TX_RX;
-    *b=BYTE_REG(Cfg->BaseAddr,IBDR);
+    *b=S12_REG8(Cfg,IBDR);
+    WAIT_FOR((S12_REG8(Cfg,IBSR) & IBIF)==IBIF);
+    S12_REG8(Cfg,IBSR)=IBIF;
+    S12_REG8(Cfg,IBCR)=IBEN|MS_SL|TX_RX;
+    *b=S12_REG8(Cfg,IBDR);
         
     return S12IIC_OK;
 }
@@ -139,7 +139,7 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
     uint8 idx;
     boolean ack;
     
-    if (!S12_IIC_ENABLED(Cfg)) {
+    if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
 
@@ -189,6 +189,6 @@ IIC_StatusType S12Iic_SendAddress(S12Iic_ConfigType const * const Cfg,uint8 slav
 /*
 ISR(iic_handler)
 {
-    BYTE_REG(Cfg->BaseAddr,IBSR)|=IBIF;
+    S12_REG8(Cfg,IBSR)|=IBIF;
 }       
 */

@@ -1,13 +1,13 @@
 #if !defined(__S12_ECT_H)
 #define __S12_ECT_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
+#include "S12_Hw.h"
 
 #if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
+
 /*
 **  Register-Offsets.
 */
@@ -56,8 +56,11 @@ extern "C"
     #define OC7D0   ((uint8)0x01)
 
 #define TCNT        ((uint8)0x04)
+
 #define TCNTH       ((uint8)0x04)
+
 #define TCNTL       ((uint8)0x05)
+
 #define TSCR1       ((uint8)0x06)
     /*  TSCR1-Bits. */
     #define TEN     ((uint8)0x80)
@@ -98,6 +101,11 @@ extern "C"
     #define OM0     ((uint8)0x02)
     #define OL0     ((uint8)0x01)
 
+/*
+**  The four pairs of control bits of TCTL4 also configure the 8 bit pulse accumulators PAC0 - 3.
+**  For 16 - bit pulse accumulator PACB, EDGE0B & EDGE0A, control bits of TCTL4 will decide the active edge.    
+*/
+    
 #define TCTL3       ((uint8)0x0A)
     /*  TCTL3-Bits. */
     #define EDG7B   ((uint8)0x80)
@@ -155,12 +163,19 @@ extern "C"
     #define TOF     ((uint8)0x80)
 
 #define TC0         ((uint8)0x10)
+
 #define TC1         ((uint8)0x12)
+
 #define TC2         ((uint8)0x14)
+
 #define TC3         ((uint8)0x16)
+
 #define TC4         ((uint8)0x18)
+
 #define TC5         ((uint8)0x1A)
+
 #define TC6         ((uint8)0x1C)
+
 #define TC7         ((uint8)0x1E)
 
 #define PACTL       ((uint8)0x20)
@@ -179,11 +194,9 @@ extern "C"
     #define PAIF    ((uint8)0x01)
 
 #define PACN3       ((uint8)0x22)
-#define PACN3H      ((uint8)0x22)
-#define PACN2L      ((uint8)0x23)
+#define PACN2       ((uint8)0x23)
 #define PACN1       ((uint8)0x24)
-#define PACN1H      ((uint8)0x24)
-#define PACN0L      ((uint8)0x25)
+#define PACN0       ((uint8)0x25)   
 
 #define MCCTL       ((uint8)0x26)
     /*  MCCTL-Bits. */
@@ -258,22 +271,54 @@ extern "C"
     #define PBOVF   ((uint8)0x02)
 
 #define PA3H        ((uint8)0x32)
+
 #define PA2H        ((uint8)0x33)
+
 #define PA1H        ((uint8)0x34)
+
 #define PA0H        ((uint8)0x35)
+
 #define MCCNT       ((uint8)0x36)
-#define MCCNTH      ((uint8)0x36)
-#define MCCNTL      ((uint8)0x37)
 
 #define TC0H        ((uint8)0x38)
+
 #define TC1H        ((uint8)0x3A)
+
 #define TC2H        ((uint8)0x3C)
+
 #define TC3H        ((uint8)0x3E)
+
+
+typedef enum tagS12Ect_StatusType {
+    S12ECT_OK
+} S12Ect_StatusType;
 
 
 typedef struct tagS12Ect_ConfigType {
     uint16 BaseAddr;
+    uint16 cycle;   /* (od. Period/TimeBase???) in Nano-Secs. */
+    
+    uint8 TIos;
+    uint8 TScr1;
+    uint8 TScr2;
+    uint8 TCtl1;
+    uint8 TCtl2;
+    uint8 TCtl3;
+    uint8 TCtl4;
+    uint8 TIe;
+
+    uint8 PActl;
+    uint8 PBctl;
+    uint8 ICpar;
+    uint8 MCctl;
+    uint16 MCcnt;
+    uint8 DLyct;
+    uint8 ICovw;
+    uint8 ICsys;
 } S12Ect_ConfigType;
+
+
+S12Ect_StatusType S12Ect_Init(void);
 
 #if defined(__cplusplus)
 }

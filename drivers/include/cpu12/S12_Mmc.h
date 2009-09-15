@@ -1,7 +1,7 @@
 #if !defined(__S12_MMC_H)
 #define __S12_MMC_H
 
-#include "Std_Types.h"
+#include "S12_Hw.h"
 
 #if defined(__cplusplus)
 extern "C"

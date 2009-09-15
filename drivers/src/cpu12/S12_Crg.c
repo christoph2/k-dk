@@ -1,20 +1,24 @@
 
+/*
+**  todo: 'TriggerWatchdog' (lookup Autosar) !!!
+*/
+
 #include "S12_Crg.h"
 #include "Hw_Cfg.h"
 
 S12Crg_StatusType S12Crg_Init(uint8 freq)
 {
     S12Crg_StatusType status;
-    boolean normal_mode;
+    boolean special_mode;
     
 
-/*    BYTE_REG(CRG.BaseAddr,CLKSEL)&=~PLLSEL; */
-    BYTE_REG(CRG.BaseAddr,CLKSEL)=/*PSTP|ROAWAI*/COPWAI;
-    BYTE_REG(CRG.BaseAddr,PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;  /* Hinweis: 'ACQ' hat keine Bedeutung, wenn 'AUTO' !!!*/
+/*    S12CRG_REG8(CLKSEL)&=~PLLSEL; */
+    S12CRG_REG8(CLKSEL)=/*PSTP|ROAWAI*/COPWAI;
+    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;  /* Hinweis: 'ACQ' hat keine Bedeutung, wenn 'AUTO' !!!*/
 
-    (void)S12Mebi_NormalMode(&normal_mode);
+    (void)S12Mebi_SpecialMode(&special_mode);
 
-    if (normal_mode==TRUE) {
+    if (special_mode==FALSE) {
         status=S12Crg_SetPLLFreq(freq);
         if (status!=S12CRG_OK) {
             return status;   
@@ -26,7 +30,6 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
     } else {
         /* we don't use PLL-Clock in Specialmodes (==> BDM). */
         (void)S12Crg_DisablePLL();
-        
     }
     
     if (CRG.EnableRTI==TRUE) {
@@ -43,7 +46,7 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
     }
        
     /* todo:  'EnablePLL()' !!! */
-/*    BYTE_REG(CRG.BaseAddr,CLKSEL)|=PLLSEL;   */
+/*    S12CRG_REG8(CLKSEL)|=PLLSEL;   */
     
     return S12CRG_OK;
 }
@@ -59,7 +62,7 @@ S12Crg_StatusType S12Crg_EnablePLL(void)
         return S12CRG_STATE;
     }
 
-    BYTE_REG(CRG.BaseAddr,CLKSEL)|=PLLSEL;
+    S12CRG_REG8(CLKSEL)|=PLLSEL;
     
     return S12CRG_OK;
 }
@@ -75,7 +78,7 @@ S12Crg_StatusType S12Crg_DisablePLL(void)
         return S12CRG_STATE;
     }    
 
-    BYTE_REG(CRG.BaseAddr,CLKSEL)&=~PLLSEL;
+    S12CRG_REG8(CLKSEL)&=~PLLSEL;
     
     return S12CRG_OK;
 }
@@ -83,7 +86,7 @@ S12Crg_StatusType S12Crg_DisablePLL(void)
 
 S12Crg_StatusType S12Crg_PLLEnabled(boolean *flag)
 {
-    *flag=((BYTE_REG(CRG.BaseAddr,CLKSEL) & PLLSEL)==PLLSEL);
+    *flag=((S12CRG_REG8(CLKSEL) & PLLSEL)==PLLSEL);
 
     return S12CRG_OK;    
 }
@@ -103,10 +106,10 @@ S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq)
         return S12CRG_STATE;
     }
 
-    BYTE_REG(CRG.BaseAddr,REFDV)=CRG.OscFreq-((uint8)1);  /* divide to get 1MHz. */
-    BYTE_REG(CRG.BaseAddr,SYNR)=freq-((uint8)1);
+    S12CRG_REG8(REFDV)=CRG.OscFreq-((uint8)1);  /* divide, to get 1MHz. */
+    S12CRG_REG8(SYNR)=freq-((uint8)1);
     
-    WAIT_FOR((BYTE_REG(CRG.BaseAddr,CRGFLG) & LOCK)!=((uint8)0x00));
+    WAIT_FOR((S12CRG_REG8(CRGFLG) & LOCK)==LOCK);
     
     return S12CRG_OK;
 }
@@ -120,8 +123,8 @@ S12Crg_StatusType S12Crg_GetBusFreq(uint8 *freq)
     (void)S12Crg_PLLEnabled(&flag);    
 
     if (flag==TRUE) {
-        bus_freq=CRG.OscFreq / (BYTE_REG(CRG.BaseAddr,REFDV) + 1);
-        bus_freq*=(BYTE_REG(CRG.BaseAddr,SYNR)+1);
+        bus_freq=CRG.OscFreq / (S12CRG_REG8(REFDV) + 1);
+        bus_freq*=(S12CRG_REG8(SYNR)+1);
     } else {
         bus_freq=CRG.OscFreq/2;
     }
@@ -150,8 +153,8 @@ S12Crg_StatusType S12Crg_EnableRTI(void)
         return S12CRG_STATE;    
     }
 
-    BYTE_REG(CRG.BaseAddr,CRGFLG)=RTIF;    
-    BYTE_REG(CRG.BaseAddr,CRGINT)|=RTIE;
+    S12CRG_REG8(CRGFLG)=RTIF;    
+    S12CRG_REG8(CRGINT)|=RTIE;
 
     return S12CRG_OK;
 }
@@ -167,9 +170,9 @@ S12Crg_StatusType S12Crg_DisableRTI(void)
         return S12CRG_STATE;    
     }
 
-    BYTE_REG(CRG.BaseAddr,RTICTL)=((uint8)0x00);
-    BYTE_REG(CRG.BaseAddr,CRGINT)&=~RTIE;
-    BYTE_REG(CRG.BaseAddr,CRGFLG)=RTIF;
+    S12CRG_REG8(RTICTL)=((uint8)0x00);
+    S12CRG_REG8(CRGINT)&=~RTIE;
+    S12CRG_REG8(CRGFLG)=RTIF;
     
     return S12CRG_OK;
 }
@@ -185,7 +188,7 @@ S12Crg_StatusType S12Crg_SetRTIRate(uint8 rate)
         return S12CRG_STATE;    
     }
     
-    BYTE_REG(CRG.BaseAddr,RTICTL)=rate;
+    S12CRG_REG8(RTICTL)=rate;
 
     return S12CRG_OK;        
 }
@@ -193,7 +196,16 @@ S12Crg_StatusType S12Crg_SetRTIRate(uint8 rate)
 
 S12Crg_StatusType S12Crg_RTIEnabled(boolean *flag)
 {
-    *flag=(BYTE_REG(CRG.BaseAddr,CRGINT) & RTIE)==RTIE;
+    *flag=(S12CRG_REG8(CRGINT) & RTIE)==RTIE;
+
+    return S12CRG_OK;
+}
+
+
+S12Crg_StatusType S12Crg_TriggerWDG(void)
+{
+    S12CRG_REG8(ARMCOP)=(uint8)0x55;
+    S12CRG_REG8(ARMCOP)=(uint8)0xaa;;
 
     return S12CRG_OK;
 }
@@ -202,23 +214,30 @@ S12Crg_StatusType S12Crg_RTIEnabled(boolean *flag)
 S12Crg_StatusType S12Crg_ResetMCU(void)
 {
 
-    if (!(BYTE_REG(CRG.BaseAddr,COPCTL) & (CR2|CR1|CR0))) {
+    if (!(S12CRG_REG8(COPCTL) & (CR2|CR1|CR0))) {
                                         /* Enable COP if disabled. */
-        BYTE_REG(CRG.BaseAddr,COPCTL)=(RSBCK|CR0);
+        S12CRG_REG8(COPCTL)=(RSBCK|CR0);
     }
     
-    BYTE_REG(CRG.BaseAddr,ARMCOP)=0xcc; /* Write garbage to 'ARMCOP' ==> instant RESET. */
+    S12CRG_REG8(ARMCOP)=0xcc; /* Write garbage to 'ARMCOP' ==> instant RESET. */
     
     return S12CRG_OK;                   /* never reached... */    
 }
 
+
+/*
+**
+**  todo:   den Vektoren mit 'S12CRG_USE_RTI_VECTOR' aktivieren !!!
+**          das ganze Allgemein verwenden: !!!S12mod_USE_xxx_VECTOR' !!!
+**
+*/
 
 #if 0
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
     
-    BYTE_REG(CRG.BaseAddr,CRGFLG)=RTIF;
+    S12CRG_REG8(CRGFLG)=RTIF;
     
     cnt++;
 }

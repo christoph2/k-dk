@@ -1,8 +1,7 @@
 #if !defined(__S12_MEBI_H)
 #define __S12_MEBI_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
+#include "S12_Hw.h"
 
 #if defined(__cplusplus)
 extern "C"
@@ -13,14 +12,21 @@ extern "C"
 **  Register-Offsets.
 */
 #define	PORTA       ((uint8)0x00)
+
 #define	PORTB       ((uint8)0x01)
+
 #define	DDRA        ((uint8)0x02)
+
 #define	DDRB        ((uint8)0x03)
+
 /*
 0x04-0x07 Reserved
 */
+
 #define	PORTE       ((uint8)0x08)
+
 #define	DDRE        ((uint8)0x09)
+
 #define	PEAR        ((uint8)0x0A)
     /*  PEAR-Bits.  */
     #define NOACCE  ((uint8)0x80)
@@ -56,6 +62,7 @@ extern "C"
     /*  EBICTL-Bits.  */
     #define ESTR    ((uint8)0x01)
 
+    
 typedef enum tagS12Mebi_StatusType {
     S12MEBI_OK
 } S12Mebi_StatusType;
@@ -78,7 +85,7 @@ typedef struct tagS12Mebi_ConfigType {
 
 
 S12Mebi_StatusType S12Mebi_GetMode(S12Mebi_ModeType *mode);
-S12Mebi_StatusType S12Mebi_NormalMode(boolean *flag);
+S12Mebi_StatusType S12Mebi_SpecialMode(boolean *flag);
 
 #if defined(__cplusplus)
 }

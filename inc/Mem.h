@@ -1,8 +1,8 @@
 #if !defined(__MEM_H)
 #define __MEM_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
 
 typedef enum tagMem_StackStatus {

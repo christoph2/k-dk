@@ -1,16 +1,14 @@
 #if !defined(__SPI_H)
 #define __SPI_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
-#include "ISR.h"
-
+#include "S12_Hw.h"
+#include "S12_Pim.h"
 
 /*
 ** Register-Offsets.
 */
 #define SPICR1      ((uint8)0x00)
-        /*  SPICR1-Bits.  */
+    /*  SPICR1-Bits.  */
     #define SPIE    ((uint8)0x80)
     #define SPE     ((uint8)0x40)
     #define SPTIE   ((uint8)0x20)
@@ -21,14 +19,14 @@
     #define LSBFE   ((uint8)0x01)
 
 #define SPICR2      ((uint8)0x01)
-        /*  SPICR2-Bits.  */
+    /*  SPICR2-Bits.  */
     #define MODFEN  ((uint8)0x10)
     #define BIDIROE ((uint8)0x08)
     #define SPISWAI ((uint8)0x02)
     #define SPC0    ((uint8)0x01)
 
 #define SPIBR       ((uint8)0x02)
-        /*  SPIBR-Bits. */
+    /*  SPIBR-Bits. */
     #define SPPR2   ((uint8)0x40)
     #define SPPR1   ((uint8)0x20)
     #define SPPR0   ((uint8)0x10)
@@ -37,7 +35,7 @@
     #define SPR0    ((uint8)0x01)
 
 #define SPISR       ((uint8)0x03)
-        /*  SPISR-Bits. */
+    /*  SPISR-Bits. */
     #define SPIF    ((uint8)0x80)
     #define SPTEF   ((uint8)0x20)
     #define MODF    ((uint8)0x10)
@@ -72,7 +70,6 @@ typedef struct tagSPI_ConfigType {
 #define BASE_ADDR_SPI0  ((uint16)0x00d8)
 #define BASE_ADDR_SPI1  ((uint16)0x00f0)
 #define BASE_ADDR_SPI2  ((uint16)0x00f8)
-
 
 
 void SPI_Init(const SPI_ConfigType *Cfg);

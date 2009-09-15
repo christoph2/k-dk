@@ -1,11 +1,8 @@
 #if !defined(__S12CAN_H)
 #define __S12CAN_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
+#include "S12_Hw.h"
 #include "Utl.h"
-#include "ISR.h"
-
 
 #if defined(__cplusplus)
 extern "C"
@@ -294,8 +291,10 @@ typedef struct tagS12Can_ConfigType {
 
 
 /* todo: Makros f. Standard- und Extended-Identifiers!!! */
+#if 0
 #define Can_Request(Cfg,id,length,priority,SentOnBuffer)   \
     S12Can_Transmit((Cfg),(id),(uint8)NULL,(length),(priority),S12CAN_READ_REQ,(SentOnBuffer))
+#endif
 
 
 /*
@@ -304,20 +303,20 @@ typedef struct tagS12Can_ConfigType {
 S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uint8 btr1);
 S12Can_StatusType S12Can_Stop(S12Can_ConfigType const * const Cfg);
 S12Can_StatusType S12Can_InitializationMode(S12Can_ConfigType const * const  Cfg,boolean enable);
-S12Can_StatusType S12Can_Initializing(S12Can_ConfigType const * const  Cfg,boolean *initializing);
+S12Can_StatusType S12Can_Initializing(S12Can_ConfigType const * const  Cfg,/*@out@*/boolean *initializing);
 S12Can_StatusType S12Can_SleepMode(S12Can_ConfigType const * const Cfg,boolean enable);
-S12Can_StatusType S12Can_Sleeping(S12Can_ConfigType const * const Cfg,boolean *sleeping);
+S12Can_StatusType S12Can_Sleeping(S12Can_ConfigType const * const Cfg,/*@out@*/boolean *sleeping);
 
 S12Can_StatusType S12Can_SetBusTiming(S12Can_ConfigType const * const  Cfg,uint8 btr0,uint8 btr1);
 S12Can_StatusType S12Can_SetFilter(S12Can_ConfigType const * const Cfg,const S12Can_FilterType *Filter);
 S12Can_StatusType S12Can_EnableInterrupts(S12Can_ConfigType const * const Cfg,boolean enable);
-S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,const S12Can_MessageType *Msg,uint8 priority,uint8 *SentOnBuffer);
-S12Can_StatusType S12Can_Ready(S12Can_ConfigType const * const Cfg,boolean *ready);
-S12Can_StatusType S12Can_RxD(S12Can_ConfigType const * const Cfg,boolean *rxd);
+S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,S12Can_MessageType const * Msg,uint8 priority,/*@out@*/uint8 *SentOnBuffer);
+S12Can_StatusType S12Can_Ready(S12Can_ConfigType const * const Cfg,/*@out@*/boolean *ready);
+S12Can_StatusType S12Can_RxD(S12Can_ConfigType const * const Cfg,/*@out@*/boolean *rxd);
 S12Can_StatusType S12Can_WaitSynch(S12Can_ConfigType const * const Cfg);
 S12Can_StatusType S12Can_CancelMessage(S12Can_ConfigType const * const Cfg,uint8 Number);
-S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,S12Can_MessageType *Msg);
-S12Can_StatusType S12Can_GetErrorCounters(S12Can_ConfigType const * const Cfg,uint8 *RxErrors,uint8 *TxErrors);
+S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,/*@out@*/S12Can_MessageType *Msg);
+S12Can_StatusType S12Can_GetErrorCounters(S12Can_ConfigType const * const Cfg,uint8 *RxErrors,/*@out@*/uint8 *TxErrors);
 
 /*
 **  ISR-Handlers.

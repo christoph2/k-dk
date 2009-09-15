@@ -1,5 +1,5 @@
 
-#include "autosar/Std_Types.h"
+#include "Std_Types.h"
 
 void bs_test(void);
 

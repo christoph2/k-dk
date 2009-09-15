@@ -7,10 +7,10 @@
 extern "C"
 {
 #endif  /* __cplusplus */
+
 /*
 **  Register-Offsets.
 */
-
 #define SYNR            ((uint8)0x00)
     /*  SYNR-Bits.  */
     #define SYN5        ((uint8)0x20)
@@ -128,26 +128,26 @@ typedef struct tagS12Crg_ConfigType {
     uint8 RTIModulo;
 } S12Crg_ConfigType;
 
+
 /*
 **  Function-Prototypes.
 */
-
-
 S12Crg_StatusType S12Crg_Init(uint8 freq);
 
 S12Crg_StatusType S12Crg_EnablePLL(void);
 S12Crg_StatusType S12Crg_DisablePLL(void);
-S12Crg_StatusType S12Crg_PLLEnabled(boolean *flag);
+S12Crg_StatusType S12Crg_PLLEnabled(/*@out@*/boolean *flag);
 S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq);
 
 S12Crg_StatusType S12Crg_EnableRTI(void);
 S12Crg_StatusType S12Crg_DisableRTI(void);
-S12Crg_StatusType S12Crg_RTIEnabled(boolean *flag);
+S12Crg_StatusType S12Crg_RTIEnabled(/*@out@*/boolean *flag);
 S12Crg_StatusType S12Crg_SetRTIRate(uint8 rate);
 
-S12Crg_StatusType S12Crg_GetBusFreq(uint8 *freq);
-S12Crg_StatusType S12Crg_GetOscFreq(uint8 *freq);
+S12Crg_StatusType S12Crg_GetBusFreq(/*@out@*/uint8 *freq);
+S12Crg_StatusType S12Crg_GetOscFreq(/*@out@*/uint8 *freq);
 
+S12Crg_StatusType S12Crg_TriggerWDG(void);
 S12Crg_StatusType S12Crg_ResetMCU(void);
 
 #if defined(__cplusplus)

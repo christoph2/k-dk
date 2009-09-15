@@ -182,7 +182,7 @@ void Utl_StrCpy(uint8 * RESTRICT dst,const uint8 * RESTRICT  src)
 
 
 /*
- *	Hinweis: Der COSMIC-Compiler generiert bei der folgenden Funktion ein 'TBEQ' ohne Register!!!
+ *      Hinweis: Der COSMIC-Compiler generiert bei der folgenden Funktion ein 'TBEQ' ohne Register!!!
  */
 
 #if 0
@@ -299,7 +299,7 @@ void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,u
 }
 
 
-boolean Utl_FloatsAreNearlyEqual(const float lhs,const float rhs,sint32 max_difference)
+boolean Utl_FloatsAreNearlyEqual(float lhs,float rhs,sint32 max_difference)
 {
     sint32 lhs_int=*(sint32*)&lhs;
     sint32 rhs_int=*(sint32*)&rhs;

@@ -2,63 +2,40 @@
 #include "S12_Ect.h"
 #include "Hw_Cfg.h"
 
-/*
-**
-**  todo:   - Timer konfigurieren.
-**          - OCs/IC2 konfigurieren.
-**          - Modulus-Counter konfigurieren.
-**
-*/
+#define OS_SYSTEM_TIMER_FREQ    ((uint16)1000)        /* todo: nach 'Hw_Cfg.h' */
 
-/*
-**
-**  todo: Header-Datei, in der die Timer-Prescaler (auch RTI) berechnet werden!!!
-**          Return-Codes!!!
-**
-*/
-
-#define OS_SYSTEM_TIMER_FREQ    ((uint16)1000)        /* todo: nach 'os_config.h' */
-
-void S12Ect_Init(void);
-
-void S12Ect_Init(void)
+S12Ect_StatusType S12Ect_Init(void)
 {
-/*
-**
-**  todo:   Conditionals für die verschiedenen Timer!!!
-**          PLL-Initialisierung!!!
-**
-*/
+    /* Main Timer Setup */
+    S12ECT_REG8(TIOS)=ECT.TIos;
+    S12ECT_REG8(TCTL1)=ECT.TCtl1;
+    S12ECT_REG8(TCTL2)=ECT.TCtl2;
+    S12ECT_REG8(TCTL3)=ECT.TCtl3;
+    S12ECT_REG8(TCTL4)=ECT.TCtl4;
+    S12ECT_REG8(TIE)=ECT.TIe;
+    S12ECT_REG8(ICPAR)=ECT.ICpar;
     
-/*  __OS_MS_COUNTER=0L; */
-        
-        /*  Setup Timer-System. */
-/* BYTE_REG(ECT->BaseAddr,     */
-    
-        BYTE_REG(ECT.BaseAddr,TSCR1)=(uint8)0x00;              /*  Disable-Timer.  */
-        
-        BYTE_REG(ECT.BaseAddr,TIOS)=IOS0;
+    /* Pulse Accus      */
+    S12ECT_REG8(PACTL)=ECT.PActl;
+    S12ECT_REG8(PBCTL)=ECT.PBctl;    
 
-        BYTE_REG(ECT.BaseAddr,TCTL1)=(uint8)0x00;
-        BYTE_REG(ECT.BaseAddr,TCTL2)=(uint8)0x00;
-/*  TIE=C0I;  */
-        
-        BYTE_REG(ECT.BaseAddr,TSCR2)=/*TOI|*/PR0|PR1;  /*  Hinweis: Prescaler in Abhängigkeit der Taktfrequenz!!!  */
-        
-        BYTE_REG(ECT.BaseAddr,TFLG1)=(uint8)0xFF;              /*  Clear pending interrupts. */
-/*      TC0=TCNT+TICKS_PER_MS;  */
-        
-        BYTE_REG(ECT.BaseAddr,TSCR1)=TEN|TSFRZ/*|TFFCA*/;      /*  Enable Timer. - zuletzt !!?? */
+    /* Modulus Counter  */
+    S12ECT_REG8(MCCTL)=ECT.MCctl;
+    S12ECT_REG16(MCCNT)=ECT.MCcnt;
 
-/*
-*       Modulus-Counter Setup.
-*/
+    /* 
+    **  ns_per_mhz=1000
+    **  cycle=ns_per_mhz/bus_clock
+    **  presc=log2(timer_cycle/cycle) (if timer_cycle>cycle)
+    */    
+    S12ECT_REG8(DLYCT)=ECT.DLyct;
+    S12ECT_REG8(ICOVW)=ECT.ICovw;
+    S12ECT_REG8(ICSYS)=ECT.ICsys;
+    S12ECT_REG8(TFLG1)=(uint8)0xFF;     /*  Clear pending interrupts. */
+    S12ECT_REG8(TFLG2)=(uint8)0x80;
 
-/*      MCCTL=0x00; */
-        BYTE_REG(ECT.BaseAddr,MCCTL)=MCZI|MODMC|MCEN|MCPR1;
+    S12ECT_REG8(TSCR2)=ECT.TScr2;
+    S12ECT_REG8(TSCR1)=ECT.TScr1;
 
-        WORD_REG(ECT.BaseAddr,MCCNT)=OS_SYSTEM_TIMER_FREQ/*-1*/;       /*  'TICK_BASE' oder so!? */
-        BYTE_REG(ECT.BaseAddr,MCCTL)|=FLMC;    /*  Force Load Register into the Modulus Counter Count Register.  */
-
-        /*  Watchdog aktivieren. */
+    return S12ECT_OK;
 }

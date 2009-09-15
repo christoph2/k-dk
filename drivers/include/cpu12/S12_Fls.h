@@ -56,6 +56,7 @@ boolean S12Fls_VerifyErase(uint8 block_num);
 
 uint8 S12Fls_SectorErase(uint8 page,uint16 addr);
 uint8 S12Fls_MassErase(uint8 block_num);
+uint8 S12Fls_PageErase(uint8 page);     /* todo: Implementieren !!! */
 
 uint8 S12Fls_ProgramWord(uint8 page,uint16 addr,uint16 data);
 uint8 S12Fls_BurstProgram(uint8 page,uint16 start_addr,const uint16 *data,uint16 len);

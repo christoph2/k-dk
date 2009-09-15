@@ -15,10 +15,10 @@
 #if !defined(__UTL_H)
 #define __UTL_H
 
-#include "autosar/Std_Types.h"
-#include "autosar/CPU_Primitives.h"
+#include "Std_Types.h"
+#include "CPU_Primitives.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
@@ -63,7 +63,7 @@ const uint8 *Utl_StrChr(/*@in@*/const uint8 * str,uint8 ch);
 void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,uint16 elem_size,Utl_CompareFuncType compare_func);
 
 void Utl_Divrem(uint16 dividend,uint16 divisor,/*@out@*/Utl_DivremType *res);
-boolean Utl_FloatsAreNearlyEqual(const float32 lhs,const float32 rhs,sint32 max_difference);
+boolean Utl_FloatsAreNearlyEqual(float32 lhs,float32 rhs,sint32 max_difference);
 
 void Utl_Randomize(uint16 seed);
 uint16 Utl_Random(void);
@@ -92,7 +92,7 @@ uint16 Utl_SetJump(Utl_JumpBufType *buf);
 
 #define Utl_PlainCharIsSigned() ((int)((char)0x80)<0)
 
-#ifdef __cplusplus
+#if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 

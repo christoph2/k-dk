@@ -1,4 +1,3 @@
-
 #include "S12_Sci.h"
 #include "Hw_Cfg.h"
 
@@ -10,63 +9,68 @@
 **
 */
 
-#define	SCI_FIXED_PRESCALER ((uint8)16)
-#define SCI_INTR_MSK        RIE         /* do not enable Transmit-Interrupt(TIE)!!! */
+#define	S12SCI_FIXED_PRESCALER  ((uint8)16)
+#define S12SCI_PRESC_PER_MHZ    ((uint32)(1000000UL/(uint32)(S12SCI_FIXED_PRESCALER)))
 
-static uint16 SCI_CalculateBaudratePrescaler(uint32 br);
+#define S12SCI_INTR_MSK        RIE         /* do not enable Transmit-Interrupt(TIE)!!! */
 
 
-S12Sci_StatusType SCI_Init(S12Sci_ConfigType const * const Cfg)   /* todo: Baudrate und Interrupts als Parameter. */
+static uint16 S12Sci_CalculateBaudratePrescaler(uint32 baudrate);
+
+
+S12Sci_StatusType S12Sci_Init(S12Sci_ConfigType const * const Cfg)   /* todo: Baudrate und Interrupts als Parameter. */
 {        
-    BYTE_REG(Cfg->BaseAddr,SCICR2)=((uint8)0x00);    /* Schnittstelle deaktivieren - check!!! */
+    S12_REG8(Cfg,SCICR2)=((uint8)0x00);    /* Schnittstelle deaktivieren - check!!! */
         
-    SCI_SetFormat(Cfg,Cfg->BaudRate,Cfg->Parity,Cfg->NBits);
-    BYTE_REG(Cfg->BaseAddr,SCISR2)=(BRK13);
+    S12Sci_SetFormat(Cfg,Cfg->BaudRate,Cfg->Parity,Cfg->NBits);
+    S12_REG8(Cfg,SCISR2)=(BRK13);
 
 
-    SCI_SetRxBuffer(Cfg,Cfg->RxBufAddr,Cfg->RxBufLength);
-    SCI_RxBufFlush(Cfg);
+    S12Sci_SetRxBuffer(Cfg,Cfg->RxBufAddr,Cfg->RxBufLength);
+    S12Sci_RxBufFlush(Cfg);
 
-    SCI_SetTxBuffer(Cfg,(uint8*)NULL,(uint8)0);
-    SCI_TxBufFlush(Cfg);
+    S12Sci_SetTxBuffer(Cfg,(uint8*)NULL,(uint8)0);
+    S12Sci_TxBufFlush(Cfg);
 
-    BYTE_REG(Cfg->BaseAddr,SCICR1)=((uint8)0x00);
-    BYTE_REG(Cfg->BaseAddr,SCICR2)=(TE|RE);
+    S12_REG8(Cfg,SCICR1)=((uint8)0x00);
+    S12_REG8(Cfg,SCICR2)=(TE|RE);
 
-    SCI_EnableInterrupts(Cfg,FALSE);
+    S12Sci_EnableInterrupts(Cfg,FALSE);
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_EnableInterrupts(S12Sci_ConfigType const * const Cfg,boolean ena)
+
+S12Sci_StatusType S12Sci_EnableInterrupts(S12Sci_ConfigType const * const Cfg,boolean ena)
 {
     uint8 ch;   
     
     if (ena==TRUE) {
-        ch=BYTE_REG(Cfg->BaseAddr,SCIDRL);
-        BYTE_REG(Cfg->BaseAddr,SCICR2)|=SCI_INTR_MSK;
+        ch=S12_REG8(Cfg,SCIDRL);
+        S12_REG8(Cfg,SCICR2)|=S12SCI_INTR_MSK;
     } else {
-        BYTE_REG(Cfg->BaseAddr,SCICR2)&=~SCI_INTR_MSK;
+        S12_REG8(Cfg,SCICR2)&=~S12SCI_INTR_MSK;
     }
     
     return S12SCI_OK;
 }
 
 
-S12Sci_StatusType SCI_SetBaud(S12Sci_ConfigType const * const Cfg,uint32 baud)
+S12Sci_StatusType S12Sci_SetBaud(S12Sci_ConfigType const * const Cfg,uint32 baud)
 {    
-    WORD_REG(Cfg->BaseAddr,SCIBD)=SCI_CalculateBaudratePrescaler(baud);
+    S12_REG16(Cfg,SCIBD)=S12Sci_CalculateBaudratePrescaler(baud);
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_SetFormat(S12Sci_ConfigType const * const Cfg,uint32 baudrate,uint8 parity,uint8 nbits)
+
+S12Sci_StatusType S12Sci_SetFormat(S12Sci_ConfigType const * const Cfg,uint32 baudrate,uint8 parity,uint8 nbits)
 {
     uint8 set_msk=(uint8)0,clr_msk=(uint8)0;
     uint8 ch;    
     /* todo: Aktuelle Konfiguration sichern!!! */
     
-    WORD_REG(Cfg->BaseAddr,SCIBD)=SCI_CalculateBaudratePrescaler(baudrate);
+    S12_REG16(Cfg,SCIBD)=S12Sci_CalculateBaudratePrescaler(baudrate);
         
     if (parity>SCI_PARITY_EVEN) {
         parity=SCI_PARITY_NONE;
@@ -110,107 +114,107 @@ S12Sci_StatusType SCI_SetFormat(S12Sci_ConfigType const * const Cfg,uint32 baudr
               break;
         }
     }
-    BYTE_REG(Cfg->BaseAddr,SCICR1)&=~(clr_msk);
-    BYTE_REG(Cfg->BaseAddr,SCICR1)|=set_msk;
+    S12_REG8(Cfg,SCICR1)&=~(clr_msk);
+    S12_REG8(Cfg,SCICR1)|=set_msk;
     
-    ch=BYTE_REG(Cfg->BaseAddr,SCIDRL);    /* clear spurious interrupts. */
+    ch=S12_REG8(Cfg,SCIDRL);    /* clear spurious interrupts. */
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_SetRxBuffer(S12Sci_ConfigType const * const Cfg,uint8 *buf,uint8 len)
+
+S12Sci_StatusType S12Sci_SetRxBuffer(S12Sci_ConfigType const * const Cfg,uint8 *buf,uint8 len)
 {   
     Cfg->Vars->RxBufAddr=buf;
     Cfg->Vars->RxBufLength=len;
-    SCI_RxBufFlush(Cfg);
+    S12Sci_RxBufFlush(Cfg);
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_SetTxBuffer(S12Sci_ConfigType const * const Cfg,uint8 *buf,uint8 len)
+
+S12Sci_StatusType S12Sci_SetTxBuffer(S12Sci_ConfigType const * const Cfg,uint8 *buf,uint8 len)
 {    
     Cfg->Vars->TxBufAddr=buf;
     Cfg->Vars->TxBufLength=len;
-    SCI_TxBufFlush(Cfg);
+    S12Sci_TxBufFlush(Cfg);
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_Get(S12Sci_ConfigType const * const Cfg,uint8 *ch)
+
+S12Sci_StatusType S12Sci_Get(S12Sci_ConfigType const * const Cfg,uint8 *ch)
 {    
-    WAIT_FOR(((BYTE_REG(Cfg->BaseAddr,SCISR1)) & RDRF)!=((uint8)0x00));
-
-    *ch=BYTE_REG(Cfg->BaseAddr,SCIDRL);
+    WAIT_FOR(((S12_REG8(Cfg,SCISR1)) & RDRF)==RDRF);
+    *ch=S12_REG8(Cfg,SCIDRL);
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_Put(S12Sci_ConfigType const * const Cfg,uint8 ch)
+
+S12Sci_StatusType S12Sci_Put(S12Sci_ConfigType const * const Cfg,uint8 ch)
 {    
-    WAIT_FOR(((BYTE_REG(Cfg->BaseAddr,SCISR1)) & TDRE)!=((uint8)0x00));
-    BYTE_REG(Cfg->BaseAddr,SCIDRL)=ch;
+    WAIT_FOR(((S12_REG8(Cfg,SCISR1)) & TDRE)==TDRE);    
+    S12_REG8(Cfg,SCIDRL)=ch;
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_PutString(S12Sci_ConfigType const * const Cfg,uint8 *str)
+
+S12Sci_StatusType S12Sci_PutString(S12Sci_ConfigType const * const Cfg,uint8 const * str)
 {    
     uint8 ch;
    
     while ((ch=*str++)!=NULL) {
-        SCI_Put(Cfg,ch);
+        S12Sci_Put(Cfg,ch);
     }
     
     return S12SCI_OK;
 }
 
-/* void SCI_PutString(uint16 base,char *str,uint8 max_len) */
 
-S12Sci_StatusType SCI_SendBreak(S12Sci_ConfigType const * const Cfg)
+S12Sci_StatusType S12Sci_SendBreak(S12Sci_ConfigType const * const Cfg)
 {    
-    BYTE_REG(Cfg->BaseAddr,SCICR2)|=SBK;
-
+    S12_REG8(Cfg,SCICR2)|=SBK;
     CPU_NO_OPERATION();
-
-    BYTE_REG(Cfg->BaseAddr,SCICR2)&=~SBK;
+    S12_REG8(Cfg,SCICR2)&=~SBK;
     
     return S12SCI_OK;
 }
 
-/*! \fn SCITxSendBuffer
- *      <param name="base"></param>
- *      <param name="Vars"></param>
- *      <param name="buf"></param>
- *      <param name="len"></param>
- *
- * <remarks>Der Aufrufer hat Sorge zu tragen,
- *      das der vorherige Transfer abgeschlossen wurde
- *  s. #SCITxReady. </remarks>
- *
- */
-S12Sci_StatusType SCI_SendBuffer(S12Sci_ConfigType const * const Cfg,uint8 *buf,uint8 len)
-{    
-    if (len) {
 
-        WAIT_FOR(SCI_TxReady(Cfg));
+S12Sci_StatusType S12Sci_SendBuffer(S12Sci_ConfigType const * const Cfg,uint8 const * buf,uint8 len)
+{    
+    boolean ready=FALSE;
+
+    if (len) {
+        
+        do {
+            (void)S12Sci_TxReady(Cfg,&ready);
+        } while (ready==FALSE);
 
         if (len==((uint8)1)) {
-            SCI_Put(Cfg,buf[0]);               
+            (void)S12Sci_Put(Cfg,buf[0]);               
         } else {
             Cfg->Vars->TxBufLength=len;
             Cfg->Vars->TxBufAddr=buf;
             Cfg->Vars->TxBufPtr=((uint8)1);
-            BYTE_REG(Cfg->BaseAddr,SCIDRL)=buf[0];
-            BYTE_REG(Cfg->BaseAddr,SCICR2)|=SCTIE;
+            S12_REG8(Cfg,SCIDRL)=buf[0];
+            S12_REG8(Cfg,SCICR2)|=SCTIE;
         }
     }
     
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_RxBufGetCh(S12Sci_ConfigType const * const Cfg,uint8 *ch)
-{    
-    if (SCI_RxBufIsEmpty(Cfg)==S12SCI_OK) {
+
+S12Sci_StatusType S12Sci_RxBufGetCh(S12Sci_ConfigType const * const Cfg,uint8 *ch)
+{
+    boolean empty; 
+
+    (void)S12Sci_RxBufIsEmpty(Cfg,&empty);
+
+    if (empty==TRUE) {
         return S12SCI_STATE;    /* check: geht das nicht sinnvoller??? */
     }
         
@@ -223,21 +227,16 @@ S12Sci_StatusType SCI_RxBufGetCh(S12Sci_ConfigType const * const Cfg,uint8 *ch)
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_RxBufIsEmpty(S12Sci_ConfigType const * const Cfg)    /* todo: Überarbeiten!!! */
+
+S12Sci_StatusType S12Sci_RxBufIsEmpty(S12Sci_ConfigType const * const Cfg,boolean *empty)
 {
-    uint8 h,t;
+    *empty= Cfg->Vars->RxTail==Cfg->Vars->RxHead;
     
-    t=Cfg->Vars->RxTail;
-    h=Cfg->Vars->RxHead;
-    
-    if (t==h) {
-        return S12SCI_OK;
-    } else {
-        return S12SCI_STATE;
-    }        
+    return S12SCI_OK; 
 }
 
-S12Sci_StatusType SCI_RxBufFlush(S12Sci_ConfigType const * const Cfg)
+
+S12Sci_StatusType S12Sci_RxBufFlush(S12Sci_ConfigType const * const Cfg)
 {    
     Utl_MemSet((void*)Cfg->Vars->RxBufAddr,((uint8)0x00),Cfg->Vars->RxBufLength);
     Cfg->Vars->RxHead=((uint8)0x00);
@@ -246,24 +245,20 @@ S12Sci_StatusType SCI_RxBufFlush(S12Sci_ConfigType const * const Cfg)
     return S12SCI_OK;
 }
 
-S12Sci_StatusType SCI_TxBufFlush(S12Sci_ConfigType const * const Cfg)
+
+S12Sci_StatusType S12Sci_TxBufFlush(S12Sci_ConfigType const * const Cfg)
 {    
     Cfg->Vars->TxBufPtr=(uint8)0;
     
     return S12SCI_OK;
 }
 
-/*! \fn SCITxReady
- *      t.b.d
- *
- */
-S12Sci_StatusType SCI_TxReady(S12Sci_ConfigType const * const Cfg)     /* todo: Überarbeiten!!! */
+
+S12Sci_StatusType S12Sci_TxReady(S12Sci_ConfigType const * const Cfg,boolean *ready)
 {
-    if ((BYTE_REG(Cfg->BaseAddr,SCICR2) & SCTIE) || !(BYTE_REG(Cfg->BaseAddr,SCISR1) & TDRE)) {
-        return S12SCI_STATE;
-    } else {        
-        return S12SCI_OK;
-    }   
+    *ready=((S12_REG8(Cfg,SCICR2) & SCTIE)==SCTIE) || !((S12_REG8(Cfg,SCISR1) & TDRE)==TDRE);
+
+    return S12SCI_OK;
 }
 
 
@@ -273,19 +268,22 @@ S12Sci_StatusType SCI_TxReady(S12Sci_ConfigType const * const Cfg)     /* todo: 
 **
 */
 
-S12Sci_StatusType SCI_Handler(S12Sci_ConfigType const * const Cfg)
-{    
-    if ((BYTE_REG(Cfg->BaseAddr,SCICR2) & RIE) && (BYTE_REG(Cfg->BaseAddr,SCISR1) & RDRF)) {
-        Cfg->Vars->RxBufAddr[Cfg->Vars->RxTail++]=BYTE_REG(Cfg->BaseAddr,SCIDRL); /* todo: Sequence-Point wg. volatile Variablen!!! */
-        if (Cfg->Vars->RxTail>=Cfg->Vars->RxBufLength) {
+S12Sci_StatusType S12Sci_Handler(S12Sci_ConfigType const * const Cfg)
+{
+    uint8 ch;
+
+    if ((S12_REG8(Cfg,SCICR2) & RIE) && (S12_REG8(Cfg,SCISR1) & RDRF)) {
+        ch=S12_REG8(Cfg,SCIDRL);
+        Cfg->Vars->RxBufAddr[Cfg->Vars->RxTail++]=ch;
+        if (Cfg->Vars->RxTail>=Cfg->Vars->RxBufLength) {    /* todo: Modulo-Division!!! */
             Cfg->Vars->RxTail=((uint8)0x00);
         }
         /* todo: Callback ('(HW_EventNotifyFunc)NULL') falls konfiguriert!!! */
-    } else if ((BYTE_REG(Cfg->BaseAddr,SCICR2) & SCTIE) && (BYTE_REG(Cfg->BaseAddr,SCISR1) & TDRE)) {
+    } else if ((S12_REG8(Cfg,SCICR2) & SCTIE) && (S12_REG8(Cfg,SCISR1) & TDRE)) {
         if (Cfg->Vars->TxBufPtr<Cfg->Vars->TxBufLength) {
-            BYTE_REG(Cfg->BaseAddr,SCIDRL)=Cfg->Vars->TxBufAddr[Cfg->Vars->TxBufPtr++];
+            S12_REG8(Cfg,SCIDRL)=Cfg->Vars->TxBufAddr[Cfg->Vars->TxBufPtr++];
         } else {
-            BYTE_REG(Cfg->BaseAddr,SCICR2)&=~(SCTIE);   /* OK, disable Tx-Interrupt-Source. */
+            S12_REG8(Cfg,SCICR2)&=~(SCTIE);   /* OK, disable Tx-Interrupt-Source. */
             /* todo: Callback ('(HW_EventNotifyFunc)NULL') falls konfiguriert!!! */
         }
     }
@@ -294,14 +292,23 @@ S12Sci_StatusType SCI_Handler(S12Sci_ConfigType const * const Cfg)
 }
 
 
-/*
-**      Helper-Functions.
-*/
-static uint16 SCI_CalculateBaudratePrescaler(uint32 br)
+ISR1(SCI0_Vector)
+{
+    S12Sci_Handler(SCI0);
+}
+
+
+ISR1(SCI1_Vector)
+{
+    S12Sci_Handler(SCI1);
+}
+
+
+static uint16 S12Sci_CalculateBaudratePrescaler(uint32 baudrate)
 {
     uint8 freq;
     
     (void)S12Crg_GetBusFreq(&freq);
     
-    return (uint16)((freq*((uint32)1000000UL)/SCI_FIXED_PRESCALER)/br);
+    return (uint16)(freq*(S12SCI_PRESC_PER_MHZ)/baudrate);
 }

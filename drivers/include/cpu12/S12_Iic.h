@@ -1,9 +1,7 @@
 #if !defined(__S12IIC_H)
 #define __S12IIC_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
-#include "ISR.h"
+#include "S12_Hw.h"
 
 #if defined(__cplusplus)
 extern "C"

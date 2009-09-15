@@ -1,5 +1,5 @@
 
-#include "InstallIsr/ISR.h"
+#include "ISR.h"
 
 #if defined(__CSMC__)               /* Cosmic               */
     #define II_INC_COMP_C             "cosmic/ISR_CSMC.c"
