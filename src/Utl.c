@@ -24,7 +24,7 @@ static const uint16 PowerOfTwoTab16[16]={
 
 boolean Utl_BitGet(uint16 w,uint8 num)
 {
-    return ((w & PowerOfTwoTab16[num])!=(uint16)0x0000);
+    return ((w & PowerOfTwoTab16[num])!=(uint16)0x0000U);
 }
 
 
@@ -76,7 +76,7 @@ uint16 Utl_BitResetLowest(uint16 w)
 
 uint8 Utl_Log2(uint16 num)
 {
-    uint8 res=0;
+    uint8 res=(uint8)0x00;
     
     while (num>>=1) {
         res++;
@@ -88,10 +88,10 @@ uint8 Utl_Log2(uint16 num)
 
 Utl_EndianessType Utl_CheckEndianess(void)
 {
-    const uint16 foo=0xaa55;
+    const uint16 foo=0xaa55U;
     uint8 *ptr=(uint8*)&foo;
     
-    if (0[ptr]==0xaa) {
+    if (0[ptr]==(uint8)0xaa) {
         return UTL_BIG_ENDIAN;   
     } else {
         return UTL_LITTLE_ENDIAN;
@@ -141,15 +141,15 @@ void Utl_Randomize(uint16 seed)
 
 uint16 Utl_Random(void)
 {
-    NextRandomNumber=NextRandomNumber * (uint32)0x41C64E6D + (uint32)0x3039;
-    return (uint16)(NextRandomNumber/(uint32)0x10000) % (uint32)0x8000;
+    NextRandomNumber=NextRandomNumber * (uint32)0x41C64E6DUL + (uint32)0x3039UL;
+    return (uint16)(NextRandomNumber/(uint32)0x10000UL) % (uint32)0x8000UL;
 
 }
 
 
 SizeType Utl_StrLen(const uint8 *src)
 {
-    SizeType len=0;
+    SizeType len=(SizeType)0x0000;
 
     while (*(src++)) {
         len++;        
@@ -235,7 +235,7 @@ const uint8 * Utl_StrChr(const uint8 * str,uint8 ch)
 void Utl_Itoa(uint32 value,uint8 base,uint8 * buf)
 {
     uint32 mod;
-    uint8 pos=(uint8)0,swap_pos=(uint8)0;
+    uint8 pos=(uint8)0x00,swap_pos=(uint8)0x00;
     uint8 ch;
     
     ASSERT(buf!=(void*)NULL);    
@@ -279,8 +279,8 @@ void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,u
     uint8 *cmp_key;
     sint8 res;
 
-    left=(sint32)0;
-    right=(sint32)(num_elems-1);
+    left=(sint16)0x0000;
+    right=(sint16)(num_elems-1);
     
     do {
         mid=(uint16)(left+right)>>1;

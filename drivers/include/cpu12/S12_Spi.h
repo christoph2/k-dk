@@ -1,8 +1,7 @@
-#if !defined(__SPI_H)
-#define __SPI_H
+#if !defined(__S12_SPI_H)
+#define __S12_SPI_H
 
 #include "S12_Hw.h"
-#include "S12_Pim.h"
 
 /*
 ** Register-Offsets.
@@ -45,6 +44,7 @@
 */
 
 #define SPIDR       ((uint8)0x05)
+
 /*
 **  0x06-0x07 Reserved.
 */
@@ -53,32 +53,27 @@
 ** global Types.
 */
 
-typedef struct tagSPI_VariablesType {
+typedef struct tagS12Spi_VariablesType {
     uint8 *IOBufAddr;
     uint8 IOBufLength;
     uint8 IOBufPtr;
-} SPI_VariablesType;
+} S12Spi_VariablesType;
 
 
-typedef struct tagSPI_ConfigType {
+typedef struct tagS12Spi_ConfigType {
     uint16 BaseAddr;
     uint32 BaudRate;    /* todo: Prescaler!!! */
-    SPI_VariablesType * const Vars;
-} SPI_ConfigType;
-
-/* todo: CFG-Datei!!! */
-#define BASE_ADDR_SPI0  ((uint16)0x00d8)
-#define BASE_ADDR_SPI1  ((uint16)0x00f0)
-#define BASE_ADDR_SPI2  ((uint16)0x00f8)
+    S12Spi_VariablesType * const Vars;
+} S12Spi_ConfigType;
 
 
-void SPI_Init(const SPI_ConfigType *Cfg);
-void SPI_SetSpeed(const SPI_ConfigType *Cfg,uint8 prescaler);
-void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean lsbfe);
+void S12Spi_Init(S12Spi_ConfigType const * const Cfg);
+void S12Spi_SetSpeed(S12Spi_ConfigType const * const Cfg,uint8 prescaler);
+void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean cpha,boolean lsbfe);
 
-boolean SPI_Ready(const SPI_ConfigType *Cfg);
-uint8 SPI_IOByte(const SPI_ConfigType *Cfg,uint8 data);
+boolean S12Spi_Ready(S12Spi_ConfigType  const * const Cfg);
+uint8 S12Spi_IOByte(S12Spi_ConfigType const * const Cfg,uint8 data);
 
-void SPI_IOBuffer(const SPI_ConfigType *Cfg,uint8 *data,uint8 len,boolean use_interrupt);
+void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,boolean use_interrupt);
 
-#endif  /* __SPI_H */
+#endif  /* __S12_SPI_H */

@@ -3,10 +3,6 @@
 #include "Hw_Cfg.h"
 
 /*
-**  For now, we only support 16Bit-PWM.
-*/
-
-/*
 **
 **  REFERENCES:
 **  ===========
@@ -15,37 +11,74 @@
 **
 */
 
-
+static void S12Pwm_ResetCounter(uint8 ChannelNumber);
 
 S12Pwm_StatusType S12Pwm_Init(void)
-{
-#if 0    
-    PWME=((uint8)0x00);     /* PWM-Subsystem vorsichtshalber deaktivieren.  */
+{    
+    S12PWM_REG16(PWMPER01)=PWM.PwmPer01;
+    S12PWM_REG16(PWMPER23)=PWM.PwmPer23;
+    S12PWM_REG16(PWMPER45)=PWM.PwmPer45;
+    S12PWM_REG16(PWMPER67)=PWM.PwmPer67;
 
-    PERP=((uint8)0xAA);     /* Pullups für unbenutzte Ports.                */
-    DDRP=((uint8)0xAA);     /* unbenutzte Ports als Eingänge.               */
-    RDRP=((uint8)~(0xAA));  /* Ports 1,3,5,7 full drive.                    */
-    PWMPOL=((uint8)0xff);   /* alle Kanäle hi-aktiv.                        */
+    S12PWM_REG16(PWMDTY01)=PWM.PwmDty01;
+    S12PWM_REG16(PWMDTY23)=PWM.PwmDty23;
+    S12PWM_REG16(PWMDTY45)=PWM.PwmDty45;
+    S12PWM_REG16(PWMDTY67)=PWM.PwmDty67;
+    
+    S12PWM_REG16(PWMCNT0)=(uint16)0x0000U;
+    S12PWM_REG16(PWMCNT2)=(uint16)0x0000U;
+    S12PWM_REG16(PWMCNT4)=(uint16)0x0000U;
+    S12PWM_REG16(PWMCNT6)=(uint16)0x0000U;
 
-    PWMSCLA=((uint8)0x05);
-    PWMSCLB=((uint8)0x05);  /* ein Skalierungs-Faktor von 10 (PWMSCLA*2) entspricht     */
-                            /* bei 25Mhz einem Basis-Zyklus von 400ns.                  */
-    PWMCLK=((uint8)0xAA);   /* Scaled Clock-A bzw. -B verwenden.                        */
-    PWMPRCLK=((uint8)0x00); /* kein Prescaler; dieser mit mit 'setTimeBase' eingestellt.*/
-    PWMCAE=((uint8)0x00);   /* alle Channels left-aligned.                              */
+    S12PWM_REG8(PWMPOL)=PWM.PwmPol;
+    S12PWM_REG8(PWMCLK)=PWM.PwmClk;
+    S12PWM_REG8(PWMPRCLK)=PWM.PwmPrClk;
+    S12PWM_REG8(PWMCAE)=PWM.PwmCae;
+    S12PWM_REG8(PWMSCLA)=PWM.PwmSclA;
+    S12PWM_REG8(PWMSCLB)=PWM.PwmSclB;
 
-    PWMPER01=PWMPER23=PWMPER45=PWMPER67=((uint16)0xFFFF);
-    PWMDTY01=PWMDTY23=PWMDTY45=PWMDTY67=((uint16)0x0000);       
-        
-    PWMCTL=((uint8)0xF0);   /* vier 16Bit-Kanäle (P7,P5,P3,P1)                  */
-    PWME=((uint8)0xAA);     /* alle PWM Channels aktivieren.                    */
-#endif
-
-    S12PWM_REG8(PWME)=PWM.Pwme;
-
+    S12PWM_REG8(PWMSDN)=PWM.PwmSdn;    
+    S12PWM_REG8(PWMCTL)=PWM.PwmCtl;
+    S12PWM_REG8(PWME)=PWM.PwmE;         /* OK, start PWM.   */
+/* prescaler = (E-Clock * 4)/10 */
     return S12PWM_OK;
 }
 
+
+void S12Pwm_SetTimebase(void)
+{
+}
+
+
+void S12Pwm_SetDutyCycle(uint8 ChannelNumber,uint16 DutyCycle)
+{
+}
+
+
+void S12Pwm_SetPeriodAndDuty(uint8 ChannelNumber,uint16 Period,uint16 DutyCycle)
+{
+    
+}
+
+
+void S12Pwm_SetOutputToIdle(uint8 ChannelNumber)
+{
+    /* einfach PWME löschen... */
+}
+                             
+uint8 S12Pwm_GetOutputState(uint8 ChannelNumber)
+{
+    /* todo: read 'PTIP' */
+}
+
+
+void S12Pwm_ResetCounter(uint8 ChannelNumber)
+{
+    S12PWM_REG8(PWMCNT0+ChannelNumber)=(uint8)0x00;
+}
+
+
+#if 0
 /*! \fn void p_set_tb(void)
  *      Zeitbasis (Prescaler einstellen).
  */
@@ -183,7 +216,7 @@ void p_beep(void)
 #endif
         
     if ((sint16)tone<0) {       /* negative Werte schalten die Ton-Ausgabe ab. */
-        ToneOut(0x0000);
+        ToneOut(0x0000U);
     } else {
         oct=tone/12;
         tone%=12;
@@ -267,3 +300,4 @@ tone_out:
         rts
         */
 }
+#endif

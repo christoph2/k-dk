@@ -1,8 +1,4 @@
 
-/*
-**  todo: 'TriggerWatchdog' (lookup Autosar) !!!
-*/
-
 #include "S12_Crg.h"
 #include "Hw_Cfg.h"
 
@@ -215,13 +211,11 @@ S12Crg_StatusType S12Crg_ResetMCU(void)
 {
 
     if (!(S12CRG_REG8(COPCTL) & (CR2|CR1|CR0))) {
-                                        /* Enable COP if disabled. */
-        S12CRG_REG8(COPCTL)=(RSBCK|CR0);
-    }
+        S12CRG_REG8(COPCTL)=(RSBCK|CR0);    /* Enable COP if disabled.                      */
+    }    
+    S12CRG_REG8(ARMCOP)=(uint8)0xcc;        /* Write garbage to 'ARMCOP' ==> instant RESET. */
     
-    S12CRG_REG8(ARMCOP)=0xcc; /* Write garbage to 'ARMCOP' ==> instant RESET. */
-    
-    return S12CRG_OK;                   /* never reached... */    
+    return S12CRG_OK;                       /* never reached...                             */
 }
 
 
@@ -232,7 +226,6 @@ S12Crg_StatusType S12Crg_ResetMCU(void)
 **
 */
 
-#if 0
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
@@ -241,4 +234,4 @@ ISR1(RTI_Vector)
     
     cnt++;
 }
-#endif
+

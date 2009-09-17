@@ -74,19 +74,31 @@ extern "C"
     #define PFRZ        ((uint8)0x04)
 
 #define PWMTST          ((uint8)0x06)
+
 #define PWMPRSC         ((uint8)0x07)
+
 #define PWMSCLA         ((uint8)0x08)
+    /* 0 ==> Presc. = 512; 1 ==> Presc. = 2 */
 #define PWMSCLB         ((uint8)0x09)
+
 #define PWMSCNTA        ((uint8)0x0A)
+
 #define PWMSCNTB        ((uint8)0x0B)
 
 #define PWMCNT0         ((uint8)0x0C)
+
 #define PWMCNT1         ((uint8)0x0D)
+
 #define PWMCNT2         ((uint8)0x0E)
+
 #define PWMCNT3         ((uint8)0x0F)
+
 #define PWMCNT4         ((uint8)0x10)
+
 #define PWMCNT5         ((uint8)0x11)
+
 #define PWMCNT6         ((uint8)0x12)
+
 #define PWMCNT7         ((uint8)0x13)
     
 #define PWMPER0         ((uint8)0x14)
@@ -134,20 +146,52 @@ extern "C"
 **  0x25-0x27 Reserved.
 */
 
+
+#define S12PWM8B8C_NUM_CHANNELS ((uint8)8)
+
+    
 typedef enum tagS12Pwm_StatusType {
     S12PWM_OK,
     S12PWM_UNINIT,
     S12PWM_ID
 } S12Pwm_StatusType;
-    
+
+
 typedef struct tagS12Pwm_ConfigType {
     uint16 BaseAddr;
-    
-    uint8 Pwme; /* 0xaa */
+
+    uint8 PwmE;
+    uint8 PwmCtl;
+    uint8 PwmPol;
+    uint8 PwmClk;
+    uint8 PwmPrClk;
+    uint8 PwmCae;
+    uint8 PwmSclA;
+    uint8 PwmSclB;
+                        /* ein Skalierungs-Faktor von 10 (PWMSCLA*2) entspricht     */
+                        /* bei 25Mhz einem Basis-Zyklus von 400ns.                  */
+    uint8 PwmSdn;
+
+    uint16 PwmPer01;
+    uint16 PwmPer23;
+    uint16 PwmPer45;
+    uint16 PwmPer67;
+
+    uint16 PwmDty01;
+    uint16 PwmDty23;
+    uint16 PwmDty45;
+    uint16 PwmDty67;
 } S12Pwm_ConfigType;
 
 
 S12Pwm_StatusType S12Pwm_Init(void);
+
+void S12Pwm_SetTimebase(void);
+void S12Pwm_SetDutyCycle(uint8 ChannelNumber,uint16 DutyCycle);
+void S12Pwm_SetPeriodAndDuty(uint8 ChannelNumber,uint16 Period,uint16 DutyCycle);
+void S12Pwm_SetOutputToIdle(uint8 ChannelNumber);
+uint8 S12Pwm_GetOutputState(uint8 ChannelNumber);
+
 
 #if defined(__cplusplus)
 }

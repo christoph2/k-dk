@@ -18,22 +18,14 @@
 **
 */
 
-static void SPI_Handler(const SPI_ConfigType *Cfg);
 
-static SPI_VariablesType SPI0Vars;
-
-static const SPI_ConfigType SPI0={
-    BASE_ADDR_SPI0,
-    (uint32)100000,
-    &SPI0Vars
-};
-
-static boolean SPI_TxReady(const SPI_ConfigType *Cfg);
+static void S12Spi_Handler(S12Spi_ConfigType const * const Cfg);
+static boolean S12Spi_TxReady(S12Spi_ConfigType const * const Cfg);
 
 
 /* todo: BufferPointer als statische Variable!!! */
 
-void SPI_Init(const SPI_ConfigType *Cfg)
+void S12Spi_Init(S12Spi_ConfigType const * const Cfg)
 {
     uint8 ch;
     
@@ -45,12 +37,19 @@ void SPI_Init(const SPI_ConfigType *Cfg)
     S12_REG8(Cfg,SPICR1)|=SPIE;
 }
 
-void SPI_SetSpeed(const SPI_ConfigType *Cfg,uint8 prescaler)
+
+void S12Spi_SetSpeed(S12Spi_ConfigType const * const Cfg,uint8 prescaler)
 {
     S12_REG8(Cfg,SPIBR)=0x70 | (prescaler & 0x07);
 }
 
-void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean lsbfe)
+
+/*
+    CPOL — SPI Clock Polarity Bit   (Active low/high clock).
+    CPHA — SPI Clock Phase Bit      (ClockInPhase).
+    LSBFE — SPI LSB-First Enable    (LSB-First).
+*/
+void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean cpha,boolean lsbfe)
 {
     uint8 mask;
     /* todo: Fehlercode, falls SPI 'BUSY' !!! */
@@ -73,18 +72,13 @@ void SPI_SetFormat(const SPI_ConfigType *Cfg,boolean cpol,boolean cpha,boolean l
 }
 
 
-/*
-    CPOL — SPI Clock Polarity Bit   (Active low/high clock).
-    CPHA — SPI Clock Phase Bit      (ClockInPhase).
-    LSBFE — SPI LSB-First Enable    (LSB-First).
-*/
-
-boolean SPI_Ready(const SPI_ConfigType *Cfg)  /* todo: besserer Name!!! */    /* TransferComplete */
+boolean S12Spi_Ready(S12Spi_ConfigType const * const Cfg)  /* todo: besserer Name!!! */    /* TransferComplete */
 {
     return (S12_REG8(Cfg,SPISR) & SPIF)!=(uint8)0;
 }
 
-boolean SPI_TxReady(const SPI_ConfigType *Cfg)    /* TransmitterEmpty */
+
+boolean S12Spi_TxReady(S12Spi_ConfigType const * const Cfg)    /* TransmitterEmpty */
 {
     if ((S12_REG8(Cfg,SPISR) & SPTEF) || (S12_REG8(Cfg,SPICR1) & SPTIE)) {
         return FALSE;
@@ -93,27 +87,28 @@ boolean SPI_TxReady(const SPI_ConfigType *Cfg)    /* TransmitterEmpty */
     }
 }
 
-uint8 SPI_IOByte(const SPI_ConfigType *Cfg,uint8 data)
+
+uint8 S12Spi_IOByte(S12Spi_ConfigType const * const Cfg,uint8 data)
 {
-    WAIT_FOR(SPI_TxReady(Cfg));    
+    WAIT_FOR(S12Spi_TxReady(Cfg));    
     S12_REG8(Cfg,SPIDR)=data;    
-    WAIT_FOR(SPI_Ready(Cfg));
+    WAIT_FOR(S12Spi_Ready(Cfg));
  
     return S12_REG8(Cfg,SPIDR);
 }
 
 
-void SPI_IOBuffer(const SPI_ConfigType *Cfg,uint8 *data,uint8 len,boolean use_interrupt)
+void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,boolean use_interrupt)
 {
     uint8 idx;
     
     if (len) {
         if (len==(uint8)1) {
-            data[0]=SPI_IOByte(Cfg,data[0]);
+            data[0]=S12Spi_IOByte(Cfg,data[0]);
         } else {
             if (use_interrupt==FALSE) {
                 for (idx=0;idx<len;++idx) {
-                    data[idx]=SPI_IOByte(Cfg,data[idx]);
+                    data[idx]=S12Spi_IOByte(Cfg,data[idx]);
                 }
             } else {
         
@@ -124,7 +119,8 @@ void SPI_IOBuffer(const SPI_ConfigType *Cfg,uint8 *data,uint8 len,boolean use_in
     }
 }
 
-void SPI_Handler(const SPI_ConfigType *Cfg)
+
+void S12Spi_Handler(S12Spi_ConfigType const * const Cfg)
 {
     uint8 ch;
     
@@ -141,9 +137,8 @@ void SPI_Handler(const SPI_ConfigType *Cfg)
     }
 }
 
-#if 0
-ISR(SPI0_Handler)
+
+ISR1(SPI0_Vector)
 {
-    SPI_Handler(&SPI0);
+    S12Spi_Handler(SPI0);
 }
-#endif
