@@ -40,7 +40,7 @@ void S12Spi_Init(S12Spi_ConfigType const * const Cfg)
 
 void S12Spi_SetSpeed(S12Spi_ConfigType const * const Cfg,uint8 prescaler)
 {
-    S12_REG8(Cfg,SPIBR)=0x70 | (prescaler & 0x07);
+    S12_REG8(Cfg,SPIBR)=(uint8)0x70 | (prescaler & (uint8)0x07);
 }
 
 
