@@ -107,7 +107,7 @@ void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,b
             data[0]=S12Spi_IOByte(Cfg,data[0]);
         } else {
             if (use_interrupt==FALSE) {
-                for (idx=0;idx<len;++idx) {
+                for (idx=(uint8)0;idx<len;++idx) {
                     data[idx]=S12Spi_IOByte(Cfg,data[idx]);
                 }
             } else {

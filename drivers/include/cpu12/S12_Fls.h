@@ -7,29 +7,19 @@
 **  Global Defines.
 */
 
-/*
-**
-**  todo: Return-Codes!!!
-**
-*/
-
-/*
-**  Command-Codes.
-*/
+/*  Command-Codes. */
 #define S12FLS_ERASE_VERIFY     ((uint8)0x05)
 #define S12FLS_WORD_PROGRAM     ((uint8)0x20)
 #define S12FLS_SECTOR_ERASE     ((uint8)0x40)
 #define S12FLS_MASS_ERASE       ((uint8)0x41)
- 
- 
-/*
-**  Module-Error-Codes.
-*/
+
+/*  Module-Error-Codes. */
 #define S12FLS_ERR_OK           ((uint8)0)
 #define S12FLS_ERR_INIT         ((uint8)1)
 #define S12FLS_ERR_PVIOL        ((uint8)2)
 #define S12FLS_ERR_ACC          ((uint8)3)
 #define S12FLS_ERR_ADDR         ((uint8)4)
+
 
 /*
 **  Global Types.
@@ -56,7 +46,7 @@ boolean S12Fls_VerifyErase(uint8 block_num);
 
 uint8 S12Fls_SectorErase(uint8 page,uint16 addr);
 uint8 S12Fls_MassErase(uint8 block_num);
-uint8 S12Fls_PageErase(uint8 page);     /* todo: Implementieren !!! */
+uint8 S12Fls_PageErase(uint8 page);
 
 uint8 S12Fls_ProgramWord(uint8 page,uint16 addr,uint16 data);
 uint8 S12Fls_BurstProgram(uint8 page,uint16 start_addr,const uint16 *data,uint16 len);

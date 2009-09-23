@@ -310,25 +310,10 @@ static uint16 S12Sci_CalculateBaudratePrescaler(uint32 baudrate)
     
     (void)S12Crg_GetBusFreq(&freq);
     
-    tmp=(freq*S12SCI_PRESC_PER_MHZ*10L)/baudrate;
+    tmp=(uint16)((freq*S12SCI_PRESC_PER_MHZ*10L)/baudrate);
     
-    if ((tmp % 10)>=5) {
-        tmp+=10;
+    if ((tmp % (uint16)10)>=(uint16)5) {
+        tmp+=(uint16)10;
     }
-    return tmp/=10;
+    return tmp/=(uint16)10;
 }
-
-#if 0
-void Test(void);
-
-void Test(void)
-{
-    uint8 idx;
-    uint16 baudrate;
-    const uint32 btab[]={300,600,1200,2400,4800,9600,19200,38400,57600,115200};
-    
-    for (idx=0;idx<=9;idx++) {
-        baudrate=S12Sci_CalculateBaudratePrescaler(btab[idx]);
-    }
-}
-#endif

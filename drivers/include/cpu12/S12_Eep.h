@@ -8,23 +8,23 @@
 */
 
 /*
-**  Error-Codes.
+**  Global Defines.
 */
+
+/*  Error-Codes.    */
 #define S12EE_ERR_OK           ((uint8)0)
 #define S12EE_ERR_INIT         ((uint8)1)
 #define S12EE_ERR_PVIOL        ((uint8)2)
 #define S12EE_ERR_ACC          ((uint8)3)
 #define S12EE_ERR_ADDR         ((uint8)4)
 
-
-/*
-**  Command-Codes.
-*/
+/*  Command-Codes.  */
 #define S12EE_ERASE_VERIFY     ((uint8)0x05)
 #define S12EE_WORD_PROGRAM     ((uint8)0x20)
 #define S12EE_SECTOR_ERASE     ((uint8)0x40)
 #define S12EE_MASS_ERASE       ((uint8)0x41)
 #define S12EE_SECTOR_MODIFY    ((uint8)0x60)
+
 
 void S12Eep_Init(void);
 void S12Eep_Protect(boolean ena);

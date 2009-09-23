@@ -2,8 +2,6 @@
 #include "S12_Ect.h"
 #include "Hw_Cfg.h"
 
-#define OS_SYSTEM_TIMER_FREQ    ((uint16)1000)        /* todo: nach 'Hw_Cfg.h' */
-
 S12Ect_StatusType S12Ect_Init(void)
 {
     /* Main Timer Setup */

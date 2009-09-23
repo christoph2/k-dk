@@ -32,7 +32,7 @@ of operations, rather than just the CCIF Flag.
 #endif
 
 
-#if 0
+/*
 **
 **  DP256-Flash-Geometry
 **  =========================
@@ -41,7 +41,14 @@ of operations, rather than just the CCIF Flag.
 **  sectors_per_page    (32)
 **  bytes_per_sector    (512)
 **
-#endif
+**  DP512-Flash-Geometry
+**  =========================
+**  num_blocks          (4)
+**  pages_per_block     (8)
+**  sectors_per_page    (16)
+**  bytes_per_sector    (1024)
+**
+*/
 
 ;
 ;   Sector-Start-Addresses
@@ -87,12 +94,22 @@ of operations, rather than just the CCIF Flag.
     PUBLIC  S12Fls_PageSelect
     PUBLIC  S12Fls_DoCmd
     PUBLIC  S12Fls_VerifyErase
+
     PUBLIC  S12Fls_SectorErase
+    PUBLIC  S12Fls_PageErase
+    PUBLIC  S12Fls_MassErase
     
     PUBLIC  S12Fls_ProgramWord
     PUBLIC  S12Fls_BurstProgram
 
-FLS_PPAGE_OFFSET    EQU     0x30    ; todo: Cfg-Parameters!!!
+; *************************
+; todo: Cfg-Parameters!!! *
+; *************************
+FLS_PAGE_ADDR       EQU     0x8000
+FLS_PAGE_SIZE       EQU     0x4000
+
+FLS_PPAGE_OFFSET    EQU     0x30
+
 FE_CLK_DIV          EQU     ((16*1000)/200/8)-1
 FLS_NUM_BANKS	    EQU     4
 FLS_SECTOR_SIZE     EQU     512
@@ -419,6 +436,24 @@ se_cont:
 
 se_exit:
     clra
+    rts
+
+;
+;   uint8 S12Fls_PageErase(uint8 page);
+;
+S12Fls_PageErase:
+    pshb    
+    ldy     #FLS_PAGE_ADDR
+pe_loop:
+    ldab    0,SP
+    jsr     S12Fls_SectorErase,pcr
+    leay    FLS_SECTOR_SIZE,y
+    
+    cpy     #(FLS_PAGE_ADDR+FLS_PAGE_SIZE)
+    bcs     pe_loop
+
+pe_exit:
+    leas    1,sp
     rts
 
 ;
