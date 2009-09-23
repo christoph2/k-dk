@@ -1,9 +1,31 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__VT100_H)
 #define __VT100_H
 
 #include "Std_Types.h"
 #include "ascii.h"
-#include "S12_Sci.h" /* todo: HW-Independent!!! */
+#include "S12_Sci.h"
 
 #define VT100_CSI   "\x1b["   /* Control Sequence Introducer */
 
@@ -13,7 +35,6 @@
 /*
 **  Attributes (Select Graphics Redition
 */
-
 #define VT_100_ATTRS_OFF    ((uint8)0)
 #define VT_100_BOLD         ((uint8)1)
 #define VT_100_UNDERSCORE   ((uint8)4)
@@ -38,11 +59,8 @@ void VT100_CUP(uint8 line,uint8 column,char *buf);  /* Cursor Position */
 void VT100_CHOME(char *buf);                        /* Cursor Home */
 void VT100_HVP(uint8 line,uint8 column,char *buf);  /* Cursor Position */
 
-/*
-**  ???-Functions.
-*/
-void VT100_SGR(const uint8 *attrs,uint8 len,char *buf);               /* Select Graphic Rendition */
 
+void VT100_SGR(const uint8 *attrs,uint8 len,char *buf);               /* Select Graphic Rendition */
 
 void VT100_Send(const SCI_ConfigType *Cfg,const char *buf);
 

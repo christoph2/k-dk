@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include "S12_Iic.h"
 
 /*
@@ -34,13 +56,6 @@ typedef struct tagIic_PrimitiveType {
 S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg)
 {
     S12_REG8(Cfg,IBCR)=(uint8)0x00;
-
-    /* todo: PIM-Modul!!! */
-#if 0
-    DDRJ|=(uint8)0xc0;
-    PTJ|=(uint8)0xc0;
-    DDRJ&=(uint8)~0xC0;
-#endif
 
     S12_REG8(Cfg,IBFD)=Cfg->Prescaler;
     S12_REG8(Cfg,IBSR)=IBIF|IBAL;
@@ -81,16 +96,9 @@ S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg)
 
     S12_REG8(Cfg,IBCR)=IBEN;
     /*  IBCR&=~MS_SL; */
-
     return S12IIC_OK;
 }
 
-/* todo: R/W-Bit setzen!!! */
-/*
-    The R/W bit tells the slave the desired direction of data transfer.
-        1 = Read transfer, the slave transmits data to the master.
-        0 = Write transfer, the master transmits data to the slave.
-*/
 
 S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,boolean *ack)
 {
@@ -150,10 +158,10 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
         }
     } else {
         addr_mask&=(uint8)0x7f;
-        for (idx=0;idx<addr_mask;idx+=2) {  /* haut so nicht hin!!! */
+        for (idx=0;idx<addr_mask;idx+=2) {
             (void)S12Iic_Start(Cfg);
             (void)S12Iic_Write(Cfg,slave_base_addr+idx,&ack);
-            if (ack==TRUE) { /* todo: korrekte Addresierung!!! */
+            if (ack==TRUE) {
                 found++;
                 if (callback!=(IIC_PresenceCallback)NULL) {
                     callback(idx);

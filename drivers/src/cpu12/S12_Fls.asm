@@ -1,36 +1,24 @@
-
-/*
-**  Hinweis: 'lbsr' ist eine Alternative zu 'jsr,pcr' !!!
-*/
-
-#if 0
-MC9S12DP256B, Mask 2K79X
-========================
-========
-CCIF command complete flag may be erroneously set.	MUCts00973
-------------------------------------------------------------------
-
-Description
------------
-When pipeline programming the flash NVM array, the CCIF (command
-complete flag) may be momentarily set between pipelined commands. This
-is due to a bug with the physical flash block interface which restarts
-the next command as a new sequence when transitioning from one physical
-flash row to the next, rather than recognising the next command as part
-of an ongoing command sequence. Since the location of physical flash row
-boundaries differs between devices, it is difficult to specify whether
-CCIF flag set instances are erroneous or not. The workaround should be
-closely followed to avoid this issue. 
-
-Workaround
-----------
-The code which is checking for the end of command operations should
-check for both CBEIF (Command Buffer Empty Interrupt Flag) and CCIF
-(Command Complete Interrupt Flag) to be set, as an indication of the end
-of operations, rather than just the CCIF Flag. 
-
-#endif
-
+; 
+;  k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+;  
+;  (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+;  
+;  All Rights Reserved
+; 
+;  This program is free software; you can redistribute it and/or modify
+;  it under the terms of the GNU General Public License as published by
+;  the Free Software Foundation; either version 2 of the License, or
+;  (at your option) any later version.
+; 
+;  This program is distributed in the hope that it will be useful,
+;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;  GNU General Public License for more details.
+;
+;  You should have received a copy of the GNU General Public License along
+;  with this program; if not, write to the Free Software Foundation, Inc.,
+;  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+;
 
 /*
 **
@@ -50,43 +38,6 @@ of operations, rather than just the CCIF Flag.
 **
 */
 
-;
-;   Sector-Start-Addresses
-;   ======================
-;   512 byte sectors start at addresses $x000, $x200, $x400,$x600, $x800, $xA00, $xC00 and $xE00. 
-;   1024 bytes sectors start at addresses $x000, $x400, $x800 and $xC00.
-;
-;   An erase sector is 4 bytes for EEPROM, 1024 bytes for a 128k byte Flash block and 512
-;   bytes for all other Flash blocks.
-;
-;   Flash (but not EEPROM) also has a mode called Burst programming. Burst
-;   programming is invoked by pipelining program commands for words on the
-;   same Flash row. A row is 64 bytes on 32k and 64k byte Flash blocks and 128
-;   bytes on the 128k Flash block. Burst programming reduces the programming
-;   time by keeping the high voltage generation switched on between program
-;   commands on the same row. Burst programming is approximately twice as fast
-;   as single word programming.
-;
-
-#if 0
-/*
-**	Flash Block #0 enth‰lt Bootloader und Interrupt-Vektoren.
-**		auﬂerdem vom Bank #0 ausgew‰hlt sein, wenn in die
-**		Bereiche 0x4000-0x7fff und 0xc000-0xffff geschrieben
-**		werden soll!!!
-*/
-
-/*
-** NON-BANKED-REGISTERS
-** --------------------
-** FCLKDIV
-** FSEC
-** (FACTORY-TEST)
-** FCNFG
-**
-*/
-
-#endif
 
     NAME    S12Fls
 
@@ -102,9 +53,6 @@ of operations, rather than just the CCIF Flag.
     PUBLIC  S12Fls_ProgramWord
     PUBLIC  S12Fls_BurstProgram
 
-; *************************
-; todo: Cfg-Parameters!!! *
-; *************************
 FLS_PAGE_ADDR       EQU     0x8000
 FLS_PAGE_SIZE       EQU     0x4000
 
@@ -132,9 +80,6 @@ FE_ERR_PVIOL        EQU     2
 FE_ERR_ACC          EQU     3
 FE_ERR_ADDR         EQU     4
 
-;
-;   todo: Include-File!!!
-;
 PPAGE               EQU     0x0030
 
 FCLKDIV             EQU     0x0100
@@ -219,6 +164,7 @@ CODE_LEN  EQU       CODE_END-CODE_START
 
     RSEG CODE:CODE:REORDER:NOROOT(0)        ; Code-Segment.
 CODE_START:
+
 ;
 ;   void S12Fls_Init(void);
 ;
@@ -226,7 +172,6 @@ S12Fls_Init:
     movb    #0x00,FCNFG
     movb    #(PRDIV8 | FE_CLK_DIV),FCLKDIV
     rts
-
 
 ;
 ;   void S12Fls_PageSelect(uint8 page);

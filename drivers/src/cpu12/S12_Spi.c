@@ -1,4 +1,25 @@
-
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include "S12_Spi.h"
 #include "Hw_Cfg.h"
 
@@ -10,20 +31,9 @@
 **
 */
 
-/*
-**
-** todo: todo evtl. doch 'error()' wg. 'MODF'-Handling???
-**
-**  Return-Codes!!!
-**
-*/
-
-
 static void S12Spi_Handler(S12Spi_ConfigType const * const Cfg);
 static boolean S12Spi_TxReady(S12Spi_ConfigType const * const Cfg);
 
-
-/* todo: BufferPointer als statische Variable!!! */
 
 void S12Spi_Init(S12Spi_ConfigType const * const Cfg)
 {
@@ -33,7 +43,7 @@ void S12Spi_Init(S12Spi_ConfigType const * const Cfg)
     S12_REG8(Cfg,SPICR2)=MODFEN|BIDIROE|SPISWAI;
 
     ch=S12_REG8(Cfg,SPIDR);
-    S12_REG8(Cfg,SPIBR)=(uint8)0x00;  /* todo: Prescaler setzen!!! */
+    S12_REG8(Cfg,SPIBR)=(uint8)0x00;
     S12_REG8(Cfg,SPICR1)|=SPIE;
 }
 
@@ -72,7 +82,7 @@ void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean c
 }
 
 
-boolean S12Spi_Ready(S12Spi_ConfigType const * const Cfg)  /* todo: besserer Name!!! */    /* TransferComplete */
+boolean S12Spi_Ready(S12Spi_ConfigType const * const Cfg) 
 {
     return (S12_REG8(Cfg,SPISR) & SPIF)!=(uint8)0;
 }
@@ -115,7 +125,7 @@ void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,b
             }
         }
     } else {
-        /* todo: return ERROR_CODE!!! */   
+        /* todo: return ERROR_CODE!!! */
     }
 }
 

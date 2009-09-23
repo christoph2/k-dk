@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__S12IIC_H)
 #define __S12IIC_H
 
@@ -13,15 +35,6 @@ extern "C"
 */
 #define IBAD            ((uint8)0x00)
         /*  IBAD-Bits.  */
-/*
-        #define ADR7    0x80
-        #define ADR6    0x40
-        #define ADR5    0x20
-        #define ADR4    0x10
-        #define ADR3    0x08
-        #define ADR2    0x04
-        #define ADR1    0x02 
-*/
 
 #define IBFD            ((uint8)0x01)
         /*  IBFD-Bits.  */
@@ -68,8 +81,6 @@ extern "C"
 typedef struct tagS12Iic_ConfigType {
     uint16 BaseAddr;
     uint8 Prescaler;
-    /* todo: boolean EnableInterrupts*/    
-    /* todo: Callouts (mit der Option, den Puffer zu kopieren!?) */    
 } S12Iic_ConfigType;
 
 typedef enum taS12Iic_StatusType {
@@ -83,7 +94,6 @@ typedef enum taS12Iic_StatusType {
 typedef void (*IIC_PresenceCallback)(uint8 addr);
 
 
-/* DECLARE_ISR(iic_handler);   */
 /*
 **  Function-Prototypes.
 */

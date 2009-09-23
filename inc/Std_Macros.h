@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__STD_MACROS_H)
 #define __STD_MACROS_H
 
@@ -90,7 +112,7 @@
 #define INVERT_NIBBLE(b)    ((uint8)((~(b)) & ((uint8)0x0f)))
 
 #define SIZEOF_ARRAY(arr)   (sizeof((arr)) / sizeof((arr[0])))
-#define BEYOND_ARRAY(arr)   ((arr) + SIZE_OF_ARRAY((arr)))  /* todo: boolean Expr. */
+#define BEYOND_ARRAY(arr)   ((arr) + SIZE_OF_ARRAY((arr)))
 
 #define FOREVER             while(TRUE)
 
@@ -101,29 +123,7 @@
         _BEGIN_BLOCK        \
         _END_BLOCK
 
-/*
-**
-**    todo: 'ASSERT_<object>_IS_ALLOWED(obj_id)' - das 'APPMODE' Objekt bekommt DISALLOW_<object>,
-**          DISALLOW_TASK,DISALLOW_EVENT etc., mit denen man bestimmte Objekte für bestimmte
-**          Application-Modes verbieten kann.
-**
-*/
 
-/*
-**
-**      check: Zwischen DEBUG- und RELEASE- Assertions ('D_ASSERT','R_ASSERT') unterscheiden ???
-*/
-
-/* 
-    todo: Funktion bzw. Benutzerdefinierter Handler!!!
-    Außerdem als Konfigurations-Option ErrorHook(), falls
-    installiert, mit einer speziellen Konstante
-    (E_OS_SYS_ASSERTION_FAILED) aufrufen.
-
-    - DONT_USE_ASSERT.
-    - SYS_DEFINED_ASSERT.
-    - USER_DEFINED_ASSERT.
-*/
 #if !defined(NDEBUG)
 #define ASSERT(cond)            \
    _BEGIN_BLOCK                 \

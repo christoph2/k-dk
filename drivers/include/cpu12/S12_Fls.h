@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__S12_FLS_H)
 #define __S12_FLS_H
 
@@ -25,12 +47,10 @@
 **  Global Types.
 */
 typedef struct tagS12Fls_Geometry {
-    /* todo: BinnenMajuskel!? */
-    uint8 num_blocks;
+	uint8 num_blocks;
     uint8 pages_per_block;
     uint8 sectors_per_page;
     uint16 bytes_per_sector;
-    /* check: benötigen wir die 'ROW-SIZE' (64Bytes @ 256K,128Bytes @ 512K) ??? */
 } S12Fls_Geometry;
 
 /*

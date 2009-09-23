@@ -1,4 +1,25 @@
-
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include "S12_Crg.h"
 #include "Hw_Cfg.h"
 
@@ -10,7 +31,7 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
 
 /*    S12CRG_REG8(CLKSEL)&=~PLLSEL; */
     S12CRG_REG8(CLKSEL)=/*PSTP|ROAWAI*/COPWAI;
-    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;  /* Hinweis: 'ACQ' hat keine Bedeutung, wenn 'AUTO' !!!*/
+    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;
 
     (void)S12Mebi_SpecialMode(&special_mode);
 
@@ -40,14 +61,11 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
     if (status!=S12CRG_OK) {
         return status;   
     }
-       
-    /* todo:  'EnablePLL()' !!! */
-/*    S12CRG_REG8(CLKSEL)|=PLLSEL;   */
     
     return S12CRG_OK;
 }
 
-/* todo: die Funktionen Enable-/Disable-PLL implementieren ('PLLCTL') !!! */
+
 S12Crg_StatusType S12Crg_EnablePLL(void)
 {
     boolean flag;
@@ -218,13 +236,6 @@ S12Crg_StatusType S12Crg_ResetMCU(void)
     return S12CRG_OK;                       /* never reached...                             */
 }
 
-
-/*
-**
-**  todo:   den Vektoren mit 'S12CRG_USE_RTI_VECTOR' aktivieren !!!
-**          das ganze Allgemein verwenden: !!!S12mod_USE_xxx_VECTOR' !!!
-**
-*/
 
 ISR1(RTI_Vector)
 {
