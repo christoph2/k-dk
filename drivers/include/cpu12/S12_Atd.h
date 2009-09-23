@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__S12_ATD_H)
 #define __S12_ATD_H
 
@@ -9,9 +31,8 @@ extern "C"
 #endif  /* __cplusplus */
 
 /*
-**      Offsets der ATD-Register.
+**      Register-Offsets..
 */
-
 #define ATDCTL0         ((uint8)0x00)
 #define ATDCTL1         ((uint8)0x01)
 #define ATDCTL2         ((uint8)0x02)
@@ -159,6 +180,7 @@ typedef enum tagS12Atd_StatusType {
     S12ATD_ID
 } S12Atd_StatusType;
 
+
 typedef enum tagS12Atd_SampleChannelType {    
     S12ATD_SMP_CHN_AD0,
     S12ATD_SMP_CHN_AD1,
@@ -179,6 +201,7 @@ typedef enum tagS12Atd_SampleChannelType {
     S12ATD_SMP_CHN_ANY=0xff
 } S12Atd_SampleChannelType;
 
+
 typedef enum tagS12Atd_ExternalTriggerType {
     S12ATD_EXT_TRIG_FALLING_EDGE,
     S12ATD_EXT_TRIG_RISING_EDGE,
@@ -187,6 +210,7 @@ typedef enum tagS12Atd_ExternalTriggerType {
     S12ATD_EXT_TRIG_DISABLED
 } S12Atd_ExternalTriggerType;
 
+
 typedef enum tagS12Atd_ConversionTimeType{
     S12ATD_CONV_TIME_FAST,
     S12ATD_CONV_TIME_MEDIUM_FAST,
@@ -194,7 +218,7 @@ typedef enum tagS12Atd_ConversionTimeType{
     S12ATD_CONV_TIME_SLOW  
 } S12Atd_ConversionTimeType;
 
-/* todo: Flags sind definitiv sinnvoller !!! */
+
 typedef struct tagS12Atd_ConfigType {
     uint16 BaseAddr;    
     uint8 Prescaler;
@@ -207,7 +231,9 @@ typedef struct tagS12Atd_ConfigType {
     /* todo: Callout!? */
 } S12Atd_ConfigType;
 
+
 DECLARE_ISR1_VECTOR(ATD0_Vector);
+
 
 #define S12ATD_GET_CONFIGURATION() HW_GET_CONFIGURATION(S12Atd_Configuration,Cfg,id,S12ATD_ID)
 

@@ -1,38 +1,26 @@
+; 
+;  k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+;  
+;  (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+;  
+;  All Rights Reserved
+; 
+;  This program is free software; you can redistribute it and/or modify
+;  it under the terms of the GNU General Public License as published by
+;  the Free Software Foundation; either version 2 of the License, or
+;  (at your option) any later version.
+; 
+;  This program is distributed in the hope that it will be useful,
+;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;  GNU General Public License for more details.
+;
+;  You should have received a copy of the GNU General Public License along
+;  with this program; if not, write to the Free Software Foundation, Inc.,
+;  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+;
 
 /*
-**  Hinweis: 'lbsr' ist eine Alternative zu 'jsr,pcr' !!!
-*/
-
-#if 0
-MC9S12DP256B, Mask 2K79X
-========================
-========
-CCIF command complete flag may be erroneously set.	MUCts00973
-------------------------------------------------------------------
-
-Description
------------
-When pipeline programming the flash NVM array, the CCIF (command
-complete flag) may be momentarily set between pipelined commands. This
-is due to a bug with the physical flash block interface which restarts
-the next command as a new sequence when transitioning from one physical
-flash row to the next, rather than recognising the next command as part
-of an ongoing command sequence. Since the location of physical flash row
-boundaries differs between devices, it is difficult to specify whether
-CCIF flag set instances are erroneous or not. The workaround should be
-closely followed to avoid this issue. 
-
-Workaround
-----------
-The code which is checking for the end of command operations should
-check for both CBEIF (Command Buffer Empty Interrupt Flag) and CCIF
-(Command Complete Interrupt Flag) to be set, as an indication of the end
-of operations, rather than just the CCIF Flag. 
-
-#endif
-
-
-#if 0
 **
 **  DP256-Flash-Geometry
 **  =========================
@@ -41,45 +29,15 @@ of operations, rather than just the CCIF Flag.
 **  sectors_per_page    (32)
 **  bytes_per_sector    (512)
 **
-#endif
-
-;
-;   Sector-Start-Addresses
-;   ======================
-;   512 byte sectors start at addresses $x000, $x200, $x400,$x600, $x800, $xA00, $xC00 and $xE00. 
-;   1024 bytes sectors start at addresses $x000, $x400, $x800 and $xC00.
-;
-;   An erase sector is 4 bytes for EEPROM, 1024 bytes for a 128k byte Flash block and 512
-;   bytes for all other Flash blocks.
-;
-;   Flash (but not EEPROM) also has a mode called Burst programming. Burst
-;   programming is invoked by pipelining program commands for words on the
-;   same Flash row. A row is 64 bytes on 32k and 64k byte Flash blocks and 128
-;   bytes on the 128k Flash block. Burst programming reduces the programming
-;   time by keeping the high voltage generation switched on between program
-;   commands on the same row. Burst programming is approximately twice as fast
-;   as single word programming.
-;
-
-#if 0
-/*
-**	Flash Block #0 enth‰lt Bootloader und Interrupt-Vektoren.
-**		auﬂerdem vom Bank #0 ausgew‰hlt sein, wenn in die
-**		Bereiche 0x4000-0x7fff und 0xc000-0xffff geschrieben
-**		werden soll!!!
-*/
-
-/*
-** NON-BANKED-REGISTERS
-** --------------------
-** FCLKDIV
-** FSEC
-** (FACTORY-TEST)
-** FCNFG
+**  DP512-Flash-Geometry
+**  =========================
+**  num_blocks          (4)
+**  pages_per_block     (8)
+**  sectors_per_page    (16)
+**  bytes_per_sector    (1024)
 **
 */
 
-#endif
 
     NAME    S12Fls
 
@@ -87,12 +45,19 @@ of operations, rather than just the CCIF Flag.
     PUBLIC  S12Fls_PageSelect
     PUBLIC  S12Fls_DoCmd
     PUBLIC  S12Fls_VerifyErase
+
     PUBLIC  S12Fls_SectorErase
+    PUBLIC  S12Fls_PageErase
+    PUBLIC  S12Fls_MassErase
     
     PUBLIC  S12Fls_ProgramWord
     PUBLIC  S12Fls_BurstProgram
 
-FLS_PPAGE_OFFSET    EQU     0x30    ; todo: Cfg-Parameters!!!
+FLS_PAGE_ADDR       EQU     0x8000
+FLS_PAGE_SIZE       EQU     0x4000
+
+FLS_PPAGE_OFFSET    EQU     0x30
+
 FE_CLK_DIV          EQU     ((16*1000)/200/8)-1
 FLS_NUM_BANKS	    EQU     4
 FLS_SECTOR_SIZE     EQU     512
@@ -115,9 +80,6 @@ FE_ERR_PVIOL        EQU     2
 FE_ERR_ACC          EQU     3
 FE_ERR_ADDR         EQU     4
 
-;
-;   todo: Include-File!!!
-;
 PPAGE               EQU     0x0030
 
 FCLKDIV             EQU     0x0100
@@ -202,6 +164,7 @@ CODE_LEN  EQU       CODE_END-CODE_START
 
     RSEG CODE:CODE:REORDER:NOROOT(0)        ; Code-Segment.
 CODE_START:
+
 ;
 ;   void S12Fls_Init(void);
 ;
@@ -209,7 +172,6 @@ S12Fls_Init:
     movb    #0x00,FCNFG
     movb    #(PRDIV8 | FE_CLK_DIV),FCLKDIV
     rts
-
 
 ;
 ;   void S12Fls_PageSelect(uint8 page);
@@ -419,6 +381,24 @@ se_cont:
 
 se_exit:
     clra
+    rts
+
+;
+;   uint8 S12Fls_PageErase(uint8 page);
+;
+S12Fls_PageErase:
+    pshb    
+    ldy     #FLS_PAGE_ADDR
+pe_loop:
+    ldab    0,SP
+    jsr     S12Fls_SectorErase,pcr
+    leay    FLS_SECTOR_SIZE,y
+    
+    cpy     #(FLS_PAGE_ADDR+FLS_PAGE_SIZE)
+    bcs     pe_loop
+
+pe_exit:
+    leas    1,sp
     rts
 
 ;

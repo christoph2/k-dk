@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include "S12_Sci.h"
 #include "Hw_Cfg.h"
 
@@ -18,9 +40,9 @@
 static uint16 S12Sci_CalculateBaudratePrescaler(uint32 baudrate);
 
 
-S12Sci_StatusType S12Sci_Init(S12Sci_ConfigType const * const Cfg)   /* todo: Baudrate und Interrupts als Parameter. */
+S12Sci_StatusType S12Sci_Init(S12Sci_ConfigType const * const Cfg)
 {        
-    S12_REG8(Cfg,SCICR2)=((uint8)0x00);    /* Schnittstelle deaktivieren - check!!! */
+    S12_REG8(Cfg,SCICR2)=((uint8)0x00);
         
     S12Sci_SetFormat(Cfg,Cfg->BaudRate,Cfg->Parity,Cfg->NBits);
     S12_REG8(Cfg,SCISR2)=(BRK13);
@@ -68,7 +90,6 @@ S12Sci_StatusType S12Sci_SetFormat(S12Sci_ConfigType const * const Cfg,uint32 ba
 {
     uint8 set_msk=(uint8)0,clr_msk=(uint8)0;
     uint8 ch;    
-    /* todo: Aktuelle Konfiguration sichern!!! */
     
     S12_REG16(Cfg,SCIBD)=S12Sci_CalculateBaudratePrescaler(baudrate);
         
@@ -215,7 +236,7 @@ S12Sci_StatusType S12Sci_RxBufGetCh(S12Sci_ConfigType const * const Cfg,uint8 *c
     (void)S12Sci_RxBufIsEmpty(Cfg,&empty);
 
     if (empty==TRUE) {
-        return S12SCI_STATE;    /* check: geht das nicht sinnvoller??? */
+        return S12SCI_STATE; 
     }
         
     *ch=Cfg->Vars->RxBufAddr[Cfg->Vars->RxHead++];
@@ -275,16 +296,16 @@ S12Sci_StatusType S12Sci_Handler(S12Sci_ConfigType const * const Cfg)
     if ((S12_REG8(Cfg,SCICR2) & RIE) && (S12_REG8(Cfg,SCISR1) & RDRF)) {
         ch=S12_REG8(Cfg,SCIDRL);
         Cfg->Vars->RxBufAddr[Cfg->Vars->RxTail++]=ch;
-        if (Cfg->Vars->RxTail>=Cfg->Vars->RxBufLength) {    /* todo: Modulo-Division!!! */
+        if (Cfg->Vars->RxTail>=Cfg->Vars->RxBufLength) {
             Cfg->Vars->RxTail=((uint8)0x00);
         }
-        /* todo: Callback ('(HW_EventNotifyFunc)NULL') falls konfiguriert!!! */
+        /* todo: Callback ('(HW_EventNotifyFunc)NULL') ! */
     } else if ((S12_REG8(Cfg,SCICR2) & SCTIE) && (S12_REG8(Cfg,SCISR1) & TDRE)) {
         if (Cfg->Vars->TxBufPtr<Cfg->Vars->TxBufLength) {
             S12_REG8(Cfg,SCIDRL)=Cfg->Vars->TxBufAddr[Cfg->Vars->TxBufPtr++];
         } else {
             S12_REG8(Cfg,SCICR2)&=~(SCTIE);   /* OK, disable Tx-Interrupt-Source. */
-            /* todo: Callback ('(HW_EventNotifyFunc)NULL') falls konfiguriert!!! */
+            /* todo: Callback ('(HW_EventNotifyFunc)NULL') ! */
         }
     }
     
@@ -310,25 +331,10 @@ static uint16 S12Sci_CalculateBaudratePrescaler(uint32 baudrate)
     
     (void)S12Crg_GetBusFreq(&freq);
     
-    tmp=(freq*S12SCI_PRESC_PER_MHZ*10L)/baudrate;
+    tmp=(uint16)((freq*S12SCI_PRESC_PER_MHZ*10L)/baudrate);
     
-    if ((tmp % 10)>=5) {
-        tmp+=10;
+    if ((tmp % (uint16)10)>=(uint16)5) {
+        tmp+=(uint16)10;
     }
-    return tmp/=10;
+    return tmp/=(uint16)10;
 }
-
-#if 0
-void Test(void);
-
-void Test(void)
-{
-    uint8 idx;
-    uint16 baudrate;
-    const uint32 btab[]={300,600,1200,2400,4800,9600,19200,38400,57600,115200};
-    
-    for (idx=0;idx<=9;idx++) {
-        baudrate=S12Sci_CalculateBaudratePrescaler(btab[idx]);
-    }
-}
-#endif

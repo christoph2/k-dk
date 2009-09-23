@@ -1,16 +1,26 @@
-/**********************************************************************************************************
-*                                              xxx-OSEK
-*                              An OpenSource OSEK/VDX-Implementation
-*
-*                          (c) Copyright 2006-2008, Christoph Schueler
-*
-*               All rights reserved.  Protected by international copyright laws.
-*
-*                         *** PRE-ALPHA, ONLY FOR INTERNAL USAGE ***
-*
-**********************************************************************************************************/
-
-#include "Utl.h"
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
+ #include "Utl.h"
 
 static uint32 NextRandomNumber=1;
 
@@ -52,6 +62,7 @@ uint16 Utl_BitGetHighest(uint16 w)
     w|=w>>2;
     w|=w>>4;
     w|=w>>8;
+
     return w^(w>>1);
 }
 
@@ -98,12 +109,6 @@ Utl_EndianessType Utl_CheckEndianess(void)
     }
 }
 
-
-/* 
-**  Hinweis:    wenn die Konfiguration eine Memory-Map enthält, können Schreib-Zugriffe
-**              in den Register-Bereich und in Read-Only-Bereiche mit einer
-**              Assertion abgefangen werden.
-*/
 
 void Utl_MemCopy(void * RESTRICT dst,void * RESTRICT src,SizeType len)
 {
@@ -166,7 +171,7 @@ void Utl_StrCat(uint8 * RESTRICT dst,const uint8 * RESTRICT  src)
     while (*(dst++))
         {}
     --dst;
-    /* 'assignment in condition' ist nicht MISRA-C konform!!! */
+
     while (*(dst++)=*(src++))
         {}
 }
@@ -175,22 +180,18 @@ void Utl_StrCat(uint8 * RESTRICT dst,const uint8 * RESTRICT  src)
 void Utl_StrCpy(uint8 * RESTRICT dst,const uint8 * RESTRICT  src)
 {
     ASSERT(dst!=(void*)NULL);
-    /* 'assignment in condition' ist nicht MISRA-C konform!!! */
+
     while (*(dst++)=*(src++))
         {}
 }
 
 
-/*
- *      Hinweis: Der COSMIC-Compiler generiert bei der folgenden Funktion ein 'TBEQ' ohne Register!!!
- */
 
 #if 0
 void Utl_StrNCpy(uint8 * RESTRICT dst,const uint8 * RESTRICT  src,SizeType maxlen)
 {
     ASSERT(dest!=(void*)NULL);
     
-    /* 'assignment in condition' ist nicht MISRA-C konform!!! */
     while ((*(dst++)=*(src++)) && (maxlen--))
         {}
 }
@@ -226,11 +227,6 @@ const uint8 * Utl_StrChr(const uint8 * str,uint8 ch)
     return (const uint8 *)NULL;
 }
 
-/*
-**  todo: 'StrCenter(uint8 * str,uint8 filler)' 'Str[e|L|R]Trim'  !!!
-**          StrCmp, StrNCmp
-**        
-*/
 
 void Utl_Itoa(uint32 value,uint8 base,uint8 * buf)
 {

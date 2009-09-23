@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__S12CAN_H)
 #define __S12CAN_H
 
@@ -13,7 +35,7 @@ extern "C"
 ** Register-Offsets 
 */
 #define CANCTL0         ((uint8)0)
-        /*  CANCTL0-Bits. */
+	/*  CANCTL0-Bits. */
     #define RXFRM       ((uint8)0x80)
     #define RXACT       ((uint8)0x40)
     #define CSWAI       ((uint8)0x20)
@@ -235,7 +257,7 @@ typedef struct tagS12Can_BufferType {
     uint8 TSRL;
 } S12Can_BufferType;  /* Can_MsgBufferType */
 
-typedef uint8 S12Can_IdentifierType[S12CAN_FILTER_LEN];    /* Hinweis: 'Identifier' ist verunglückt... */
+typedef uint8 S12Can_IdentifierType[S12CAN_FILTER_LEN];
 typedef uint8 S12Can_SDUType[CAN_MAX_LSDU_LEN];
 
 typedef struct tagS12Can_BusTimingType {
@@ -266,11 +288,8 @@ typedef struct tagS12Can_FilterType {
 
 typedef struct tagS12Can_ConfigType {
     uint16 BaseAddr;
-    /* todo: boolean EnableInterrupts*/    
-    /* todo: Bus-Timing bzw. Baudraten-Konstante, dafür einen boolschen Selektor!!! */    
     S12Can_FilterType Filter;
-    /* todo: Callouts (mit der Option, den Puffer zu kopieren!?) */    
-} S12Can_ConfigType;    /* todo: Can_ConfigType */
+} S12Can_ConfigType;
 
 
 #define S12CAN_INTERRUPTS        TRUE

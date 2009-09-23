@@ -1,4 +1,25 @@
-
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #include "S12_Can.h"
 #include "Hw_Cfg.h"
 
@@ -55,16 +76,6 @@ static const S12Can_BusTimingType Can_SpeedTable[]={
 };
 
 
-
-/*
-todo: Makros für die Filter-Register
-====================================
-MAKE_|SET_REG[32|16|8]
-*/
-
-
-/* todo: die meisten Funktionen benötigen einen Check auf Init- und Sleep-Mode!!! */
-
 S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uint8 btr1)
 {
     S12Can_StatusType ret;
@@ -86,7 +97,7 @@ S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uin
 
     S12_REG8(Cfg,CANCTL0)=(CSWAI|TIME|WUPE);
  
-    (void)S12Can_EnableInterrupts(Cfg,TRUE);   /* check: dem Anwender überlassen!? */
+    (void)S12Can_EnableInterrupts(Cfg,TRUE);
 
     return S12CAN_OK;
 }
@@ -94,7 +105,7 @@ S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uin
 
 S12Can_StatusType S12Can_EnableInterrupts(S12Can_ConfigType const * const Cfg,boolean enable)
 {
-    boolean initializing;   /* check:  mit 'z' oder 's' ??? */
+    boolean initializing;
     
     (void)S12Can_Initializing(Cfg,&initializing);
     if (initializing) {
@@ -102,10 +113,7 @@ S12Can_StatusType S12Can_EnableInterrupts(S12Can_ConfigType const * const Cfg,bo
     }
     
     if (enable) {
-        /* check: evtl. nur Busoff berücksichtigen??? */
-        /* check: oder einen Parameter 'errorLevel' ??? */
         S12_REG8(Cfg,CANRIER)=WUPIE|CSCIE|RSTATE0|RSTATE1|TSTATE0|TSTATE1|OVRIE|RXFIE;
-/*        S12_REG8(Cfg,CANTIER)=TXEIE0|TXEIE1|TXEIE2; */
     } else {
         S12_REG8(Cfg,CANRIER)=(uint8)0x00;
         S12_REG8(Cfg,CANTIER)=(uint8)0x00;
@@ -181,7 +189,6 @@ S12Can_StatusType S12Can_SetFilter(S12Can_ConfigType const * const Cfg,const S12
 
 S12Can_StatusType S12Can_Stop(S12Can_ConfigType const * const Cfg)
 {
-    /* Funktioniert so nicht!!! */
     (void)S12Can_InitializationMode(Cfg,TRUE);
     S12_REG8(Cfg,CANCTL1)&=~CANE; /* only in special system operation modes. */
     S12_REG8(Cfg,CANRIER)=(uint8)0x00;
@@ -202,7 +209,7 @@ S12Can_StatusType S12Can_InitializationMode(S12Can_ConfigType const * const Cfg,
         S12_REG8(Cfg,CANCTL0)|=INITRQ;
         WAIT_FOR((S12_REG8(Cfg,CANCTL1) & INITAK)==INITAK);
     } else {
-        if (!((S12_REG8(Cfg,CANCTL0) & INITRQ) && (S12_REG8(Cfg,CANCTL1) & INITAK))) {  /* todo: make bool ! */
+        if (!((S12_REG8(Cfg,CANCTL0) & INITRQ) && (S12_REG8(Cfg,CANCTL1) & INITAK))) {
             return S12CAN_STATE; /* must be in Initialization Mode. */
         }
         S12_REG8(Cfg,CANCTL0)&=~INITRQ;
@@ -220,7 +227,7 @@ S12Can_StatusType S12Can_SleepMode(S12Can_ConfigType const * const Cfg,boolean e
         WAIT_FOR((S12_REG8(Cfg,CANCTL1) & SLPAK)==SLPAK);
 
     } else {
-        if (!((S12_REG8(Cfg,CANCTL0) & SLPRQ) && (S12_REG8(Cfg,CANCTL1) & SLPAK))) {      /* todo: make bool ! */
+        if (!((S12_REG8(Cfg,CANCTL0) & SLPRQ) && (S12_REG8(Cfg,CANCTL1) & SLPAK))) {
             return S12CAN_STATE; /* must be in Sleep Mode. */
         }
         S12_REG8(Cfg,CANCTL0)&=~SLPRQ;
@@ -252,7 +259,7 @@ S12Can_StatusType S12Can_CancelMessage(S12Can_ConfigType const * const Cfg,uint8
     }
     S12_REG8(Cfg,CANTARQ)|=Mask;
 
-    WAIT_FOR((S12_REG8(Cfg,CANTAAK) & Mask)==Mask);   /* check: kann das blockieren??? */
+    WAIT_FOR((S12_REG8(Cfg,CANTAAK) & Mask)==Mask);
     
     
     return S12CAN_OK;
@@ -305,9 +312,8 @@ S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,S12Can_Mes
     TxFG->DLR=Msg->DLR;
     TxFG->TBPR=priority;
 
-    /* todo: ID einbauen - Makro für Standard- und Extended-Identifier!!! */
     if (Msg->ExtendedID) {
-/* todo: Implementieren!!! */
+
         if (Msg->RTR) {
             TxFG->IDR1|=(uint8)0x10;
         }
@@ -382,7 +388,6 @@ S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,S12Can
 
 S12Can_StatusType S12Can_GetErrorCounters(S12Can_ConfigType const * const Cfg,uint8 *RxErrors,uint8 *TxErrors)
 {
-    /* Hinweis: Funktioniert nur im Sleep- oder Init-Mode!!! */
     *RxErrors=S12_REG8(Cfg,CANRXERR);
     *TxErrors=S12_REG8(Cfg,CANTXERR);
 
@@ -435,11 +440,11 @@ ISR1(CAN0ErrorVector)
         state=rflags & (RSTAT1|RSTAT0|TSTAT1|TSTAT0);
         
         if (((state & S12CAN_RSTAT_BUSOFF)==S12CAN_RSTAT_BUSOFF) || ((state & S12CAN_TSTAT_BUSOFF)==S12CAN_TSTAT_BUSOFF)) {
-/* todo: Busoff-Callout, wenn konfiguriert.*/   
+
         }
         BYTE_REG(CAN0.BaseAddr,CANRFLG)=CSCIF;
     } else if ((rflags & OVRIF)==OVRIF) {
-/* todo: Overflow-Vector, falls konfiguriert!!! */        
+
         BYTE_REG(CAN0.BaseAddr,CANRFLG)=OVRIF;
     }
 }

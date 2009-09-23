@@ -1,3 +1,25 @@
+/*
+ * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ */
 #if !defined(__HW_CFG_H)
 #define __HW_CFG_H
 
@@ -37,8 +59,6 @@ extern const S12Atd_ConfigType S12Atd_Configuration[2];
 #define BASE_ADDR_CAN2  (BASE_ADDR_REGISTERS+(uint16)0x01C0)
 #define BASE_ADDR_CAN3  (BASE_ADDR_REGISTERS+(uint16)0x0220)
 #define BASE_ADDR_CAN4  (BASE_ADDR_REGISTERS+(uint16)0x0280)
-
-/* extern const S12Can_ConfigType CANBus0,CANBus1,CANBus2,CANBus3,CANBus4; */
 
 extern const S12Can_ConfigType S12Can_Configuration[5];
 
