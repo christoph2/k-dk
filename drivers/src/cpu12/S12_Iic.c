@@ -49,7 +49,7 @@ typedef enum tagIic_OpcodeType {
 typedef struct tagIic_PrimitiveType {
     Iic_OpcodeType Opcode;
     uint8 Len;
-    uint8 *data;        
+    uint8 *data;
 } Iic_PrimitiveType;
 
 
@@ -60,7 +60,7 @@ S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg)
     S12_REG8(Cfg,IBFD)=Cfg->Prescaler;
     S12_REG8(Cfg,IBSR)=IBIF|IBAL;
     S12_REG8(Cfg,IBCR)=IBEN;
-    
+
     return S12IIC_OK;
 }
 
@@ -71,9 +71,9 @@ S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg)
     }
 
     WAIT_FOR((S12_REG8(Cfg,IBSR) & IBB)!=IBB);
-    S12_REG8(Cfg,IBCR)|=(IBEN|MS_SL|TX_RX);                    
+    S12_REG8(Cfg,IBCR)|=(IBEN|MS_SL|TX_RX);
     WAIT_FOR((S12_REG8(Cfg,IBSR) & IBB)==IBB);
-    
+
     return S12IIC_OK;
 }
 
@@ -81,11 +81,11 @@ S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg)
 {
     if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
-    }    
+    }
 
     S12_REG8(Cfg,IBCR)|=RSTA;
-    
-    return S12IIC_OK;    
+
+    return S12IIC_OK;
 }
 
 S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg)
@@ -105,12 +105,12 @@ S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,boole
     if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
-    
+
     S12_REG8(Cfg,IBDR)=b;
     WAIT_FOR((S12_REG8(Cfg,IBSR) & IBIF)==IBIF);
-    *ack=((S12_REG8(Cfg,IBSR) & RXAK)!=RXAK);    
+    *ack=((S12_REG8(Cfg,IBSR) & RXAK)!=RXAK);
     S12_REG8(Cfg,IBSR)=IBIF;
-        
+
     return S12IIC_OK;
 }
 
@@ -119,7 +119,7 @@ S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,uint8 *b,boole
     if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
-    
+
     S12_REG8(Cfg,IBCR)=IBEN|MS_SL;
 
     if (ack==FALSE) {
@@ -131,7 +131,7 @@ S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,uint8 *b,boole
     S12_REG8(Cfg,IBSR)=IBIF;
     S12_REG8(Cfg,IBCR)=IBEN|MS_SL|TX_RX;
     *b=S12_REG8(Cfg,IBDR);
-        
+
     return S12IIC_OK;
 }
 
@@ -146,19 +146,22 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
     uint8 found=(uint8)0;
     uint8 idx;
     boolean ack;
-    
+
     if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
-
+/*
     if (slave_base_addr==IIC_ADDR_ANY) {
+        (void)S12Iic_Start(Cfg);
         (void)S12Iic_Write(Cfg,IIC_ADDR_ANY,&ack);
+        (void)S12Iic_Stop(Cfg);
         if (ack==TRUE) {
             found=(uint8)1;
         }
     } else {
+*/
         addr_mask&=(uint8)0x7f;
-        for (idx=0;idx<addr_mask;idx+=2) {
+        for (idx=(uint8)0;idx<addr_mask;idx+=(uint8)2) {
             (void)S12Iic_Start(Cfg);
             (void)S12Iic_Write(Cfg,slave_base_addr+idx,&ack);
             if (ack==TRUE) {
@@ -169,8 +172,8 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
             }
             (void)S12Iic_Stop(Cfg);
         }
-    }
-    
+//    }
+
     return (found!=(uint8)0);
 }
 
@@ -181,14 +184,14 @@ IIC_StatusType S12Iic_SendAddress(S12Iic_ConfigType const * const Cfg,uint8 slav
 
     if (!S12_IIC_ENABLED(Cfg)) {
         return S12IIC_UNINIT;
-    }    
-    
+    }
+
     S12Iic_Start(Cfg);
     res=S12Iic_Write(Cfg,slave_addr & (uint8)0xfe);
     if (res==IIC_NAK) {
         S12Iic_Stop(Cfg);
     }
-    
+
     return res;
 }
 #endif
@@ -198,5 +201,5 @@ IIC_StatusType S12Iic_SendAddress(S12Iic_ConfigType const * const Cfg,uint8 slav
 ISR(iic_handler)
 {
     S12_REG8(Cfg,IBSR)|=IBIF;
-}       
+}
 */

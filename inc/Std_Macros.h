@@ -114,6 +114,25 @@
 #define SIZEOF_ARRAY(arr)   (sizeof((arr)) / sizeof((arr[0])))
 #define BEYOND_ARRAY(arr)   ((arr) + SIZE_OF_ARRAY((arr)))
 
+#define __HEX(n) 0x##n##LU
+#define __BIN8(x)                   \
+ (( (x) & 0x0000000FLU) ? 1   : 0)    \
++(( (x) & 0x000000F0LU) ? 2   : 0)    \
++(( (x) & 0x00000F00LU) ? 4   : 0)    \
++(( (x) & 0x0000F000LU) ? 8   : 0)    \
++(( (x) & 0x000F0000LU) ? 16  : 0)    \
++(( (x) & 0x00F00000LU) ? 32  : 0)    \
++(( (x) & 0x0F000000LU) ? 64  : 0)    \
++(( (x) & 0xF0000000LU) ? 128 : 0)
+
+#define BIN8(d) ((uint8)__BIN8(__HEX(d)))
+#define BIN16(dmsb,dlsb) (((uint16)BIN8(dmsb)<<8) + BIN8(dlsb))
+#define BIN32(dmsb,db2,db3,dlsb)    \
+ (((uint32)BIN8(dmsb) << 24)        \
++ ((uint32)BIN8(db2)  << 16)        \
++ ((uint32)BIN8(db3)  << 8)         \
++ BIN8(dlsb))
+
 #define FOREVER             while(TRUE)
 
 #define NOT_ADDRESSABLE     register
@@ -143,7 +162,7 @@
 #define STATIC_ASSERT(cond,msg)                 \
 struct  GLUE2(__NEVER_USED_BY_ISO_C_,__LINE__){ \
     uint8 x[(cond) ? 1 : -1];                   \
-} 
+}
 #endif
 
 #define RETURN_VALUE_IF_FALSE(expr,value)   \

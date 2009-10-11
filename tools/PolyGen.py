@@ -2,10 +2,30 @@
 # -*- coding: latin-1 -*-
 
 __version__="0.9.0"
-
+__description__="VMC-Downloader for the C-Control II."
 __copyright__="""
-Copyright (c) 2009 Christoph Schueler. All rights reserved.
+   2-CB (C-Control-II kompatible Virtuelle Maschine).
+
+  (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+                                       cpu12.gems@googlemail.com>
+
+   All Rights Reserved
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
+
 
 """
 uint16 CRC_CalculateCRC16(const uint8 *Crc_DataPtr,uint32 Crc_Length,uint16 Crc_StartValue16);
@@ -17,16 +37,6 @@ uint16 CRC_CalculateCRC16(const uint8 *data_ptr,uint32 length,uint16 initial_val
 import sys
 import os
 from optparse import OptionParser,OptionGroup
-
-
-##  Some standards such as SDLC expect the data to come into the processor least
-##  significant bit first, e.g. from a UART. Because of this, the standard
-##  specifies that the incoming data and the resulting CRC must be bit reflected.
-##  This means that the bits are swapped around their center position, e.g., in a
-##  16-bit word, b0<->b15, b1<->b14, b2<->b13, etc. So rather than waste processor
-##  time reflecting the input bits and then the CRC, the algorithm is reflected.
-##  So for each normal algorithm, an associated reflected algorithm exists.
-##  This saves both CPU time and power.
 
 """
 unsigned short crc16MakeTableMethod(unsigned short crc, TBL_MEM unsigned short *table,
@@ -97,8 +107,10 @@ void crc32BuildTable(unsigned long *ptable, unsigned long poly)
 GENPOLY_FT3     =   0x3D65  ## FT3 (IEC870-5-2) (e.g. KNX/RF, wireless MBus("Wireless Meter Readout", CEN TC 294 WG 5))
                             ## Example: the sequence 01 02 03 04 05 06 07 08 has the CRC 'FCBC'
 GENPOLY_CCITT   =   0x1021  ## SDLC,HDLC,ITU-T Q.921,V.41...
-GENPOLY_MODBUS  =   0xa001  ## MODBus
+GENPOLY_MODBUS  =   0xa001  ## MODBus, Disk Drive Controllers...
+GENPOLY_IRDA    =   0x8408  ## IRDA, PPP(RFC1171 ) .
 GENPOLY_CANBUS  =   0xC599  ## CANBus
+GENPOLY_IBUTTON8=   0x8C    ## Dallas iWire/iButton.    : x^8 + x^5 + x^4 + 1
 
 ##
 ## BDLC (SAE J1850)
@@ -112,6 +124,10 @@ GENPOLY_CANBUS  =   0xC599  ## CANBus
 ##
 ## GSM 05.03 g(D) = D8 + D4 + D3 + D2 + 1
 ##
+##  iButton: X8 + X5 + X4 + 1
+
+## iButton 16: X16 + X15 + X2 + 1
+
 
 def CRCCalculate16(genpoly,data,accum):
     data <<= 8

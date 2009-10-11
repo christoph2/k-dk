@@ -84,10 +84,18 @@ extern "C"
     /*  EBICTL-Bits.  */
     #define ESTR    ((uint8)0x01)
 
-    
-typedef enum tagS12Mebi_StatusType {
-    S12MEBI_OK
-} S12Mebi_StatusType;
+/*
+**  0x0f - Reserved.
+*/
+
+#define IRQCR       ((uint8)0x1E)
+    /*  INTCR-Bits. */
+    #define IRQE    ((uint8)0x80)
+    #define IRQEN   ((uint8)0x40)
+
+#define PORTK       ((uint8)0x32)
+
+#define DDRK        ((uint8)0x33)
 
 
 typedef enum tagS12Mebi_ModeType {
@@ -101,13 +109,37 @@ typedef enum tagS12Mebi_ModeType {
     S12MODE_NORMAL_EXPANDED_WIDE
 } S12Mebi_ModeType;
 
+
 typedef struct tagS12Mebi_ConfigType {
     uint16 BaseAddr;
+
+    uint8 Pucr;
+    uint8 Rdriv;
+    uint8 IrqCr;
+
+    /* PortA */
+    uint8 DdrA;
+    uint8 PortA;
+
+    /* PortB */
+    uint8 DdrB;
+    uint8 PortB;
+
+    /* PortE */
+    uint8 DdrE;
+    uint8 PortE;
+
+    /* PortK */
+    uint8 DdrK;
+    uint8 PortK;
+
 } S12Mebi_ConfigType;
 
 
-S12Mebi_StatusType S12Mebi_GetMode(S12Mebi_ModeType *mode);
-S12Mebi_StatusType S12Mebi_SpecialMode(boolean *flag);
+void S12Mebi_Init(void);
+S12Mebi_ModeType S12Mebi_GetMode(void);
+boolean S12Mebi_SpecialMode(void);
+
 
 #if defined(__cplusplus)
 }

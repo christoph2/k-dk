@@ -1,15 +1,15 @@
-; 
+;
 ;  k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
-;  
+;
 ;  (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
-;  
+;
 ;  All Rights Reserved
-; 
+;
 ;  This program is free software; you can redistribute it and/or modify
 ;  it under the terms of the GNU General Public License as published by
 ;  the Free Software Foundation; either version 2 of the License, or
 ;  (at your option) any later version.
-; 
+;
 ;  This program is distributed in the hope that it will be useful,
 ;  but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -42,14 +42,13 @@
     NAME    S12Fls
 
     PUBLIC  S12Fls_Init
-    PUBLIC  S12Fls_PageSelect
     PUBLIC  S12Fls_DoCmd
     PUBLIC  S12Fls_VerifyErase
 
     PUBLIC  S12Fls_SectorErase
     PUBLIC  S12Fls_PageErase
     PUBLIC  S12Fls_MassErase
-    
+
     PUBLIC  S12Fls_ProgramWord
     PUBLIC  S12Fls_BurstProgram
 
@@ -68,9 +67,9 @@ FLS_SECTOR_SIZE     EQU     512
 FE_ERASE_VERIFY     EQU     0x05
 FE_WORD_PROGRAM     EQU     0x20
 FE_SECTOR_ERASE     EQU     0x40
-FE_MASS_ERASE       EQU     0x41    
- 
- 
+FE_MASS_ERASE       EQU     0x41
+
+
 ;
 ;   Module-Error-Codes.
 ;
@@ -150,17 +149,17 @@ CMDB0       EQU     0x01
 
 
 FADDR               EQU     0x0108
-FDATA               EQU     0x11a
+FDATA               EQU     0x011a
 ;
 ; ***************************
 ;
 
 FLS_BC_KEYS         EQU     0xFF00  ; eight Bytes, Backdoor Comparison Keys.
 
-CODE_LEN  EQU       CODE_END-CODE_START    
-    
+CODE_LEN  EQU       CODE_END-CODE_START
+
     RSEG DATA16_C:CONST:REORDER:NOROOT(0)   ; Constant-Segment.
-    
+
 
     RSEG CODE:CODE:REORDER:NOROOT(0)        ; Code-Segment.
 CODE_START:
@@ -220,7 +219,7 @@ S12Fls_DoCmd:
 
     brset   FCLKDIV,#FDIVLD,dc_cont1
     ldab    #FE_ERR_INIT    ; FLS not initialized.
-    bra     dc_exit   
+    bra     dc_exit
 dc_cont1:
     jsr     S12Fls_ClearPendingErrors,pcr
 
@@ -236,13 +235,16 @@ dc_cont1:
     stab    FCMD            ; Write Command.
     movb    #CBEIF,FSTAT    ; Start Command.
 
+;
+;   Hinweis: Fehler treten bereits nach 'Command'-Write auf!!!
+;
     brclr   FSTAT,#(PVIOL|ACCERR),dc_cont2  ; any errors occurred?
-    
+
     brclr   FSTAT,#PVIOL,dc_cont2   ; Protection violation?
     movb    #PVIOL,FSTAT
     ldab    #FE_ERR_PVIOL
     bra     dc_exit
-
+; Die fehler-Prüfung ist nicht korrekt!!!
     brclr   FSTAT,#ACCERR,dc_cont2  ; Access error?
     movb    #ACCERR,FSTAT
     ldab    #FE_ERR_ACC
@@ -267,10 +269,10 @@ S12Fls_VerifyErase:
     ldaa    #FLS_NUM_BANKS
     mul
     addb    #FLS_PPAGE_OFFSET
-    tfr     b,a    
+    tfr     b,a
     ldab    #FE_ERASE_VERIFY
     ldy     #0xaffe                 ; arbitrary address+data.
-    movw    #0xdead,2,-sp    
+    movw    #0xdead,2,-sp
     jsr     S12Fls_DoCmd,pcr
     leas    2,sp
     tstb
@@ -321,20 +323,20 @@ S12Fls_BurstProgram:
 
 bp_cont1:
     jsr     S12Fls_ClearPendingErrors,pcr
-    
+
     tfr     d,x
     ldd     3+2,sp
     beq     bp_finish       ; check for len!=0.
-    
-    ldab    2+2,sp          
+
+    ldab    2+2,sp
     jsr     S12Fls_PageSelect,pcr  ; Select PPAGE and BLOCK.
-    
+
 bp_loop:
     brclr   FSTAT,#CBEIF,*          ; Wait for Command-Buffers ready.
     movw    2,y+,2,x+               ; Write data to dst. address.
     movb    #FE_WORD_PROGRAM,FCMD   ; Write Command.
     movb    #CBEIF,FSTAT            ; Start Command.
-    
+
     brclr   FSTAT,#(PVIOL|ACCERR),bp_cont2  ; any errors occurred?
     brclr   FSTAT,#PVIOL,bp_cont2   ; Protection violation?
     movb    #PVIOL,FSTAT
@@ -350,7 +352,7 @@ bp_cont2:
     subd    #1
     std     3+2,sp
     bne     bp_loop
-    
+
 bp_finish:
     brclr   FSTAT,#CCIF,*           ; Wait for Command completion.
     ldab    #FE_ERR_OK
@@ -374,7 +376,7 @@ S12Fls_SectorErase:
     leas    2,sp
     tstb
     bne     se_cont
-    brclr   FSTAT,#BLANK,se_cont
+    brclr   FSTAT,#BLANK,se_cont    /* ???? */
     ldab    #0x01
     bra     se_exit
 se_cont:
@@ -387,13 +389,13 @@ se_exit:
 ;   uint8 S12Fls_PageErase(uint8 page);
 ;
 S12Fls_PageErase:
-    pshb    
+    pshb
     ldy     #FLS_PAGE_ADDR
 pe_loop:
     ldab    0,SP
     jsr     S12Fls_SectorErase,pcr
     leay    FLS_SECTOR_SIZE,y
-    
+
     cpy     #(FLS_PAGE_ADDR+FLS_PAGE_SIZE)
     bcs     pe_loop
 
@@ -417,10 +419,10 @@ S12Fls_MassErase:
     ldaa    #FLS_NUM_BANKS
     mul
     addb    #FLS_PPAGE_OFFSET
-    tfr     b,a    
+    tfr     b,a
     ldab    #FE_MASS_ERASE
     ldy     #0xaffe                 ; arbitrary address+data.
-    movw    #0xdead,2,-sp    
+    movw    #0xdead,2,-sp
     jsr     S12Fls_DoCmd,pcr
     leas    2,sp
     clra
@@ -429,4 +431,4 @@ S12Fls_MassErase:
 
 CODE_END:
     END
-        
+

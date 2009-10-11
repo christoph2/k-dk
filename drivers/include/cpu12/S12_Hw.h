@@ -31,8 +31,12 @@
 #define S12_REG16(mod,reg)      (WORD_REG((mod)->BaseAddr,(reg)))
 
 #define S12CRG_REG8(reg)        (S12_REG8(&CRG,(reg)))
+#define S12BKP_REG8(reg)        (S12_REG8(&BKP,(reg)))
+#define S12BKP_REG16(reg)       (S12_REG16(&BKP,(reg)))
 #define S12ECT_REG8(reg)        (S12_REG8(&ECT,(reg)))
 #define S12ECT_REG16(reg)       (S12_REG16(&ECT,(reg)))
+#define S12FLS_REG8(reg)        (S12_REG8(&FLS,(reg)))
+#define S12INT_REG8(reg)        (S12_REG8(&INT,(reg)))
 #define S12MEBI_REG8(reg)       (S12_REG8(&MEBI,(reg)))
 #define S12MMC_REG8(reg)        (S12_REG8(&MMC,(reg)))
 #define S12PIM_REG8(reg)        (S12_REG8(&PIM,(reg)))

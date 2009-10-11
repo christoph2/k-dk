@@ -34,8 +34,8 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-/* 
-** Register-Offsets 
+/*
+** Register-Offsets
 */
 
 #define SCIBD           ((uint8)0x00)
@@ -113,11 +113,11 @@ extern "C"
 
 typedef enum tagS12Sci_StatusType {
     S12SCI_OK,
-    S12SCI_UNINIT,    
+    S12SCI_UNINIT,
     S12SCI_ID,
     S12SCI_STATE,
     S12SCI_VALUE
-    
+
 } S12Sci_StatusType;
 
 
@@ -133,6 +133,7 @@ typedef struct tagS12Sci_VariablesType {
     uint8 RxBufLength;
     uint8 RxHead;
     uint8 volatile RxTail;
+    uint8 LastError;
 	
     /*@only@*/uint8 const * RESTRICT TxBufAddr;
     uint8 TxBufLength;
@@ -190,6 +191,8 @@ S12Sci_StatusType S12Sci_RxBufIsEmpty(S12Sci_ConfigType const * const Cfg,/*@out
 S12Sci_StatusType S12Sci_RxBufGetCh(S12Sci_ConfigType const * const Cfg,/*@out@*/uint8 *ch);
 S12Sci_StatusType S12Sci_RxBufFlush(S12Sci_ConfigType const * const Cfg);
 S12Sci_StatusType S12Sci_TxBufFlush(S12Sci_ConfigType const * const Cfg);
+
+uint8 S12Sci_GetLastError(S12Sci_ConfigType const * const Cfg);
 
 S12Sci_StatusType S12Sci_Handler(S12Sci_ConfigType const * const Cfg);
 

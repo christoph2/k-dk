@@ -29,25 +29,112 @@
 **  Global Defines.
 */
 
+/*
+** Register-Offsets.
+*/
+#define FCLKDIV         ((uint8)0x00)
+    /*  FCLKDIV-Bits. */
+    #define FDIVLD      ((uint8)0x80)
+    #define PRDIV8      ((uint8)0x40)
+    #define FDIV5       ((uint8)0x20)
+    #define FDIV4       ((uint8)0x10)
+    #define FDIV3       ((uint8)0x08)
+    #define FDIV2       ((uint8)0x04)
+    #define FDIV1       ((uint8)0x02)
+    #define FDIV0       ((uint8)0x01)
+#define FSEC            ((uint8)0x01)
+    /*  FSEC-Bits.  */
+    #define KEYEN1      ((uint8)0x80)
+    #define KEYEN0      ((uint8)0x40)
+    #define NV5         ((uint8)0x20)
+    #define NV4         ((uint8)0x10)
+    #define NV3         ((uint8)0x08)
+    #define NV2         ((uint8)0x04)
+    #define SEC1        ((uint8)0x02)
+    #define SEC0        ((uint8)0x01)
+
+#define FTSTMOD         ((uint8)0x02)
+    /*  FTSTMOD-Bits. */
+    #define WRALL       ((uint8)0x10)
+
+#define FCNFG           ((uint8)0x03)
+    /*  FCNFG-Bits. */
+    #define CBEIE       ((uint8)0x80)
+    #define CCIE        ((uint8)0x40)
+    #define KEYACC      ((uint8)0x20)
+    #define BKSEL1      ((uint8)0x02)
+    #define BKSEL0      ((uint8)0x01)
+
+#define FPROT           ((uint8)0x04)
+    /*  FPROT-Bits. */
+    #define FPOPEN      ((uint8)0x80)
+    #define NV6         ((uint8)0x40)
+    #define FPHDIS      ((uint8)0x20)
+    #define FPHS1       ((uint8)0x10)
+    #define FPHS0       ((uint8)0x08)
+    #define FPLDIS      ((uint8)0x04)
+    #define FPLS1       ((uint8)0x02)
+    #define FPLS0       ((uint8)0x01)
+
+#define FSTAT           ((uint8)0x05)
+    /*  FSTAT-Bits. */
+    #define CBEIF       ((uint8)0x80)
+    #define CCIF        ((uint8)0x40)
+    #define PVIOL       ((uint8)0x20)
+    #define ACCERR      ((uint8)0x10)
+    #define BLANK       ((uint8)0x04)
+
+#define FCMD            ((uint8)0x06)
+    /*  FCMD-Bits.  */
+    #define CMDB6       ((uint8)0x40)
+    #define CMDB5       ((uint8)0x20)
+    #define CMDB2       ((uint8)0x04)
+    #define CMDB0       ((uint8)0x01)
+
+/*
+**  0x07 - Reserved.
+*/
+
+#define FADDRHI         ((uint8)0x08)
+
+#define FADDRLO         ((uint8)0x09)
+
+#define FDATAHI         ((uint8)0x0A)
+
+#define FDATALO         ((uint8)0x0B)
+
+/*
+**  0x08-0x0F Reserved for Factory Test
+*/
+
+
 /*  Command-Codes. */
 #define S12FLS_ERASE_VERIFY     ((uint8)0x05)
 #define S12FLS_WORD_PROGRAM     ((uint8)0x20)
 #define S12FLS_SECTOR_ERASE     ((uint8)0x40)
 #define S12FLS_MASS_ERASE       ((uint8)0x41)
 
-/*  Module-Error-Codes. */
-#define S12FLS_ERR_OK           ((uint8)0)
-#define S12FLS_ERR_INIT         ((uint8)1)
-#define S12FLS_ERR_PVIOL        ((uint8)2)
-#define S12FLS_ERR_ACC          ((uint8)3)
-#define S12FLS_ERR_ADDR         ((uint8)4)
-
-
 /*
 **  Global Types.
 */
+
+/*  Module-Error-Codes. */
+typedef enum tagS12Fls_StatusType {
+    S12FLS_OK,
+    S12FLS_UNINIT,
+    S12FLS_ERR_PVIOL,
+    S12FLS_ERR_ACC,
+    S12FLS_ERR_ADDR
+} Fls_StatusType;
+
+
+typedef struct tagS12Fls_ConfigType {
+    uint16 BaseAddr;
+} S12Fls_ConfigType;
+
+
 typedef struct tagS12Fls_Geometry {
-	uint8 num_blocks;
+    uint8 num_blocks;
     uint8 pages_per_block;
     uint8 sectors_per_page;
     uint16 bytes_per_sector;
@@ -60,15 +147,14 @@ typedef struct tagS12Fls_Geometry {
 */
 
 void S12Fls_Init(void);
-void S12Fls_PageSelect(uint8 page);
-uint8 S12Fls_DoCmd(uint8 cmd,uint8 page,uint16 addr,uint16 data);
+Fls_StatusType S12Fls_DoCmd(uint8 cmd,uint8 page,uint16 addr,uint16 data);
 boolean S12Fls_VerifyErase(uint8 block_num);
 
-uint8 S12Fls_SectorErase(uint8 page,uint16 addr);
-uint8 S12Fls_MassErase(uint8 block_num);
-uint8 S12Fls_PageErase(uint8 page);
+Fls_StatusType S12Fls_SectorErase(uint8 page,uint16 addr);
+Fls_StatusType S12Fls_MassErase(uint8 block_num);
+Fls_StatusType S12Fls_PageErase(uint8 page);
 
-uint8 S12Fls_ProgramWord(uint8 page,uint16 addr,uint16 data);
-uint8 S12Fls_BurstProgram(uint8 page,uint16 start_addr,const uint16 *data,uint16 len);
+Fls_StatusType S12Fls_ProgramWord(uint8 page,uint16 addr,uint16 data);
+Fls_StatusType S12Fls_BurstProgram(uint8 page,uint16 start_addr,uint16 const * data,uint16 len);
 
 #endif /* __S12_FLS_H */
