@@ -20,61 +20,52 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__CPRI_H)
-#define __CPRI_H
-
-/*
-** 
-**  CPU-Primitives.
-**
-*/
-
-/*
-**  Powerdown(Wait)-Mode.
-*/
-#define CPU_POWERDOWN_MODE()            asm("wai")
+#include "Dio.h"
+#include "Dio_Cbk.h"
+#include "MemMap.h"
+#include "Den.h"
+#include "Det.h"
+#include "SchM_Dio.h"
 
 
-/*
-**  Software-Interrupt.
-*/
-#define CPU_SOFTWARE_INTERRUPT()        asm("swi")
+Dio_LevelType Dio_ReadChannel(Dio_ChannelType ChannelId)
+{
+
+}
 
 
-/*
-**  Return from Interrupt.
-*/
-#define CPU_RETURN_FROM_INTERRUPT()     asm("rti")
+void Dio_WriteChannel(Dio_ChannelType ChannelId,Dio_LevelType Level)
+{
+
+}
 
 
-/*
-**  Software-Breakpoint.
-*/
-#define CPU_BREAKPOINT()                asm("bgnd")
+Dio_PortLevelType Dio_ReadPort(Dio_PortType PortId)
+{
+
+}
 
 
-/*
-**  No-Operation.
-*/
-#define CPU_NO_OPERATION()              asm("nop")
+void Dio_WritePort(Dio_PortType PortId,Dio_PortLevelType Level)
+{
+
+}
 
 
-/*
-**  Disable All Interrupts.
-*/
-#define CPU_DISABLE_ALL_INTERRUPTS()    asm("sei")
+Dio_PortLevelType Dio_ReadChannelGroup(const Dio_ChannelGroupType *ChannelGroupIdPtr)
+{
+
+}
 
 
-/*
-**  Enable All Interrupts.
-*/
-#define CPU_ENABLE_ALL_INTERRUPTS()         \
-    _BEGIN_BLOCK                            \
-        asm("cli");                         \
-        asm("nop");                         \
-    _END_BLOCK
+void Dio_WriteChannelGroup(const Dio_ChannelGroupType *ChannelGroupIdPtr,Dio_PortLevelType Level)
+{
 
-boolean CPU_INTERRUPTS_DISABLED(void);
+}
 
-#endif /* __CPRI_H */
+
+void Dio_GetVersionInfo(Std_VersionInfoType *VersionInfo)
+{
+
+}
 

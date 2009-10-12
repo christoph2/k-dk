@@ -20,61 +20,73 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__CPRI_H)
-#define __CPRI_H
 
-/*
-** 
-**  CPU-Primitives.
-**
-*/
-
-/*
-**  Powerdown(Wait)-Mode.
-*/
-#define CPU_POWERDOWN_MODE()            asm("wai")
+#include "MemMap.h"
+#include "Mcu.h"
+#include "Mcu_Cbk.h"
+#include "Det.h"
+#include "Dem.h"
+#include "SchM_Mcu.h"
 
 
-/*
-**  Software-Interrupt.
-*/
-#define CPU_SOFTWARE_INTERRUPT()        asm("swi")
+void Mcu_Init(const Mcu_ConfigType *ConfigPtr)
+{
+
+}
 
 
-/*
-**  Return from Interrupt.
-*/
-#define CPU_RETURN_FROM_INTERRUPT()     asm("rti")
+Std_ReturnType Mcu_InitRamSection(Mcu_RamSectionType RamSection)
+{
+
+}
 
 
-/*
-**  Software-Breakpoint.
-*/
-#define CPU_BREAKPOINT()                asm("bgnd")
+Std_ReturnType Mcu_InitClock(Mcu_ClockType ClockSetting)
+{
+
+}
 
 
-/*
-**  No-Operation.
-*/
-#define CPU_NO_OPERATION()              asm("nop")
+void Mcu_DistributePllClock(void)
+{
+
+}
 
 
-/*
-**  Disable All Interrupts.
-*/
-#define CPU_DISABLE_ALL_INTERRUPTS()    asm("sei")
+Mcu_PllStatusType Mcu_GetPllStatus(void)
+{
+
+}
 
 
-/*
-**  Enable All Interrupts.
-*/
-#define CPU_ENABLE_ALL_INTERRUPTS()         \
-    _BEGIN_BLOCK                            \
-        asm("cli");                         \
-        asm("nop");                         \
-    _END_BLOCK
+Mcu_ResetType Mcu_GetResetReason(void)
+{
 
-boolean CPU_INTERRUPTS_DISABLED(void);
+}
 
-#endif /* __CPRI_H */
+
+Mcu_RawResetType Mcu_GetResetRawValue(void)
+{
+
+}
+
+
+void Mcu_PerformReset(void)
+{
+
+}
+
+
+void Mcu_SetMode(Mcu_ModeType McuMode)
+{
+
+}
+
+
+void Mcu_GetVersionInfo(Std_VersionInfoType *versioninfo)
+{
+
+}
+
+
 

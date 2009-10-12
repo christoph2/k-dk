@@ -23,6 +23,11 @@
 #if !defined(__CPRI_H)
 #define __CPRI_H
 
+/*
+** 
+**  CPU-Primitives.
+**
+*/
 
 /*
 **  Powerdown(Wait)-Mode.
@@ -82,7 +87,7 @@
 /*
 **  Check for Interrupts disabled.
 */
-#define Cpu_InterruptsDisabled()  (((uint8)_asm("tfr ccr,b\n") & ((uint8)0x10))==((uint8)0x10))
+#define CPU_INTERRUPTS_DISABLED()  (((uint8)_asm("tfr ccr,b\n") & ((uint8)0x10))==((uint8)0x10))
 
 #endif /* __CPRI_H */
 

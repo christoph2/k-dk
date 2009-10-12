@@ -23,9 +23,10 @@
 #if !defined(__CPRI_H)
 #define __CPRI_H
 
-
 /*
-**      Port-Macros.
+** 
+**  CPU-Primitives.
+**
 */
 
 /*
@@ -77,7 +78,7 @@
 /*
 **  Check for Interrupts disabled.
 */
-boolean Cpu_InterruptsDisabled(void);
+boolean CPU_INTERRUPTS_DISABLED(void);
 
 #endif /* __CPRI_H */
 

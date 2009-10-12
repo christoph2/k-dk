@@ -20,61 +20,46 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__CPRI_H)
-#define __CPRI_H
+#if !defined(__DIO__CFG_H)
+#define __DIO_CFG_H
 
+#include "Dio.h"
+#define DioVersionInfoApi
+
+#define DiDevErrorDetect    /* Detection of Development Errors. */
+
+#if 0
 /*
-** 
-**  CPU-Primitives.
-**
+**  Examples
 */
 
-/*
-**  Powerdown(Wait)-Mode.
-*/
-#define CPU_POWERDOWN_MODE()            asm("wai")
+/* DIO Channels */
+#define MOTOR_START_STOP    (DIO_CHANNEL_A_5)
+#define	MOTOR_DIRECTION	    (DIO_CHANNEL_A_6)
 
+/* DIO Ports */
+#define MOTOR_CTL_PORT	    (DIO_PORT_A)
+#define MUX_SEL_PORT	    (DIO_PORT_B)
 
-/*
-**  Software-Interrupt.
-*/
-#define CPU_SOFTWARE_INTERRUPT()        asm("swi")
+/* DIO Channel Group */
+#define MOTOR_CTL_GRP_PTR   (&DioConfigData[0])
+#define MUX_SEL_GRP_PTR	    (&DioConfigData[1])
 
+/* Instatiation of DIO configuration data */
+/* (the filename should be 'Dio_Lcfg.c'.) */
+const Dio_ChannelGroupType DioConfigData[2]={
+    {
+	.port=MOTOR_CTL_PORT,
+	.offset=5
+	.mask=0x60,
+    },
+    {
+	.port=MUX_SEL_PORT,
+	.offset=1,
+	.mask=0x1e,
+    }
+};
+#endif
 
-/*
-**  Return from Interrupt.
-*/
-#define CPU_RETURN_FROM_INTERRUPT()     asm("rti")
-
-
-/*
-**  Software-Breakpoint.
-*/
-#define CPU_BREAKPOINT()                asm("bgnd")
-
-
-/*
-**  No-Operation.
-*/
-#define CPU_NO_OPERATION()              asm("nop")
-
-
-/*
-**  Disable All Interrupts.
-*/
-#define CPU_DISABLE_ALL_INTERRUPTS()    asm("sei")
-
-
-/*
-**  Enable All Interrupts.
-*/
-#define CPU_ENABLE_ALL_INTERRUPTS()         \
-    _BEGIN_BLOCK                            \
-        asm("cli");                         \
-        asm("nop");                         \
-    _END_BLOCK
-
-boolean CPU_INTERRUPTS_DISABLED(void);
-
-#endif /* __CPRI_H */
+#endif /* __DIO_CFG_H */
 

@@ -23,11 +23,15 @@
 #if !defined(__CPRI_H)
 #define __CPRI_H
 
+/*
+** 
+**  CPU-Primitives.
+**
+*/
 
 /*
 **  Powerdown(Wait)-Mode.
 */
-#elif defined(__HIWARE__)
 #define CPU_POWERDOWN_MODE()            __asm wai
 
 
@@ -74,7 +78,7 @@
 /*
 **  Check for Interrupts disabled.
 */
-boolean Cpu_InterruptsDisabled(void);
+boolean CPU_INTERRUPTS_DISABLED(void);
 
 #endif /* __CPRI_H */
 

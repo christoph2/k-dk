@@ -20,6 +20,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+
+/*
+** 
+**  CPU-Primitives.
+**
+*/
+
 #if !defined(__CPRI_H)
 #define __CPRI_H
 
@@ -75,6 +82,6 @@
 /*
 **  Check for Interrupts disabled.
 */
-#define Cpu_InterruptsDisabled()  (((uint8)__get_ccr_register() & ((uint8)0x10))==((uint8)0x10))
+#define CPU_INTERRUPTS_DISABLED()  (((uint8)__get_ccr_register() & ((uint8)0x10))==((uint8)0x10))
 
 #endif /* __CPRI_H */
