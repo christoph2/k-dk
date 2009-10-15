@@ -20,15 +20,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef	__DET_H
-#define	__DET_H
 
-#include "ComStack_Types.h"
+#include "Det.h"
+#include "MemMap.h"
 
-void Det_Init(void);
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
-void Det_Start(void);
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo);
+void Det_Init(void)
+{
 
-#endif	/* __DET_H */
+}
+
+
+void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
+{
+
+}
+
+
+void Det_Start(void)
+{
+
+}
+
+
+void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
+{
+
+}
+
+
 

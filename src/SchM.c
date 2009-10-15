@@ -20,15 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef	__DET_H
-#define	__DET_H
 
-#include "ComStack_Types.h"
-
-void Det_Init(void);
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
-void Det_Start(void);
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo);
-
-#endif	/* __DET_H */
+#include "SchM.h"
+#include "SchM_cfg.h"
+/* todo: Include BSW Modules (<MODULE_PREFIX>.h and SchM_<MODULE_PREFIX>.h) */
+#include "Det.h"
 
