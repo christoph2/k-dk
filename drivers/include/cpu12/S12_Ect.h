@@ -125,9 +125,9 @@ extern "C"
 
 /*
 **  The four pairs of control bits of TCTL4 also configure the 8 bit pulse accumulators PAC0 - 3.
-**  For 16 - bit pulse accumulator PACB, EDGE0B & EDGE0A, control bits of TCTL4 will decide the active edge.    
+**  For 16 - bit pulse accumulator PACB, EDGE0B & EDGE0A, control bits of TCTL4 will decide the active edge.
 */
-    
+
 #define TCTL3       ((uint8)0x0A)
     /*  TCTL3-Bits. */
     #define EDG7B   ((uint8)0x80)
@@ -159,7 +159,7 @@ extern "C"
     #define C3I     ((uint8)0x08)
     #define C2I     ((uint8)0x04)
     #define C1I     ((uint8)0x02)
-    #define C0I     ((uint8)0x01)  
+    #define C0I     ((uint8)0x01)
 
 #define TSCR2       ((uint8)0x0D)
     /*  TSCR2-Bits. */
@@ -178,7 +178,7 @@ extern "C"
     #define C3F     ((uint8)0x08)
     #define C2F     ((uint8)0x04)
     #define C1F     ((uint8)0x02)
-    #define C0F     ((uint8)0x01)   
+    #define C0F     ((uint8)0x01)
 
 #define TFLG2       ((uint8)0x0F)
     /*  TFLG2-Bits  */
@@ -218,7 +218,7 @@ extern "C"
 #define PACN3       ((uint8)0x22)
 #define PACN2       ((uint8)0x23)
 #define PACN1       ((uint8)0x24)
-#define PACN0       ((uint8)0x25)   
+#define PACN0       ((uint8)0x25)
 
 #define MCCTL       ((uint8)0x26)
     /*  MCCTL-Bits. */
@@ -237,7 +237,7 @@ extern "C"
     #define POLF3   ((uint8)0x08)
     #define POLF2   ((uint8)0x04)
     #define POLF1   ((uint8)0x02)
-    #define POLF0   ((uint8)0x01)   
+    #define POLF0   ((uint8)0x01)
 
 #define ICPAR       ((uint8)0x28)
     /*  ICPAR-Bits. */
@@ -319,7 +319,7 @@ typedef enum tagS12Ect_StatusType {
 typedef struct tagS12Ect_ConfigType {
     uint16 BaseAddr;
     uint16 cycle;
-    
+
     uint8 TIos;
     uint8 TScr1;
     uint8 TScr2;
@@ -341,6 +341,9 @@ typedef struct tagS12Ect_ConfigType {
 
 
 S12Ect_StatusType S12Ect_Init(void);
+
+#define S12Ect_TimerCount()     S12ECT_REG16(TCNT)
+#define S12Ect_CapcomReg(no)    S12ECT_REG16(TC0+((no)<<1))
 
 #if defined(__cplusplus)
 }

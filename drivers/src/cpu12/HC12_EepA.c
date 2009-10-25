@@ -3,8 +3,6 @@
  *
  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
  *                                      cpu12.gems@googlemail.com>
-
-
  *
  * All Rights Reserved
  *
@@ -25,18 +23,12 @@
  */
 
 #include "HC12_EepA.h"
+#include "Hw_Cfg.h"
+
 
 /*
 **  Prescaler = eXtal / 28571.
 */
-
-
-const HC12EepA_ConfigType EEP={
-    BASE_ADDR_EEP,
-
-    (uint16)0x230,          /* EeDiv */
-};
-
 
 void HC12EepA_Init(void)
 {

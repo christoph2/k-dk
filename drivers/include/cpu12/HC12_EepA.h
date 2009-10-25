@@ -102,14 +102,6 @@ typedef struct tagHC12EepA_ConfigType {
     uint16 EeDiv;
 } HC12EepA_ConfigType;
 
-
-/* todo: Cfg. */
-#define BASE_ADDR_EEP   ((uint16)0x00ecU)
-#define HC12EEP_START   ((uint16)0x0800U)
-#define HC12EEP_LEN     ((uint16)0x0800U)
-
-extern const HC12EepA_ConfigType EEP;
-
 /*
 **  Basic EEP-Functions.
 */

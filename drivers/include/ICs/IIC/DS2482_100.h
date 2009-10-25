@@ -21,20 +21,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#if !defined(__DS2482_100_H)
+#define __DS2482_100_H
 
-#include "HC12_BcIo.h"
+#include "HC12_Iic.h"
 #include "Hw_Cfg.h"
 
-void HC12BcIo_Init(void)
-{
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(PORTA)=BCIO.PortB;
-    HC12BCIO_REG8(PORTA)=BCIO.PortE;
+void DS2482_100_Init(void);
 
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrB;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrE;
+boolean DS2482_100_DeviceReset(uint8 addr);
 
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
-}
+boolean DS2482_100_BusReset(uint8 addr);
+
+#endif /* __DS2482_100_H */

@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -23,15 +24,25 @@
 #if !defined(__S12IIC_H)
 #define __S12IIC_H
 
+#define CPU12_HC12
+
+#if defined(CPU12_S12)
 #include "S12_Hw.h"
+#elif defined(CPU12_HC12)
+#include "HC12_Hw.h"
+#define S12_REG8    HC12_REG8
+#else
+#error Wrong CPU Family.
+#endif
+
 
 #if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
-/* 
-** Register-Offsets 
+/*
+** Register-Offsets
 */
 #define IBAD            ((uint8)0x00)
         /*  IBAD-Bits.  */
@@ -75,6 +86,7 @@ extern "C"
 
 #define IIC_ADDR_ANY    ((uint8)0)
 
+
 /*
 **  global Types.
 */
@@ -83,12 +95,13 @@ typedef struct tagS12Iic_ConfigType {
     uint8 Prescaler;
 } S12Iic_ConfigType;
 
+
 typedef enum taS12Iic_StatusType {
     S12IIC_OK,
-    S12IIC_UNINIT,    
+    S12IIC_UNINIT,
     S12IIC_ID,
     S12IIC_STATE,
-    S12IIC_VALUE    
+    S12IIC_VALUE
 } S12Iic_StatusType;
 
 typedef void (*IIC_PresenceCallback)(uint8 addr);
@@ -97,6 +110,8 @@ typedef void (*IIC_PresenceCallback)(uint8 addr);
 /*
 **  Function-Prototypes.
 */
+
+/* Basic-Functions.     */
 S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg);
 S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg);
 S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg);
@@ -104,7 +119,12 @@ S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg);
 S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,/*@out@*/boolean *ack);
 S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,/*@out@*/uint8 *b,boolean ack);
 
+/* Highlevel-Functions. */
 boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_base_addr,uint8 addr_mask,IIC_PresenceCallback callback);
+
+boolean S12Iic_ModeReq(S12Iic_ConfigType const * const Cfg,uint8 slave_addr,boolean write);
+#define S12Iic_ReadMode(cfg,addr)   S12Iic_ModeReq((cfg),(addr),FALSE)
+#define S12Iic_WriteMode(cfg,addr)  S12Iic_ModeReq((cfg),(addr),TRUE)
 
 #if defined(__cplusplus)
 }

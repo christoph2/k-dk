@@ -76,8 +76,9 @@ extern "C"
 #define PUCR        ((uint8)0x0C)
     /* PUCR-Bits.   */
     #define PUPK    ((uint8)0x80)
-    #define PUPJ 
-  ((uint8)0x40)
+/* #if 0 */
+#define PUPJ ((uint8)0x40)
+/* #endif */
     #define PUPH    ((uint8)0x20)
     #define PUPE    ((uint8)0x10)
     #define PUPB    ((uint8)0x02)
@@ -97,8 +98,23 @@ extern "C"
 */
 
 
+typedef struct tagHC12BcIo_ConfigType {
+    uint16 BaseAddr;
+
+    uint8 DdrA;
+    uint8 DdrB;
+    uint8 DdrE;
+    uint8 PortA;
+    uint8 PortB;
+    uint8 PortE;
+    uint8 Pucr;
+    uint8 Rdriv;
+} HC12BcIo_ConfigType;
+
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
+
+void HC12BcIo_Init(void);
 
 #endif /* __HC12_BCIO_H */

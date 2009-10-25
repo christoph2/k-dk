@@ -330,11 +330,13 @@ typedef struct tagHC12Ect_ConfigType {
     uint16 BaseAddr;
 } HC12Ect_ConfigType;
 
-/*
-**
-** todo: Fkts. für die (16Bit-)Counter.
-**
-*/
+
+void HC12Ect_Init(void);
+
+#define HC12Ect_TimerCount()    HC12ECT_REG16(TCNT)
+#define HC12Ect_CapcomReg(no)   HC12ECT_REG16(TC0+((no)<<1))
+uint16 HC12Ect_GetOverflowCount(void);
+uint32 HC12Ect_GetTickCount(void);
 
 #if defined(__cplusplus)
 }

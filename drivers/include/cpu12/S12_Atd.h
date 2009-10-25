@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -88,7 +89,7 @@ extern "C"
 
 /*
 **  0x07 Unimplemented.
-*/        
+*/
 
 #define ATDTEST0        ((uint8)0x08)
 
@@ -109,8 +110,8 @@ extern "C"
     #define CCF3        ((uint8)0x08)
     #define CCF2        ((uint8)0x04)
     #define CCF1        ((uint8)0x02)
-    #define CCF0        ((uint8)0x01)    
-  
+    #define CCF0        ((uint8)0x01)
+
 /*
 **  0x0C Unimplemented.
 */
@@ -181,7 +182,7 @@ typedef enum tagS12Atd_StatusType {
 } S12Atd_StatusType;
 
 
-typedef enum tagS12Atd_SampleChannelType {    
+typedef enum tagS12Atd_SampleChannelType {
     S12ATD_SMP_CHN_AD0,
     S12ATD_SMP_CHN_AD1,
     S12ATD_SMP_CHN_AD2,
@@ -215,12 +216,12 @@ typedef enum tagS12Atd_ConversionTimeType{
     S12ATD_CONV_TIME_FAST,
     S12ATD_CONV_TIME_MEDIUM_FAST,
     S12ATD_CONV_TIME_MEDIUM_SLOW,
-    S12ATD_CONV_TIME_SLOW  
+    S12ATD_CONV_TIME_SLOW
 } S12Atd_ConversionTimeType;
 
 
 typedef struct tagS12Atd_ConfigType {
-    uint16 BaseAddr;    
+    uint16 BaseAddr;
     uint8 Prescaler;
     boolean TenBit;
     S12Atd_ExternalTriggerType ExternalTrigger;
@@ -232,7 +233,7 @@ typedef struct tagS12Atd_ConfigType {
 } S12Atd_ConfigType;
 
 
-DECLARE_ISR1_VECTOR(ATD0_Vector);
+/* DECLARE_ISR1_VECTOR(ATD0_Vector); */
 
 
 #define S12ATD_GET_CONFIGURATION() HW_GET_CONFIGURATION(S12Atd_Configuration,Cfg,id,S12ATD_ID)

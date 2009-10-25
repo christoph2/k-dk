@@ -24,6 +24,10 @@
 #include "Hw_Cfg.h"
 
 /*
+** todo:    Functions for 8- and 16-Bit PWM.
+*/
+
+/*
 **
 **  REFERENCES:
 **  ===========
@@ -32,10 +36,8 @@
 **
 */
 
-static void S12Pwm_ResetCounter(uint8 ChannelNumber);
-
-S12Pwm_StatusType S12Pwm_Init(void)
-{    
+void S12Pwm_Init(void)
+{
     S12PWM_REG16(PWMPER01)=PWM.PwmPer01;
     S12PWM_REG16(PWMPER23)=PWM.PwmPer23;
     S12PWM_REG16(PWMPER45)=PWM.PwmPer45;
@@ -45,7 +47,7 @@ S12Pwm_StatusType S12Pwm_Init(void)
     S12PWM_REG16(PWMDTY23)=PWM.PwmDty23;
     S12PWM_REG16(PWMDTY45)=PWM.PwmDty45;
     S12PWM_REG16(PWMDTY67)=PWM.PwmDty67;
-    
+
     S12PWM_REG16(PWMCNT0)=(uint16)0x0000U;
     S12PWM_REG16(PWMCNT2)=(uint16)0x0000U;
     S12PWM_REG16(PWMCNT4)=(uint16)0x0000U;
@@ -58,11 +60,11 @@ S12Pwm_StatusType S12Pwm_Init(void)
     S12PWM_REG8(PWMSCLA)=PWM.PwmSclA;
     S12PWM_REG8(PWMSCLB)=PWM.PwmSclB;
 
-    S12PWM_REG8(PWMSDN)=PWM.PwmSdn;    
+    S12PWM_REG8(PWMSDN)=PWM.PwmSdn;
     S12PWM_REG8(PWMCTL)=PWM.PwmCtl;
     S12PWM_REG8(PWME)=PWM.PwmE;         /* OK, start PWM.   */
 /* prescaler = (E-Clock * 4)/10 */
-    return S12PWM_OK;
+
 }
 
 
@@ -78,7 +80,7 @@ void S12Pwm_SetDutyCycle(uint8 ChannelNumber,uint16 DutyCycle)
 
 void S12Pwm_SetPeriodAndDuty(uint8 ChannelNumber,uint16 Period,uint16 DutyCycle)
 {
-    
+
 }
 
 
@@ -87,7 +89,7 @@ void S12Pwm_SetOutputToIdle(uint8 ChannelNumber)
 
 }
 
-                             
+
 uint8 S12Pwm_GetOutputState(uint8 ChannelNumber)
 {
     /* todo: read 'PTIP' */
@@ -97,4 +99,16 @@ uint8 S12Pwm_GetOutputState(uint8 ChannelNumber)
 void S12Pwm_ResetCounter(uint8 ChannelNumber)
 {
     S12PWM_REG8(PWMCNT0+ChannelNumber)=(uint8)0x00;
+}
+
+
+uint8 S12Pwm_GetCounter8(uint8 ChannelNumber)
+{
+    return S12PWM_REG8(PWMCNT0+ChannelNumber);
+}
+
+
+uint16 S12Pwm_GetCounter16(uint8 ChannelNumber)
+{
+    return S12PWM_REG16(PWMCNT0+(ChannelNumber<<1));
 }

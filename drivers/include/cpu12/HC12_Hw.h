@@ -28,16 +28,14 @@
 #include "CPU_Primitives.h"
 #include "ISR.h"
 
-#define HC12_REG8(mod,reg)       (BYTE_REG((mod)->BaseAddr,(reg)))
-#define HC12_REG16(mod,reg)      (WORD_REG((mod)->BaseAddr,(reg)))
+#define HC12_REG8(mod,reg)      (BYTE_REG((mod)->BaseAddr,(reg)))
+#define HC12_REG16(mod,reg)     (WORD_REG((mod)->BaseAddr,(reg)))
 
 
 #if 0
 #define HC12CRG_REG8(reg)        (HC12_REG8(&CRG,(reg)))
 #define HC12BKP_REG8(reg)        (HC12_REG8(&BKP,(reg)))
 #define HC12BKP_REG16(reg)       (HC12_REG16(&BKP,(reg)))
-#define HC12ECT_REG8(reg)        (HC12_REG8(&ECT,(reg)))
-#define HC12ECT_REG16(reg)       (HC12_REG16(&ECT,(reg)))
 #define HC12FLS_REG8(reg)        (HC12_REG8(&FLS,(reg)))
 #define HC12INT_REG8(reg)        (HC12_REG8(&INT,(reg)))
 #define HC12MEBI_REG8(reg)       (HC12_REG8(&MEBI,(reg)))
@@ -45,9 +43,12 @@
 #define HC12PIM_REG8(reg)        (HC12_REG8(&PIM,(reg)))
 #endif
 
-#define HC12EEP_REG8(reg)        (HC12_REG8(&EEP,(reg)))
-#define HC12PWM_REG8(reg)        (HC12_REG8(&PWM,(reg)))
-#define HC12PWM_REG16(reg)       (HC12_REG16(&PWM,(reg)))
+#define HC12BCIO_REG8(reg)      (HC12_REG8(&BCIO,(reg)))
+#define HC12ECT_REG8(reg)       (HC12_REG8(&ECT,(reg)))
+#define HC12ECT_REG16(reg)      (HC12_REG16(&ECT,(reg)))
+#define HC12EEP_REG8(reg)       (HC12_REG8(&EEP,(reg)))
+#define HC12PWM_REG8(reg)       (HC12_REG8(&PWM,(reg)))
+#define HC12PWM_REG16(reg)      (HC12_REG16(&PWM,(reg)))
 
 
 #endif /* __HC12_HW_H */

@@ -117,8 +117,6 @@ extern "C"
 #define DDRP        ((uint8)0x17)
 
 
-#define HC12PWM_NUM_CHANNELS ((uint8)4)
-
 typedef enum tagHC12Pwm_StatusType {
     HC12PWM_OK,
     HC12PWM_UNINIT,
@@ -146,6 +144,7 @@ typedef struct tagHC12Pwm_ConfigType {
     uint8 PwDty2;
     uint8 PwDty3;
 } HC12Pwm_ConfigType;
+
 
 
 void HC12Pwm_Init(void);

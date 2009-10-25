@@ -108,12 +108,6 @@
 */
 
 
-/*  Command-Codes. */
-#define S12FLS_ERASE_VERIFY     ((uint8)0x05)
-#define S12FLS_WORD_PROGRAM     ((uint8)0x20)
-#define S12FLS_SECTOR_ERASE     ((uint8)0x40)
-#define S12FLS_MASS_ERASE       ((uint8)0x41)
-
 /*
 **  Global Types.
 */

@@ -20,8 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__PWM_H)
-#define	__PWM_H
+#if !defined(__S12_PWM_H)
+#define	__S12_PWM_H
 
 #include "S12_Hw.h"
 
@@ -122,7 +122,7 @@ extern "C"
 #define PWMCNT6         ((uint8)0x12)
 
 #define PWMCNT7         ((uint8)0x13)
-    
+
 #define PWMPER0         ((uint8)0x14)
 #define PWMPER1		((uint8)0x15)
 #define PWMPER01        ((uint8)0x14)
@@ -130,31 +130,31 @@ extern "C"
 #define PWMPER2         ((uint8)0x16)
 #define PWMPER3         ((uint8)0x17)
 #define PWMPER23        ((uint8)0x16)
-    
+
 #define PWMPER4         ((uint8)0x18)
 #define PWMPER5         ((uint8)0x19)
 #define PWMPER45        ((uint8)0x18)
-    
+
 #define PWMPER6         ((uint8)0x1A)
 #define PWMPER7         ((uint8)0x1B)
 #define PWMPER67        ((uint8)0x1A)
-    
+
 #define PWMDTY0         ((uint8)0x1C)
 #define PWMDTY1         ((uint8)0x1D)
 #define PWMDTY01        ((uint8)0x1C)
-    
+
 #define PWMDTY2         ((uint8)0x1E)
 #define PWMDTY3         ((uint8)0x1F)
 #define PWMDTY23        ((uint8)0x1E)
-    
+
 #define PWMDTY4         ((uint8)0x20)
 #define PWMDTY5         ((uint8)0x21)
 #define PWMDTY45        ((uint8)0x20)
-    
+
 #define PWMDTY6         ((uint8)0x22)
 #define PWMDTY7         ((uint8)0x23)
 #define PWMDTY67        ((uint8)0x22)
-    
+
 #define PWMSDN          ((uint8)0x24)
     /*  PWMSDN-Bits.  */
     #define PWMIF       ((uint8)0x80)
@@ -171,7 +171,7 @@ extern "C"
 
 #define S12PWM8B8C_NUM_CHANNELS ((uint8)8)
 
-    
+
 typedef enum tagS12Pwm_StatusType {
     S12PWM_OK,
     S12PWM_UNINIT,
@@ -205,18 +205,19 @@ typedef struct tagS12Pwm_ConfigType {
 } S12Pwm_ConfigType;
 
 
-S12Pwm_StatusType S12Pwm_Init(void);
+void S12Pwm_Init(void);
 
 void S12Pwm_SetTimebase(void);
 void S12Pwm_SetDutyCycle(uint8 ChannelNumber,uint16 DutyCycle);
 void S12Pwm_SetPeriodAndDuty(uint8 ChannelNumber,uint16 Period,uint16 DutyCycle);
 void S12Pwm_SetOutputToIdle(uint8 ChannelNumber);
 uint8 S12Pwm_GetOutputState(uint8 ChannelNumber);
-
+uint8 S12Pwm_GetCounter8(uint8 ChannelNumber);
+uint16 S12Pwm_GetCounter16(uint8 ChannelNumber);
+void S12Pwm_ResetCounter(uint8 ChannelNumber);
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-
-#endif  /* __PWM_H */
+#endif  /* __S12_PWM_H */

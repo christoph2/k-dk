@@ -25,6 +25,12 @@
 
 #define FE_CLK_DIV          (((16*1000)/200/8)-1)   /* todo: Cfg. !!! */
 
+/*  Command-Codes. */
+#define S12FLS_ERASE_VERIFY     ((uint8)0x05)
+#define S12FLS_WORD_PROGRAM     ((uint8)0x20)
+#define S12FLS_SECTOR_ERASE     ((uint8)0x40)
+#define S12FLS_MASS_ERASE       ((uint8)0x41)
+
 static void S12Fls_PageSelect(uint8 page);
 static void S12Fls_ClearPendingErrors(void);
 static uint8 S12Fls_CalculateFirstPageInBlock(uint8 block_num);

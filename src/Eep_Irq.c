@@ -22,19 +22,6 @@
  *
  */
 
-#include "HC12_BcIo.h"
-#include "Hw_Cfg.h"
+#include "MemMap.h"
+#include "Eep.h"
 
-void HC12BcIo_Init(void)
-{
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(PORTA)=BCIO.PortB;
-    HC12BCIO_REG8(PORTA)=BCIO.PortE;
-
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrB;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrE;
-
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
-}

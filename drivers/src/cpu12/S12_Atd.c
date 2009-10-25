@@ -51,34 +51,34 @@ S12Atd_StatusType S12Atd_Init(S12Atd_ConfigType const * const Cfg)
     if (Cfg->TenBit==FALSE) {
         S12_REG8(Cfg,ATDCTL4)|=SRES8;
     }
-        
+
     S12_REG8(Cfg,ATDCTL5)=((uint8)DJM|MULT);
     if (Cfg->ContinuousConversion==TRUE) {
         S12_REG8(Cfg,ATDCTL5)|=SCAN;
     }
-    
-    S12_REG8(Cfg,ATDDIEN)=((uint8)0x00);    
+
+    S12_REG8(Cfg,ATDDIEN)=((uint8)0x00);
 
     ctl=((uint8)ADPU|AFFC|AWAI);
 
     if (Cfg->ExternalTrigger!=S12ATD_EXT_TRIG_DISABLED) {
         ctl|=((uint8)Cfg->ExternalTrigger << 3) | ETRIGE;
     }
-    
+
     if (Cfg->EnableCompletionInterrupt==TRUE) {
         ctl|=ASCIE;
     }
     S12_REG8(Cfg,ATDCTL2)=ctl;
-    
+
     return S12ATD_OK;
 }
 
 S12Atd_StatusType S12Atd_GetChannel(S12Atd_ConfigType const * const Cfg,uint8 chn,uint16 *result)
-{    
+{
     chn&=((uint8)0x07);	
     WAIT_FOR((S12_REG8(Cfg,ATDSTAT0) & SCF) == SCF);
     *result=*(uint16*)(S12_REG16(Cfg,ATDDR0+(chn<<1)));	/* Right justified data (else divide by 0x40). */
-    
+
     return S12ATD_OK;
 }
 
@@ -93,7 +93,7 @@ uint8 S12Atd_CalculatePrescaler(void)
     if (!(bus_freq & (uint8)0x03)) {
         res--;
     }
-    
+
     return res;
 }
 
@@ -106,7 +106,7 @@ void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
     uint8 idx;
     uint8 cc;
     uint8 ccf;
-    
+
     S12_REG8(Cfg,ATDSTAT0)=SCF;
     cc=S12_REG8(Cfg,ATDSTAT0) & (uint8)0x07;
     ccf=S12_REG8(Cfg,ATDSTAT1);
@@ -114,13 +114,13 @@ void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
     for (idx=0;idx<8;++idx) {
         result[idx]=S12_REG8(Cfg,ATDDR0+(idx<<1));
     }
-    
-    conversion_counter++;    
+
+    conversion_counter++;
 }
 
 
 ISR1(ATD0_Vector)
 {
     S12Atd_Handler(ATD0);
-        
+
 }

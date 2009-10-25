@@ -49,7 +49,7 @@ MC9S12DT256     0L91N               $0030
 MC9S12E256      0L43X               $5000   ; MEMSIZ0 0x07 - MEMSIZ1 0x81
 MC9S12E128      2L15P               $5102   ;  MEMSIZ0 0x03 - MEMSIZ1 0x80
 MC9S12E64       2L15P               $5200
-MC9S12E32       TBD                 $5300      ## todo: neues Datenblatt!!!
+MC9S12E32       TBD                 $5300
 
 MC9S12H256      0K78X               $1000
 MC9S12H256      1K78X               $1001

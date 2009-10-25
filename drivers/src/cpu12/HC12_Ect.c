@@ -21,20 +21,52 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
-#include "HC12_BcIo.h"
 #include "Hw_Cfg.h"
+#include "HC12_Ect.h"
 
-void HC12BcIo_Init(void)
+#if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
+static uint16 HC12Ect_OverflowCount;
+#endif
+
+
+void HC12Ect_Init(void)
 {
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(PORTA)=BCIO.PortB;
-    HC12BCIO_REG8(PORTA)=BCIO.PortE;
-
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrB;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrE;
-
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
+#if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
+    HC12Ect_OverflowCount=(uint16)0x0000;
+#endif
 }
+
+
+/*
+** todo: Interrupts.
+*/
+
+
+uint16 HC12Ect_GetOverflowCount(void)
+{
+#if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
+    return HC12Ect_OverflowCount;
+#else
+    return (uint16)0x0000U;
+#endif
+}
+
+
+uint32 HC12Ect_GetTickCount(void)
+{
+#if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
+    return (((uint32)HC12Ect_OverflowCount)<<16) + HC12Ect_TimerCount();
+#else
+    return (uint32)HC12Ect_TimerCount();
+#endif
+}
+
+
+#if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
+ISR1(HC12Ect_TofHandler)
+{
+    HC12ECT_REG8(TFLG2)=TOF;
+
+    HC12Ect_OverflowCount++;
+}
+#endif

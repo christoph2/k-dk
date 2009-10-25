@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+
 #include "S12_Iic.h"
 
 /*
@@ -34,17 +36,23 @@
 
 /*
 **
-**  todo: Über einen Interrupt-gesteuerten Sequencer nachdenken!!!
+**  todo: Interrupt-driven Sequencer!
 **          S12Iic_Opcode {START,RESTART,WRITE,READ,STOP};
+**          IIC_SequenceState{IIC_SEQ_NOT_RUNNING,IIC_SEQ_RUNNING,IIC_SEQ_COMPLETED};
+**          Errorcode: IIC_E_STATE
 **
 */
 
+#define IIC_RW_BIT          ((uint8)0x01)
 
 #define S12_IIC_ENABLED()   ((S12_REG8(Cfg,IBCR) & IBEN)==IBEN)
+#define S12_IIC_MASTER()    ((S12_REG8(Cfg,IBCR) & MS_SL)==MS_SL)
+
 
 typedef enum tagIic_OpcodeType {
     START,RESTART,WRITE,READ,STOP
 } Iic_OpcodeType;
+
 
 typedef struct tagIic_PrimitiveType {
     Iic_OpcodeType Opcode;
@@ -64,6 +72,7 @@ S12Iic_StatusType S12Iic_Init(S12Iic_ConfigType const * const Cfg)
     return S12IIC_OK;
 }
 
+
 S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg)
 {
     if (!S12_IIC_ENABLED()) {
@@ -77,6 +86,7 @@ S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg)
     return S12IIC_OK;
 }
 
+
 S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg)
 {
     if (!S12_IIC_ENABLED()) {
@@ -87,6 +97,7 @@ S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg)
 
     return S12IIC_OK;
 }
+
 
 S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg)
 {
@@ -106,6 +117,7 @@ S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,boole
         return S12IIC_UNINIT;
     }
 
+    S12_REG8(Cfg,IBCR)|=TX_RX;
     S12_REG8(Cfg,IBDR)=b;
     WAIT_FOR((S12_REG8(Cfg,IBSR) & IBIF)==IBIF);
     *ack=((S12_REG8(Cfg,IBSR) & RXAK)!=RXAK);
@@ -114,32 +126,33 @@ S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,boole
     return S12IIC_OK;
 }
 
+/* todo: ReadLast   */
 S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,uint8 *b,boolean ack)
 {
     if (!S12_IIC_ENABLED()) {
         return S12IIC_UNINIT;
     }
 
-    S12_REG8(Cfg,IBCR)=IBEN|MS_SL;
+#if 0
+    S12_REG8(Cfg,IBCR)=IBEN|MS_SL;  /* ???? */
+#endif
+    S12_REG8(Cfg,IBCR)&=~TX_RX;
 
-    if (ack==FALSE) {
+    if (ack) {
+        S12_REG8(Cfg,IBCR)&=~TXAK;
+    }else {
         S12_REG8(Cfg,IBCR)|=TXAK;
     }
 
     *b=S12_REG8(Cfg,IBDR);
     WAIT_FOR((S12_REG8(Cfg,IBSR) & IBIF)==IBIF);
     S12_REG8(Cfg,IBSR)=IBIF;
-    S12_REG8(Cfg,IBCR)=IBEN|MS_SL|TX_RX;
+/*    S12_REG8(Cfg,IBCR)=IBEN|MS_SL|TX_RX; */
     *b=S12_REG8(Cfg,IBDR);
 
     return S12IIC_OK;
 }
 
-/*
-**
-**  todo: statt 'boolean' 'IIC_StatusType' verwenden: [IIC_OK|IIC_NOT_PRESENT].
-**
-*/
 
 boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_base_addr,uint8 addr_mask,IIC_PresenceCallback callback)
 {
@@ -160,7 +173,7 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
         }
     } else {
 */
-        addr_mask&=(uint8)0x7f;
+/*        addr_mask&=(uint8)0x7f; */
         for (idx=(uint8)0;idx<addr_mask;idx+=(uint8)2) {
             (void)S12Iic_Start(Cfg);
             (void)S12Iic_Write(Cfg,slave_base_addr+idx,&ack);
@@ -177,24 +190,34 @@ boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_bas
     return (found!=(uint8)0);
 }
 
-#if 0
-IIC_StatusType S12Iic_SendAddress(S12Iic_ConfigType const * const Cfg,uint8 slave_addr)
+/* boolean S12Iic_ReadMode(S12Iic_ConfigType const * const Cfg,uint8 slave_addr) */
+
+boolean S12Iic_ModeReq(S12Iic_ConfigType const * const Cfg,uint8 slave_addr,boolean write)
 {
-    IIC_StatusType res;
+    boolean ack;
 
-    if (!S12_IIC_ENABLED(Cfg)) {
-        return S12IIC_UNINIT;
+    if (S12_IIC_MASTER()) {
+        (void)S12Iic_Restart(Cfg);
+    } else {
+        (void)S12Iic_Start(Cfg);
     }
 
-    S12Iic_Start(Cfg);
-    res=S12Iic_Write(Cfg,slave_addr & (uint8)0xfe);
-    if (res==IIC_NAK) {
-        S12Iic_Stop(Cfg);
+    if (write) {
+        slave_addr&=~IIC_RW_BIT;
+    } else {
+        slave_addr|=IIC_RW_BIT;
     }
 
-    return res;
+    (void)S12Iic_Write(Cfg,slave_addr,&ack);
+
+    if (ack==TRUE) {
+
+    } else {
+
+    }
+
+    return ack;
 }
-#endif
 
 
 /*

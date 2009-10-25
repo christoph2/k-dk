@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -33,20 +34,20 @@ S12Ect_StatusType S12Ect_Init(void)
     S12ECT_REG8(TCTL4)=ECT.TCtl4;
     S12ECT_REG8(TIE)=ECT.TIe;
     S12ECT_REG8(ICPAR)=ECT.ICpar;
-    
+
     /* Pulse Accus      */
     S12ECT_REG8(PACTL)=ECT.PActl;
-    S12ECT_REG8(PBCTL)=ECT.PBctl;    
+    S12ECT_REG8(PBCTL)=ECT.PBctl;
 
     /* Modulus Counter  */
     S12ECT_REG8(MCCTL)=ECT.MCctl;
     S12ECT_REG16(MCCNT)=ECT.MCcnt;
 
-    /* 
+    /*
     **  ns_per_mhz=1000
     **  cycle=ns_per_mhz/bus_clock
     **  presc=log2(timer_cycle/cycle) (if timer_cycle>cycle)
-    */    
+    */
     S12ECT_REG8(DLYCT)=ECT.DLyct;
     S12ECT_REG8(ICOVW)=ECT.ICovw;
     S12ECT_REG8(ICSYS)=ECT.ICsys;

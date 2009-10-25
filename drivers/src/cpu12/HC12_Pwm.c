@@ -24,8 +24,6 @@
 #include "HC12_Pwm.h"
 #include "Hw_Cfg.h"
 
-extern const HC12Pwm_ConfigType PWM;    /* hier??? */
-
 /*
 **
 ** todo:    Functions for 8- and 16-Bit PWM.
