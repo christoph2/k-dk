@@ -27,9 +27,11 @@
 #include "Std_Types.h"
 #include "Port_Cfg.h"
 
+#if 0
 #if defined(xxx_VERSION_INFO_API)
 xxx_GetVersionInfo(...)
 #endif /* xxx_VERSION_INFO_API */
+#endif
 
 #define PORT_E_PARAM_PIN		((uint8)0x0a)
 #define PORT_E_DIRECTION_UNCHANGEBLE	((uint8)0x0b)
@@ -39,7 +41,7 @@ xxx_GetVersionInfo(...)
 #define PORT_E_UNINIT			((uint8)0x0f)
 
 typedef struct tagPort_ConfigType {
-
+    uint8 dummy;
 } Port_ConfigType;
 
 typedef uint8 Port_PinType;
@@ -47,7 +49,7 @@ typedef uint8 Port_PinType;
 typedef enum tagPort_PinDirectionType {
     PORT_PIN_IN,
     PORT_PIN_OUT
-} Port_PinDirectionType; 
+} Port_PinDirectionType;
 
 #define PORT_PIN_LEVEL_LOW  ((uint8)0x00)
 #define PORT_PIN_LEVEL_HIGH ((uint8)0x01)
@@ -61,7 +63,7 @@ typedef enum tagPort_PinDirectionType {
 #define PORT_PIN_MODE_ICU	((uint8)0x06)
 #define PORT_PIN_MODE_LIN	((uint8)0x07)
 #define PORT_PIN_MODE_MEM	((uint8)0x08)
-#define PORT_PIN_MODE_MEM	((uint8)0x09)
+/* #define PORT_PIN_MODE_MEM	((uint8)0x09) */
 #define PORT_PIN_MODE_PWM	((uint8)0x0a)
 #define PORT_PIN_MODE_SPI	((uint8)0x0b)
 
@@ -80,4 +82,3 @@ void Port_GetVersionInfo(Std_VersionInfoType *VersionInfo);
 void Port_SetPinMode(Port_PinType Pin,Port_PinModeType Mode);
 
 #endif /* __PORT_H */
-

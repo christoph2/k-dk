@@ -28,9 +28,11 @@
 #include "EcuM.h"
 #include "Mcu_Cfg.h"
 
+#if 0
 #if defined(xxx_VERSION_INFO_API)
 xxx_GetVersionInfo(...)
 #endif /* xxx_VERSION_INFO_API */
+#endif
 
 #define MCU_E_PARAM_CONFIG	((uint8)0x0a)
 #define MCU_E_PARAM_CLOCK	((uint8)0x0b)
@@ -41,7 +43,7 @@ xxx_GetVersionInfo(...)
 #define MCU_E_CLOCK_FAILURE	((uint8)0x10)	/* Assigned by DEM */
 
 typedef struct tagMcu_ConfigType {
-
+    uint8 dummy;
 } Mcu_ConfigType;
 
 typedef enum tagMcu_PllStatusType {

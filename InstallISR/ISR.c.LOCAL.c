@@ -1,8 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
- *                                      cpu12.gems@googlemail.com>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
  *
  * All Rights Reserved
  *
@@ -21,9 +20,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__IOHWAB_TYPES_H)
-#define	__IOHWAB_TYPES_H
+#include "ISR.h"
 
-#include "Std_Types.h"
+#if defined(__CSMC__)               /* Cosmic               */
+    #define II_INC_COMP_C             "cosmic/ISR_CSMC.c"
+#elif defined(__GNUC__)             /* GNU GCC              */
+    #define II_INC_COMP_C             "gcc/ISR_GCC.c"
+#elif defined(__HIWARE__)           /* Metrowerks/Freescale */
+    #define II_INC_COMP_C             "metrowerks/ISR_MW.c"
+#elif defined(__IAR_SYSTEMS_ICC__)  /* IAR Systems          */
+    #define II_INC_COMP_C             "iar/ISR_IAR.c"
+#elif defined(__IMAGECRAFT__)       /* Imagecraft           */
+    #define II_INC_COMP_C             "imagecraft/ISR_ICC.c"
+#else                               /* todo: Add Support    */
+    #error Unsupported Compiler.
+#endif
 
-#endif	/* __IOHWAB_TYPES_H */
+#include II_INC_COMP_C

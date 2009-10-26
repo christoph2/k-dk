@@ -13,7 +13,7 @@
  *      Please read the file sha1.c for more information.
  *
  */
-#ifndef _SHA1_H_
+#if !deffined(_SHA1_H_)
 #define _SHA1_H_
 
 #include <stdint.h>
@@ -29,7 +29,7 @@
  *
  */
 
-#ifndef _SHA_enum_
+#if !defined(_SHA_enum_)
 #define _SHA_enum_
 enum
 {
@@ -39,6 +39,7 @@ enum
     shaStateError       /* called Input after Result */
 };
 #endif
+
 #define SHA1_HASH_SIZE  ((uint8_t)20)
 
 /*
@@ -67,4 +68,4 @@ int SHA1_Reset(SHA1_ContextType *context);
 int SHA1_Input(SHA1_ContextType *context,const uint8_t *message_array,unsigned int length);
 int SHA1_Result(SHA1_ContextType *context,uint8_t Message_Digest[SHA1_HASH_SIZE]);
 
-#endif
+#endif /* _SHA1_H_ */

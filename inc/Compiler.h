@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -34,7 +35,7 @@
 ** _IMAGECRAFT_C_CPU12_
 ** _METROWERKS_C_CPU12_
 */
-         
+
 #define	AUTOMATIC	/* shall be provided as empty definition. */
 #define	_STATIC_	static
 #define	NULL_PTR	((void*)0)
@@ -45,22 +46,22 @@
  Example (Cosmic, S12X):
  #define	FUNC(rettype,memclass)	memclass rettype
  FUNC(void,@near) ExampleFunction(void);
-*/ 
+*/
 
-#define	P2VAR(ptrtype,memclass,ptrclass)                                      
-/*                                                                   
-	Example (Metrowerks, S12X)                                         
-	#define	P2VAR(ptrtype,memclass,ptrclass) \                         
-	ptrclass ptrtyppe * memclass                                       
-	                                                                   
-	#define SPI_APLL_DATA	@far                                         
-	#define SPI_VAR_FAST	@near                                        
-	                                                                   
-	P2VAR(uint8,SPI_VAR_FAST,SPI_APPL_DATA) Spi_FastPointerToApllData  
-*/                                                                   
+#define	P2VAR(ptrtype,memclass,ptrclass)
+/*
+	Example (Metrowerks, S12X)
+	#define	P2VAR(ptrtype,memclass,ptrclass) \
+	ptrclass ptrtyppe * memclass
+	
+	#define SPI_APLL_DATA	@far
+	#define SPI_VAR_FAST	@near
+	
+	P2VAR(uint8,SPI_VAR_FAST,SPI_APPL_DATA) Spi_FastPointerToApllData
+*/
 
 
-         
+
 /*
 "For each Compiler and Platform an own Compiler
 Abstraction has to be provided".
@@ -84,18 +85,18 @@ Abstraction has to be provided".
 	
 	FAR-FUNCTION-Deklarationen:
 	---------------------------
-	Cosmic:                               
-	@near void MyFarFunction(void);        
-                                        
-	Metrowerks:                             
+	Cosmic:
+	@near void MyFarFunction(void);
+
+	Metrowerks:
 	void __far MyFarFunction(void);
-                                        
-	IAR:                                    
-	void __banked MyFarFunction(void); 
-                                        
-	Imagecraft:                             
+
+	IAR:
+	void __banked MyFarFunction(void);
+
+	Imagecraft:
 	#pragma paged_function MyFarFunction
-	void MyFarFunction(void);              
+	void MyFarFunction(void);
 
 	NEAR-POINTER(Var./RAM)-Deklarationen:
 	-------------------------------------	

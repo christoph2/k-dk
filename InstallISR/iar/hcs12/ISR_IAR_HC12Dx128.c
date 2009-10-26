@@ -334,7 +334,7 @@ __root void (* const interrupt_vectors[])(void) =
     (IISR_IVF)TRAP_VECTOR,       /* Unimplement Intruction Trap      */
     (IISR_IVF)COP_VECTOR,        /* COP failure reset                */
     (IISR_IVF)CMF_VECTOR,        /* Clock monitor fail reset         */
-#if !defined(__IAR_SYSTEMS_ICC__)       
+#if !defined(__IAR_SYSTEMS_ICC__)
     (IISR_IVF)RESET_VECTOR,      /* Reset                            */
-#endif        
+#endif
 };

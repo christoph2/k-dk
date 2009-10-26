@@ -44,8 +44,12 @@ typedef struct tagDio_ChannelGroupType {
 } Dio_ChannelGroupType;
 
 typedef enum tagDio_LevelType {
+#if 0
     STD_LOW,
     STD_HIGH
+#endif
+    DIO_LOW,
+    DIO_HIGH
 } Dio_LevelType;
 
 typedef uint8 Dio_PortLevelType;

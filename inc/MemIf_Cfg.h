@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,8 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef __MEMIF_CFG_H
-define	__MEMIF_CFG_H
+ #if !defined(__MEMIF_CFG_H)
+#define __MEMIF_CFG_H
 
-#endif	// __MEMIF_CFG_H
-
+#endif	/* __MEMIF_CFG_H */

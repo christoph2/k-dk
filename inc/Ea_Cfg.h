@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,12 +21,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef	__EA_CFG_H
+#if	!defined(__EA_CFG_H)
 #define	__EA_CFG_H
 
 #include <Ea_Lcfg.h>
 
-#define	EA_VIRTUAL_PAGE_SIZE	4	// Check: gehört das hierher?
+#define	EA_VIRTUAL_PAGE_SIZE	((uint8)4)
 #define	EA_DEV_ERROR_DETECT
 
-#endif	// __EA_CFG_H
+#endif	/* __EA_CFG_H  */

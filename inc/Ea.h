@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,14 +21,14 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef	__EA_H
+#if !defined(__EA_H)
 #define	__EA_H
 
 #include <Ea_Cfg.h>
 #include <Eep.h>
 
 typedef struct tagEa_ConfigType {
-	unsigned filler; // Hardware and/or implementation specific.
+	unsigned filler; /* Hardware and/or implementation specific. */
 } Ea_ConfigType;
 
 void Ea_Init(const Ea_ConfigType *ConfigPtr);
@@ -41,5 +42,4 @@ Std_ReturnType Ea_InvalidateBlock(uint16 BlockNumber);
 void Ea_GetVersionInfo(Std_VersionInfotype *VersionInfoPtr);
 Std_ReturnType Ea_EraseImmediateBlock(uint16 BlockNumber);
 
-
-#endif	// __EA_H
+#endif	/* __EA_H */

@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#ifndef	__MEMMAP_H
+#if !defined(__MEMMAP_H)
 #define	__MEMMAP_H
 
 /* This File is Configuration-Specific. */
@@ -34,4 +35,3 @@
 #define	MEM_SW_PATCH_VERSION	((uint8)0)
 
 #endif	/* __MEMMAP_H */
-

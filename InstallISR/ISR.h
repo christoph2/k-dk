@@ -1,7 +1,9 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
+
  *
  * All Rights Reserved
  *
@@ -47,9 +49,9 @@ extern "C" {
 #else                               /* todo: Add Support    */
     #error Unsupported Compiler.
 #endif
-    
+
 typedef  void (*const IISR_IVF)(void);
-    
+
 /*
 **  OSEK-ISR2-Wrapper.
 */
@@ -62,7 +64,7 @@ typedef  void (*const IISR_IVF)(void);
 #define DEFINE_ISR2_VECTOR DECLARE_ISR2_VECTOR
 
 /*
-**  ISR2_HANDLER: Handler, that is implemented /w 'ISR()'. 
+**  ISR2_HANDLER: Handler, that is implemented /w 'ISR()'.
 */
 #define DECLARE_ISR2_USER_HANDLER(IsrName) void IsrName##_Handler(void)
 

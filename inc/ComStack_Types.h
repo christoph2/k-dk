@@ -26,14 +26,14 @@
 #include "Std_Types.h"
 
 typedef uint8 PduIdType;
-    #define	PduIdmax	((PduIdType)-1)
+    #define PduIdmax        ((PduIdType)-1)
 
 typedef uint8 PduLengthType;
-    #define	PduLengthmax	((PduLengthType)-1)
+    #define PduLengthmax    ((PduLengthType)-1)
 
-typedef struct tagPduInfoType
-    uint8 *SduDataPtr,
-    PduLengthType SduLength
+typedef struct tagPduInfoType {
+    uint8 *SduDataPtr;
+    PduLengthType SduLength;
 } PduInfoType;
 
 typedef enum tagBufReq_ReturnType {
@@ -58,4 +58,3 @@ typedef uint8 BusTrcvErrorType;
 	#define BUSTRCV_E_ERROR         0x01
 
 #endif	/* __COMSTACK_TYPES_H */
-
