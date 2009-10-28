@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,12 +21,28 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+
 #if defined(__ICCARM__)
     #define II_INC_TARGET_C   "./arm/ISR_IAR_ARM.c"
 #elif defined(__ICCHCS12__)
-    #define II_INC_TARGET_C   "./hcs12/ISR_IAR_HCS12.c"
+
 #else
     #error Unsupported Target for IAR-Compiler.
+#endif
+
+#if CPU_FAMILY==CPU12_HC12
+/* CPU_DERIVATE  CPU12_HC12B32 | CPU12_HC12BC32 | CPU12_HC12DG128A */
+
+    #if CPU_DERIVATE==CPU12_HC12B32 || CPU_DERIVATE==CPU12_HC12BC32
+        #define II_INC_TARGET_C   "./hc12/ISR_IAR_HC12B.c"
+    #else
+        #error UUPS
+    #endif
+
+#elif CPU_FAMILY==CPU12_S12
+    #define II_INC_TARGET_C   "./s12/ISR_IAR_HCS12.c"
+#else
+
 #endif
 
 #include II_INC_TARGET_C

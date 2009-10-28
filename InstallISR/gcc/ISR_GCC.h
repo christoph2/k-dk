@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -30,7 +31,7 @@
 #elif defined(__AVR__)
     #define II_INC_TARGET_H   "./avr/ISR_GCC_AVR.h"
 #elif defined(MC6812)
-    #define II_INC_TARGET_H   "hcs12/ISR_GCC_HCS12.h"
+    #define II_INC_TARGET_H   "s12/ISR_GCC_HCS12.h"
 #elif defined(__MSP430__)
     #define II_INC_TARGET_H   "./msp430/ISR_GCC_MSP430.h"
 #elif defined( __CYGWIN32__) && defined(__I386__)
@@ -40,6 +41,6 @@
     #error Unsupported Target for GCC.
 #endif
 
-#include "hcs12/ISR_GCC_HCS12.h"
+#include "s12/ISR_GCC_HCS12.h"
 
 #endif /* __ISR_GCC_H */

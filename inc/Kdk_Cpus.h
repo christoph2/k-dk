@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,21 +21,27 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__ISR_MW_HCS12_H)
-#define __ISR_MW_HCS12_H
 
-#define DECLARE_ISR2_VECTOR(IsrName) __interrupt void IsrName(void)
-#define DECLARE_ISR1_VECTOR(IsrName) __interrupt void IsrName(void)
-#define ISR1(IsrName) __interrupt void IsrName(void)
+#if !defined(__KDK_CPUS_H)
+#define __KDK_CPUS_H
 
-void __near _Startup(void);
-#define IISR_ENTRY_POINT  _Startup
+/*
+**  Supported CPU-Families.
+*/
+#define CPU12_HC12          1
+#define CPU12_S12           2
+#define CPU12_S12X          3
 
-extern void (* const  interrupt_vectors[])(void);
+/*
+**  HC12-Family-Members.
+*/
+#define CPU12_HC12B32       1
+#define CPU12_HC12BC32      2
+#define CPU12_HC12DG128A    3
 
-#define IISR_DECLARE_VECTOR_TABLE()
-#define IISR_BEGIN_VECTOR_TABLE()
-#define IISR_END_VECTOR_TABLE()
+/*
+**  S12-Family-Members.
+*/
+#define CPU12_S12DP256B     1
 
-
-#endif /* __ISR_MW_HCS12_H */
+#endif /* __KDK_CPUS_H */

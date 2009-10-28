@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,26 +21,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__ISR_GCC_HCS12_H)
-#define __ISR_GCC_HCS12_H
+#if !defined(__ISR_CSMC_HCS12_H)
+#define __ISR_CSMC_HCS12_H
 
-#if 0
-#define DECLARE_ISR(IsrName) void IsrName(void) __attribute__((interrupt))
-#endif
+#define DECLARE_ISR2_VECTOR(IsrName) INTERRUPT void IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName) INTERRUPT void IsrName(void)
 
-#define DECLARE_ISR2_VECTOR(IsrName) void IsrName(void) __attribute__((interrupt))
-#define DECLARE_ISR1_VECTOR(IsrName) void IsrName(void) __attribute__((interrupt))
-#define ISR1(IsrName) void IsrName(void) __attribute__((interrupt))
+#define ISR1(IsrName) INTERRUPT void IsrName(void)
 
 extern void (* const  interrupt_vectors[])(void);
-
-void _start(void);
-
-#define IISR_ENTRY_POINT  _start
-#define IISR_INTERUPT     __attribute__((interrupt))
 
 #define IISR_DECLARE_VECTOR_TABLE
 #define IISR_BEGIN_VECTOR_TABLE
 #define IISR_END_VECTOR_TABLE
 
-#endif /* __ISR_GCC_HCS12_H */
+#endif /* __ISR_CSMC_HCS12_H */

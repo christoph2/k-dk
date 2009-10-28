@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -29,7 +30,7 @@ void _start(void);
 #if defined(_AVR)
     #define II_INC_TARGET_H    "./avr/ISR_ICC_AVR.h"
 #elif defined(_HC12)
-    #define II_INC_TARGET_H    "hcs12/ISR_ICC_HCS12.h"
+    #define II_INC_TARGET_H    "s12/ISR_ICC_HCS12.h"
 #elif defined(_MSP430)
     #define II_INC_TARGET_H    "./msp430/ISR_ICC_MSP430.h"
 #else
@@ -40,4 +41,3 @@ void _start(void);
 #include II_INC_PATH_H
 
 #endif /* __ISR_ICC_H */
-

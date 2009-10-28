@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -22,11 +23,10 @@
  */
 /*
 **
-**       Interrupt-Vektoren S12DP256.
+**       Interrupt-Vectors S12DP256.
 **
 */
 
-#include "ISR.h"
 
 #if     !defined(RESET_VECTOR)
 #define RESET_VECTOR    IISR_ENTRY_POINT
@@ -260,13 +260,16 @@
 #define PWMES_VECTOR DUMMY_VECTOR
 #endif  /*  PWMES_VECTOR  */
 
-static ISR1(DUMMY_VECTOR)
+static ISR(DUMMY_VECTOR)
 {       
 }
 
+void ISR_Init(void)
+{
 
-#pragma CONST_SEG VECTORS
-void (*const interrupt_vectors[])(void) = 
+}
+
+void (*const interrupt_vectors[])(void) __attribute__((section(".vectors"))) = 
 {
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF82                   */
@@ -333,5 +336,3 @@ void (*const interrupt_vectors[])(void) =
     (IISR_IVF)CMF_VECTOR,        /* Clock monitor fail reset         */
     (IISR_IVF)RESET_VECTOR,      /* Reset                            */
 };
-
-#pragma CONST_SEG DEFAULT

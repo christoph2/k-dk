@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -21,7 +22,7 @@
  *
  */
 #if defined(__CSMC__)
-    #define II_INC_TARGET_C    "cosmic/hcs12/ISR_CSMC_HCS12.c"
+    #define II_INC_TARGET_C    "cosmic/s12/ISR_CSMC_HCS12.c"
 #else
     #error Unsupported Target for Cosmic-Compiler.
 #endif

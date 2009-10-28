@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -22,7 +23,7 @@
  */
 /*
 **
-**	 Interrupt-Vektoren S12DP256.
+**	 Interrupt-Vectors S12DP256.
 **
 */
 

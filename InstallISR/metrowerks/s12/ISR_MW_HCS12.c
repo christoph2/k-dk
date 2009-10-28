@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -22,22 +23,22 @@
  */
 /*
 **
-**       Interrupt-Vektoren S12DP256.
+**       Interrupt-Vectors S12DP256.
 **
 */
 
 #include "ISR.h"
 
 #if     !defined(RESET_VECTOR)
-#define RESET_VECTOR    II_ENTRY_POINT
+#define RESET_VECTOR    IISR_ENTRY_POINT
 #endif  /*  RESET_VECTOR */
 
 #if     !defined(CMF_VECTOR)
-#define CMF_VECTOR      II_ENTRY_POINT
+#define CMF_VECTOR      IISR_ENTRY_POINT
 #endif  /*  CMF_VECTOR  */
 
 #if     !defined(COP_VECTOR)
-#define COP_VECTOR      II_ENTRY_POINT
+#define COP_VECTOR      IISR_ENTRY_POINT
 #endif  /*  COP_VECTOR  */
 
 #if     !defined(TRAP_VECTOR)
@@ -260,12 +261,13 @@
 #define PWMES_VECTOR DUMMY_VECTOR
 #endif  /*  PWMES_VECTOR  */
 
-ISR(DUMMY_VECTOR)
+static ISR1(DUMMY_VECTOR)
 {       
 }
 
-#pragma abs_address:0xFF80
-void (*const interrupt_vectors[])(void) =
+
+#pragma CONST_SEG VECTORS
+void (*const interrupt_vectors[])(void) = 
 {
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF82                   */
@@ -333,4 +335,4 @@ void (*const interrupt_vectors[])(void) =
     (IISR_IVF)RESET_VECTOR,      /* Reset                            */
 };
 
-#pragma end_abs_address
+#pragma CONST_SEG DEFAULT

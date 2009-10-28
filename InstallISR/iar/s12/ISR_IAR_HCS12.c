@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -22,11 +23,11 @@
  */
 /*
 **
-**	 Interrupt-Vektoren S12DP256.
+**	 Interrupt-Vectors S12DP256.
 **
 */
 
-#include "InstallIsr\\ISR.h"
+#include "ISR.h"
 
 DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 
@@ -266,8 +267,10 @@ ISR1(DUMMY_VECTOR)
 {	
 }
 
-#pragma section const {vector}
-void (* const interrupt_vectors[])(void) /* @0xFF80*/ =
+#pragma constseg=INTVEC
+#pragma required=interrupt_vectors
+__root void (* const interrupt_vectors[])(void) =
+
 {
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF82                   */
@@ -332,6 +335,7 @@ void (* const interrupt_vectors[])(void) /* @0xFF80*/ =
     (IISR_IVF)TRAP_VECTOR,       /* Unimplement Intruction Trap      */
     (IISR_IVF)COP_VECTOR,        /* COP failure reset                */
     (IISR_IVF)CMF_VECTOR,        /* Clock monitor fail reset         */
+#if !defined(__IAR_SYSTEMS_ICC__)       
     (IISR_IVF)RESET_VECTOR,      /* Reset                            */
+#endif        
 };
-#pragma section const {}

@@ -21,14 +21,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if defined(_AVR)
-    #define II_INC_TARGET_C   "./avr/ISR_ICC_AVR.c"
-#elif defined(_HC12)
-    #define II_INC_TARGET_C   "./s12/ISR_ICC_HCS12.c"
-#elif defined(_MSP430)
-    #define II_INC_TARGET_C   "./msp430/ISR_ICC_MSP430.c"
-#else
-    #error Unsupported Target for Imagecraft-Compiler.
-#endif
+#if !defined(__ISR_MW_HCS12_H)
+#define __ISR_MW_HCS12_H
 
-#include II_INC_TARGET_C
+#define DECLARE_ISR2_VECTOR(IsrName) __interrupt void IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName) __interrupt void IsrName(void)
+#define ISR1(IsrName) __interrupt void IsrName(void)
+
+void __near _Startup(void);
+#define IISR_ENTRY_POINT  _Startup
+
+extern void (* const  interrupt_vectors[])(void);
+
+#define IISR_DECLARE_VECTOR_TABLE()
+#define IISR_BEGIN_VECTOR_TABLE()
+#define IISR_END_VECTOR_TABLE()
+
+#endif /* __ISR_MW_HCS12_H */

@@ -3,7 +3,6 @@
  *
  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
  *                                      cpu12.gems@googlemail.com>
-
  *
  * All Rights Reserved
  *
@@ -28,6 +27,36 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
+#include "Sys_Cfg.h"
+
+#if !defined(CPU_FAMILY)
+    #error CPU_FAMILY must be specified. Valid: [CPU12_HC12|CPU12_S12].
+#elif (CPU_FAMILY!=CPU12_HC12) && (CPU_FAMILY!=CPU12_S12)
+    #error wrong CPU_FAMILY specified. Valid: [CPU12_HC12|CPU12_S12].
+#endif  /* CPU_FAMILY */
+
+#if !defined(CPU_DERIVATE)
+    #error CPU_DERIVATE must be specified (depends on CPU_FAMILY) !!!
+#else
+    #if CPU_FAMILY==CPU12_HC12
+        #if CPU_DERIVATE!=CPU12_HC12B32 && CPU_DERIVATE!=CPU12_HC12BC32 && CPU_DERIVATE!=CPU12_HC12DG128A
+            #error wrong CPU_DERIVATE specified. Valid for CPU12_HC12: [CPU12_HC12B32|CPU12_HC12BC32|CPU12_HC12DG128A].
+        #endif
+    #elif CPU_FAMILY==CPU12_S12
+        #if CPU_DERIVATE!=CPU12_S12DP256B
+            #error wrong CPU_DERIVATE specified. Valid for CPU12_S12: [CPU12_S12DP256B].
+        #endif
+    #endif
+#endif  /* CPU_DERIVATE */
+
+#if 0
+CPU_FAMILY    ==> CPU12_HC12, CPU12_S12 | CPU12_S12X
+CPU_DERIVATE  ==>
+  CPU12_HC12:   CPU12_HC12B32 | CPU12_HC12BC32 | CPU12_HC12DG128A
+  CPU12_S12:    CPU12_S12DP256B
+#endif
+
 
                                     /*   *** Compiler ***   */
                                     /*======================*/
