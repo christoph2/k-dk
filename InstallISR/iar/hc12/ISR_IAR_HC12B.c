@@ -213,8 +213,8 @@ __root void (* const interrupt_vectors[])(void) =
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC4                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC6                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC8                   */
-    (IISR_IVF)MDCU_VECTOR,      /* Modulus Down Counter Underflow   */
     (IISR_IVF)PBOF_VECTOR,      /* Pulse Accumulator B Overflow     */
+    (IISR_IVF)MDCU_VECTOR,      /* Modulus Down Counter Underflow   */
 #endif
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved  $FFCE                  */
 #if CPU_DERIVATE==CPU12_HC12B32

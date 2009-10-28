@@ -38,6 +38,7 @@
 #define CPU12_HC12B32       1
 #define CPU12_HC12BC32      2
 #define CPU12_HC12DG128A    3
+#define CPU12_HC12DT128A    4
 
 /*
 **  S12-Family-Members.

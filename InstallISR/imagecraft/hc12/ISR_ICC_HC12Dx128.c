@@ -23,7 +23,7 @@
  */
 /*
 **
-**       Interrupt-Vectors HC12B-Series.
+**       Interrupt-Vectors HC12D128x-Series.
 **
 */
 
@@ -111,61 +111,96 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define SPI_VECTOR DUMMY_VECTOR
 #endif  /*  SPI_VECTOR */
 
-#if     !defined(SCI_VECTOR)
-#define SCI_VECTOR DUMMY_VECTOR
-#endif  /*  SCI_VECTOR */
+#if     !defined(SCI0_VECTOR)
+#define SCI0_VECTOR DUMMY_VECTOR
+#endif  /*  SCI0_VECTOR */
 
+#if     !defined(SCI1_VECTOR)
+#define SCI1_VECTOR DUMMY_VECTOR
+#endif  /*  SCI1_VECTOR */
 
 #if     !defined(ATD_VECTOR)
 #define ATD_VECTOR DUMMY_VECTOR
 #endif  /*  ATD_VECTOR */
         
-#if CPU_DERIVATE==CPU12_HC12BC32
-    #if !defined(CANW_VECTOR)
-    #define CANW_VECTOR DUMMY_VECTOR
-    #endif      /*  CANW_VECTOR  */
-#endif  /* CPU12_HC12BC32*/
+#if     !defined(CAN0W_VECTOR)
+#define CAN0W_VECTOR DUMMY_VECTOR
+#endif  /*  CAN0W_VECTOR  */
 
+#if     !defined(CAN0E_VECTOR)
+#define CAN0E_VECTOR DUMMY_VECTOR
+#endif  /*  CAN0E_VECTOR  */
 
-#if CPU_DERIVATE==CPU12_HC12B32
-    #if !defined(BDLC_VECTOR)
-    #define     BDLC_VECTOR DUMMY_VECTOR
-    #endif      /*  BDLC_VECTOR */
-#endif  /* CPU12_HC12B32 */
+#if     !defined(CAN0R_VECTOR)
+#define CAN0R_VECTOR DUMMY_VECTOR
+#endif  /*  CAN0R_VECTOR  */
 
+#if     !defined(CAN0T_VECTOR)
+#define CAN0T_VECTOR DUMMY_VECTOR
+#endif  /*  CAN0T_VECTOR  */
 
-#if CPU_DERIVATE==CPU12_HC12BC32
-    #if !defined(CANE_VECTOR)
-    #define     CANE_VECTOR DUMMY_VECTOR
-    #endif      /*  CANE_VECTOR  */
+#if     !defined(MDCU_VECTOR)
+#define MDCU_VECTOR     DUMMY_VECTOR
+#endif  /*  MDCU_VECTOR */
 
-    #if !defined(CANR_VECTOR)
-    #define     CANR_VECTOR DUMMY_VECTOR
-    #endif      /*  CANR_VECTOR  */
+#if     !defined(PBOF_VECTOR)
+#define PBOF_VECTOR DUMMY_VECTOR
+#endif  /*  PBOF_VECTOR */
 
-    #if !defined(CANT_VECTOR)
-    #define     CANT_VECTOR DUMMY_VECTOR
-    #endif      /*  CANT_VECTOR  */
-#endif /* CPU12_HC12BC32 */
+#if     !defined(KWU_VECTOR)
+#define KWU_VECTOR DUMMY_VECTOR
+#endif  /*  KWU_VECTOR */
 
+#if     !defined(CGM_VECTOR)
+#define CGM_VECTOR DUMMY_VECTOR
+#endif  /*  CGM_VECTOR */
 
-#if CPU_DERIVATE==CPU12_HC12B32
-    #if !defined(MDCU_VECTOR)
-    #define MDCU_VECTOR DUMMY_VECTOR
-    #endif      /*  MDCU_VECTOR */
+#if     !defined(IIC_VECTOR)
+#define IIC_VECTOR DUMMY_VECTOR
+#endif  /*  IIC_VECTOR */
 
-    #if !defined(PBOF_VECTOR)
-    #define     PBOF_VECTOR DUMMY_VECTOR
-    #endif      /*  PBOF_VECTOR */
-#endif /* CPU12_HC12B32  */
+#if     !defined(CAN1W_VECTOR)
+#define CAN1W_VECTOR DUMMY_VECTOR
+#endif  /*  CAN1W_VECTOR  */
+
+#if     !defined(CAN1E_VECTOR)
+#define CAN1E_VECTOR DUMMY_VECTOR
+#endif  /*  CAN1E_VECTOR  */
+
+#if     !defined(CAN1R_VECTOR)
+#define CAN1R_VECTOR DUMMY_VECTOR
+#endif  /*  CAN1R_VECTOR  */
+
+#if     !defined(CAN1T_VECTOR)
+#define CAN1T_VECTOR DUMMY_VECTOR
+#endif  /*  CAN1T_VECTOR  */
+
+#if CPU_DERIVATE==CPU12_HC12DT128A
+    #if !defined(CAN2W_VECTOR)
+    #define CAN2W_VECTOR DUMMY_VECTOR
+    #endif      /*  CAN2W_VECTOR  */
+
+    #if !defined(CAN2E_VECTOR)
+    #define     CAN2E_VECTOR DUMMY_VECTOR
+    #endif      /*  CAN2E_VECTOR  */
+
+    #if !defined(CAN2R_VECTOR)
+    #define     CAN2R_VECTOR DUMMY_VECTOR
+    #endif      /*  CAN2R_VECTOR  */
+
+    #if !defined(CAN2T_VECTOR)
+    #define     CAN2T_VECTOR DUMMY_VECTOR
+    #endif      /*  CAN2T_VECTOR  */
+#endif /* CPU12_HC12DT128A */
 
 
 ISR1(DUMMY_VECTOR)
 {       
 }
 
-#pragma section const {vector}
-void (* const interrupt_vectors[])(void) /* @0xFF80*/ =
+
+#pragma abs_address:0xFF80
+void (*const interrupt_vectors[])(void) =
 {
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF82                   */
@@ -191,38 +226,33 @@ void (* const interrupt_vectors[])(void) /* @0xFF80*/ =
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAA                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAC                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAE                   */
+#if CPU_DERIVATE==CPU12_HC12DT128A
+    (IISR_IVF)CAN2T_VECTOR,     /* MSCAN2  Transmit                 */
+    (IISR_IVF)CAN2R_VECTOR,     /* MSCAN2  Receive                  */
+    (IISR_IVF)CAN2E_VECTOR,     /* MSCAN2  Error                    */
+    (IISR_IVF)CAN2W_VECTOR,     /* MSCAN2  Wake-up                  */
+#else
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB0                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB2                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB4                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB6                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB8                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBA                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBC                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBE                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC0                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC2                   */
-#if CPU_DERIVATE==CPU12_HC12BC32
-    (IISR_IVF)CANT_VECTOR,      /* MSCAN  Transmit                  */
-    (IISR_IVF)CANR_VECTOR,      /* MSCAN  Receive                   */
-    (IISR_IVF)CANE_VECTOR,      /* MSCAN  Error                     */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCA                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCC                   */
-#elif CPU_DERIVATE==CPU12_HC12B32
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC4                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC6                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC8                   */
-    (IISR_IVF)MDCU_VECTOR,      /* Modulus Down Counter Underflow   */
+#endif
+    (IISR_IVF)CAN1T_VECTOR,     /* MSCAN1  Transmit                 */
+    (IISR_IVF)CAN1R_VECTOR,     /* MSCAN1  Receive                  */
+    (IISR_IVF)CAN1E_VECTOR,     /* MSCAN1  Error                    */
+    (IISR_IVF)CAN1W_VECTOR,     /* MSCAN1  Wake-up                  */
+    (IISR_IVF)IIC_VECTOR,       /* IIC-Bus                          */
+    (IISR_IVF)CGM_VECTOR,       /* RCGM lock and limp home          */
+    (IISR_IVF)CAN0T_VECTOR,     /* MSCAN0  Transmit                 */
+    (IISR_IVF)CAN0R_VECTOR,     /* MSCAN0  Receive                  */
+    (IISR_IVF)CAN0E_VECTOR,     /* MSCAN0  Error                    */
     (IISR_IVF)PBOF_VECTOR,      /* Pulse Accumulator B Overflow     */
-#endif
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved  $FFCE                  */
-#if CPU_DERIVATE==CPU12_HC12B32
-    (IISR_IVF)BDLC_VECTOR,      /* BDLC                             */
-#elif CPU_DERIVATE==CPU12_HC12BC32
-    (IISR_IVF)CANW_VECTOR,      /* MSCAN  Wake-up                   */
-#endif
-    (IISR_IVF)ATD_VECTOR,       /* ATD                              */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFD4                   */
-    (IISR_IVF)SCI_VECTOR,       /* SCI                              */
+    (IISR_IVF)MDCU_VECTOR,      /* Modulus Down Counter Underflow   */
+    (IISR_IVF)KWU_VECTOR,       /* Key wake-up Port J or H          */
+    (IISR_IVF)CAN0W_VECTOR,     /* MSCAN0  Wake-up                  */
+    (IISR_IVF)ATD_VECTOR,       /* ATD0 or ATD1                     */
+    (IISR_IVF)SCI1_VECTOR,      /* SCI1                             */
+    (IISR_IVF)SCI0_VECTOR,      /* SCI0                             */
     (IISR_IVF)SPI_VECTOR,       /* SPI                              */
     (IISR_IVF)PAIE_VECTOR,      /* Pulse Accumulator A Input Edge   */
     (IISR_IVF)PAOF_VECTOR,      /* Pulse Accumulator A Overflow     */
@@ -242,8 +272,10 @@ void (* const interrupt_vectors[])(void) /* @0xFF80*/ =
     (IISR_IVF)TRAP_VECTOR,      /* Unimplement Intruction Trap      */
     (IISR_IVF)COP_VECTOR,       /* COP failure reset                */
     (IISR_IVF)CMF_VECTOR,       /* Clock monitor fail reset         */
+#if !defined(__IAR_SYSTEMS_ICC__)
     (IISR_IVF)RESET_VECTOR,     /* Reset                            */
+#endif
 };
 
-#pragma section const {}
+#pragma end_abs_address
 

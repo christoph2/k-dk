@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
-  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,7 +23,7 @@
  */
 /*
 **
-**	 Interrupt-Vectors S12DP256.
+**	 Interrupt-Vectors HC12D128x-Series.
 **
 */
 
@@ -107,9 +107,9 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define	PAIE_VECTOR DUMMY_VECTOR
 #endif	/*  PAIE_VECTOR */
 
-#if	!defined(SPI0_VECTOR)
-#define	SPI0_VECTOR DUMMY_VECTOR
-#endif	/*  SPI0_VECTOR */
+#if	!defined(SPI_VECTOR)
+#define	SPI_VECTOR DUMMY_VECTOR
+#endif	/*  SPI_VECTOR */
 
 #if	!defined(SCI0_VECTOR)
 #define	SCI0_VECTOR DUMMY_VECTOR
@@ -119,64 +119,12 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define	SCI1_VECTOR DUMMY_VECTOR
 #endif	/*  SCI1_VECTOR */
 
-#if	!defined(ATD0_VECTOR)
-#define	ATD0_VECTOR DUMMY_VECTOR
-#endif	/*  ATD0_VECTOR */
+#if	!defined(ATD_VECTOR)
+#define	ATD_VECTOR DUMMY_VECTOR
+#endif	/*  ATD_VECTOR */
 	
-#if	!defined(ATD1_VECTOR)
-#define	ATD1_VECTOR DUMMY_VECTOR
-#endif	/*  ATD1_VECTOR */
-	
-#if	!defined(PJ_VECTOR)
-#define	PJ_VECTOR DUMMY_VECTOR
-#endif	/*  PJ_VECTOR */
-
-#if	!defined(PH_VECTOR)
-#define	PH_VECTOR DUMMY_VECTOR
-#endif	/*  PH_VECTOR */
-
-#if	!defined(MDCU_VECTOR)
-#define MDCU_VECTOR	DUMMY_VECTOR
-#endif	/*  MDCU_VECTOR */
-
-#if	!defined(PBOF_VECTOR)
-#define	PBOF_VECTOR DUMMY_VECTOR
-#endif	/*  PBOF_VECTOR */
-
-#if	!defined(CRG_VECTOR)
-#define	CRG_VECTOR DUMMY_VECTOR
-#endif	/*  CRG_VECTOR  */
-
-#if	!defined(SCME_VECTOR)
-#define	SCME_VECTOR DUMMY_VECTOR
-#endif	/*  SCME_VECTOR */
-
-#if	!defined(DLC_VECTOR)
-#define	DLC_VECTOR DUMMY_VECTOR
-#endif	/*  DLC_VECTOR  */
-
-#if	!defined(IIC_VECTOR)
-#define	IIC_VECTOR DUMMY_VECTOR
-#endif	/*  IIC_VECTOR  */
-
-#if	!defined(SPI1_VECTOR)
-#define	SPI1_VECTOR DUMMY_VECTOR
-#endif	/*  SPI1_VECTOR */
-
-#if	!defined(SPI2_VECTOR)
-#define	SPI2_VECTOR DUMMY_VECTOR
-#endif	/*  SPI2_VECTOR */
-
-#if	!defined(EEP_VECTOR)
-#define	EEP_VECTOR DUMMY_VECTOR
-#endif	/*  EEP_VECTOR  */
-			
-#if	!defined(FLS_VECTOR)
-#define	FLS_VECTOR DUMMY_VECTOR
-#endif	/*  FLS_VECTOR  */
-		
 #if	!defined(CAN0W_VECTOR)
-#define	CAN0W_VECTOR DUMMY_VECTOR
+#define CAN0W_VECTOR DUMMY_VECTOR
 #endif	/*  CAN0W_VECTOR  */
 
 #if	!defined(CAN0E_VECTOR)
@@ -191,8 +139,28 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define	CAN0T_VECTOR DUMMY_VECTOR
 #endif	/*  CAN0T_VECTOR  */
 
+#if	!defined(MDCU_VECTOR)
+#define MDCU_VECTOR	DUMMY_VECTOR
+#endif	/*  MDCU_VECTOR */
+
+#if	!defined(PBOF_VECTOR)
+#define	PBOF_VECTOR DUMMY_VECTOR
+#endif	/*  PBOF_VECTOR */
+
+#if	!defined(KWU_VECTOR)
+#define	KWU_VECTOR DUMMY_VECTOR
+#endif	/*  KWU_VECTOR */
+
+#if	!defined(CGM_VECTOR)
+#define	CGM_VECTOR DUMMY_VECTOR
+#endif	/*  CGM_VECTOR */
+
+#if	!defined(IIC_VECTOR)
+#define	IIC_VECTOR DUMMY_VECTOR
+#endif	/*  IIC_VECTOR */
+
 #if	!defined(CAN1W_VECTOR)
-#define	CAN1W_VECTOR DUMMY_VECTOR
+#define CAN1W_VECTOR DUMMY_VECTOR
 #endif	/*  CAN1W_VECTOR  */
 
 #if	!defined(CAN1E_VECTOR)
@@ -207,135 +175,105 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define	CAN1T_VECTOR DUMMY_VECTOR
 #endif	/*  CAN1T_VECTOR  */
 
-#if	!defined(CAN2W_VECTOR)
-#define	CAN2W_VECTOR DUMMY_VECTOR
-#endif	/*  CAN2W_VECTOR  */
+#if CPU_DERIVATE==CPU12_HC12DT128A
+    #if	!defined(CAN2W_VECTOR)
+    #define CAN2W_VECTOR DUMMY_VECTOR
+    #endif	/*  CAN2W_VECTOR  */
 
-#if	!defined(CAN2E_VECTOR)
-#define	CAN2E_VECTOR DUMMY_VECTOR
-#endif	/*  CAN2E_VECTOR  */
+    #if	!defined(CAN2E_VECTOR)
+    #define	CAN2E_VECTOR DUMMY_VECTOR
+    #endif	/*  CAN2E_VECTOR  */
 
-#if	!defined(CAN2R_VECTOR)
-#define	CAN2R_VECTOR DUMMY_VECTOR
-#endif	/*  CAN2R_VECTOR  */
+    #if	!defined(CAN2R_VECTOR)
+    #define	CAN2R_VECTOR DUMMY_VECTOR
+    #endif	/*  CAN2R_VECTOR  */
 
-#if	!defined(CAN2T_VECTOR)
-#define	CAN2T_VECTOR DUMMY_VECTOR
-#endif	/*  CAN2T_VECTOR  */
+    #if	!defined(CAN2T_VECTOR)
+    #define	CAN2T_VECTOR DUMMY_VECTOR
+    #endif	/*  CAN2T_VECTOR  */
+#endif /* CPU12_HC12DT128A */
 
-#if	!defined(CAN3W_VECTOR)
-#define	CAN3W_VECTOR DUMMY_VECTOR
-#endif	/*  CAN3W_VECTOR  */
-
-#if	!defined(CAN3E_VECTOR)
-#define	CAN3E_VECTOR DUMMY_VECTOR
-#endif	/*  CAN3E_VECTOR  */
-
-#if	!defined(CAN3R_VECTOR)
-#define	CAN3R_VECTOR DUMMY_VECTOR
-#endif	/*  CAN3R_VECTOR  */
-
-#if	!defined(CAN3T_VECTOR)
-#define	CAN3T_VECTOR DUMMY_VECTOR
-#endif	/*  CAN3T_VECTOR  */
-
-#if	!defined(CAN4W_VECTOR)
-#define	CAN4W_VECTOR DUMMY_VECTOR
-#endif	/*  CAN4W_VECTOR  */
-
-#if	!defined(CAN4E_VECTOR)
-#define	CAN4E_VECTOR DUMMY_VECTOR
-#endif	/*  CAN4E_VECTOR  */
-
-#if	!defined(CAN4R_VECTOR)
-#define	CAN4R_VECTOR DUMMY_VECTOR
-#endif	/*  CAN4R_VECTOR  */
-
-#if	!defined(CAN4T_VECTOR)
-#define	CAN4T_VECTOR DUMMY_VECTOR
-#endif	/*  CAN4T_VECTOR  */
-
-#if	!defined(PP_VECTOR)
-#define	PP_VECTOR DUMMY_VECTOR
-#endif	/*  PP_VECTOR */
-
-#if	!defined(PWMES_VECTOR)
-#define	PWMES_VECTOR DUMMY_VECTOR
-#endif	/*  PWMES_VECTOR  */
 
 ISR1(DUMMY_VECTOR)
 {	
 }
 
+
 #pragma constseg=INTVEC
 #pragma required=interrupt_vectors
 __root void (* const interrupt_vectors[])(void) =
-
 {
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF80                   */
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF82                   */
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF84                   */
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF86                   */
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF88                   */
-    (IISR_IVF)DUMMY_VECTOR,      /* Reserved $FF8A                   */
-    (IISR_IVF)PWMES_VECTOR,      /* PWM Emergency Shutdown           */
-    (IISR_IVF)PP_VECTOR,         /* Port P Interrupt                 */
-    (IISR_IVF)CAN4T_VECTOR,      /* MSCAN 4 Transmit                 */
-    (IISR_IVF)CAN4R_VECTOR,      /* MSCAN 4 Receive                  */
-    (IISR_IVF)CAN4E_VECTOR,      /* MSCAN 4 Error                    */
-    (IISR_IVF)CAN4W_VECTOR,      /* MSCAN 4 Wake-up                  */
-    (IISR_IVF)CAN3T_VECTOR,      /* MSCAN 3 Transmit                 */
-    (IISR_IVF)CAN3R_VECTOR,      /* MSCAN 3 Receive                  */
-    (IISR_IVF)CAN3E_VECTOR,      /* MSCAN 3 Error                    */
-    (IISR_IVF)CAN3E_VECTOR,      /* MSCAN 3 Wake-up                  */
-    (IISR_IVF)CAN2T_VECTOR,      /* MSCAN 2 Transmit                 */
-    (IISR_IVF)CAN2R_VECTOR,      /* MSCAN 2 Receive                  */
-    (IISR_IVF)CAN2E_VECTOR,      /* MSCAN 2 Error                    */
-    (IISR_IVF)CAN2W_VECTOR,      /* MSCAN 2 Wake-up                  */
-    (IISR_IVF)CAN1T_VECTOR,      /* MSCAN 1 Transmit                 */
-    (IISR_IVF)CAN1R_VECTOR,      /* MSCAN 1 Receive                  */
-    (IISR_IVF)CAN1E_VECTOR,      /* MSCAN 1 Error                    */
-    (IISR_IVF)CAN1W_VECTOR,      /* MSCAN 1 Wake-up                  */
-    (IISR_IVF)CAN0T_VECTOR,      /* MSCAN 0 Transmit                 */
-    (IISR_IVF)CAN0R_VECTOR,      /* MSCAN 0 Receive                  */
-    (IISR_IVF)CAN0E_VECTOR,      /* MSCAN 0 Error                    */
-    (IISR_IVF)CAN0W_VECTOR,      /* MSCAN 0 Wake-up                  */
-    (IISR_IVF)FLS_VECTOR,        /* Flash                            */
-    (IISR_IVF)EEP_VECTOR,        /* EEPROM                           */
-    (IISR_IVF)SPI2_VECTOR,       /* SPI2                             */
-    (IISR_IVF)SPI1_VECTOR,       /* SPI1                             */
-    (IISR_IVF)IIC_VECTOR,        /* IIC Bus                          */
-    (IISR_IVF)DLC_VECTOR,        /* DLC                              */
-    (IISR_IVF)SCME_VECTOR,       /* SCME                             */
-    (IISR_IVF)CRG_VECTOR,        /* CRG Lock                         */
-    (IISR_IVF)PBOF_VECTOR,       /* Pulse Accumulator B Overflow     */
-    (IISR_IVF)MDCU_VECTOR,       /* Modulus Down Counter Underflow   */
-    (IISR_IVF)PH_VECTOR,         /* Port H Interrupt                 */
-    (IISR_IVF)PJ_VECTOR,         /* Port J Interrupt                 */
-    (IISR_IVF)ATD1_VECTOR,       /* ATD1                             */
-    (IISR_IVF)ATD0_VECTOR,       /* ATD0                             */
-    (IISR_IVF)SCI1_VECTOR,       /* SCI1                             */
-    (IISR_IVF)SCI0_VECTOR,       /* SCI0                             */
-    (IISR_IVF)SPI0_VECTOR,       /* SPI0                             */
-    (IISR_IVF)PAIE_VECTOR,       /* Pulse Accumulator A Input Edge   */
-    (IISR_IVF)PAOF_VECTOR,       /* Pulse Accumulator A Overflow     */
-    (IISR_IVF)TOF_VECTOR,        /* Timer Overflow                   */
-    (IISR_IVF)TC7_VECTOR,        /* Timer Channel 7                  */
-    (IISR_IVF)TC6_VECTOR,        /* Timer Channel 6                  */
-    (IISR_IVF)TC5_VECTOR,        /* Timer Channel 5                  */
-    (IISR_IVF)TC4_VECTOR,        /* Timer Channel 4                  */
-    (IISR_IVF)TC3_VECTOR,        /* Timer Channel 3                  */
-    (IISR_IVF)TC2_VECTOR,        /* Timer Channel 2                  */
-    (IISR_IVF)TC1_VECTOR,        /* Timer Channel 1                  */
-    (IISR_IVF)TC0_VECTOR,        /* Timer Channel 0                  */
-    (IISR_IVF)RTI_VECTOR,        /* Real Time Interrupt              */
-    (IISR_IVF)IRQ_VECTOR,        /* IRQ                              */
-    (IISR_IVF)XIRQ_VECTOR,       /* XIRQ                             */
-    (IISR_IVF)SWI_VECTOR,        /* SWI                              */
-    (IISR_IVF)TRAP_VECTOR,       /* Unimplement Intruction Trap      */
-    (IISR_IVF)COP_VECTOR,        /* COP failure reset                */
-    (IISR_IVF)CMF_VECTOR,        /* Clock monitor fail reset         */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF80                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF82                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF84                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF86                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF88                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF8A                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF8C                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF8E                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF90                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF92                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF94                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF96                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF98                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF9A                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF9C                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF9E	            */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFA0                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFA2                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFA4                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFA6                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFA8                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAA                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAC                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAE                   */
+#if CPU_DERIVATE==CPU12_HC12DT128A
+    (IISR_IVF)CAN2T_VECTOR,     /* MSCAN2  Transmit                 */
+    (IISR_IVF)CAN2R_VECTOR,     /* MSCAN2  Receive                  */
+    (IISR_IVF)CAN2E_VECTOR,     /* MSCAN2  Error                    */
+    (IISR_IVF)CAN2W_VECTOR,     /* MSCAN2  Wake-up                  */
+#else
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB0                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB2                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB4                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB6                   */
+#endif
+    (IISR_IVF)CAN1T_VECTOR,     /* MSCAN1  Transmit                 */
+    (IISR_IVF)CAN1R_VECTOR,     /* MSCAN1  Receive                  */
+    (IISR_IVF)CAN1E_VECTOR,     /* MSCAN1  Error                    */
+    (IISR_IVF)CAN1W_VECTOR,     /* MSCAN1  Wake-up                  */
+    (IISR_IVF)IIC_VECTOR,       /* IIC-Bus                          */
+    (IISR_IVF)CGM_VECTOR,       /* RCGM lock and limp home          */
+    (IISR_IVF)CAN0T_VECTOR,     /* MSCAN0  Transmit                 */
+    (IISR_IVF)CAN0R_VECTOR,     /* MSCAN0  Receive                  */
+    (IISR_IVF)CAN0E_VECTOR,     /* MSCAN0  Error                    */
+    (IISR_IVF)PBOF_VECTOR,      /* Pulse Accumulator B Overflow     */
+    (IISR_IVF)MDCU_VECTOR,      /* Modulus Down Counter Underflow   */
+    (IISR_IVF)KWU_VECTOR,       /* Key wake-up Port J or H          */
+    (IISR_IVF)CAN0W_VECTOR,     /* MSCAN0  Wake-up                  */
+    (IISR_IVF)ATD_VECTOR,       /* ATD0 or ATD1                     */
+    (IISR_IVF)SCI1_VECTOR,      /* SCI1                             */
+    (IISR_IVF)SCI0_VECTOR,      /* SCI0                             */
+    (IISR_IVF)SPI_VECTOR,       /* SPI                              */
+    (IISR_IVF)PAIE_VECTOR,      /* Pulse Accumulator A Input Edge   */
+    (IISR_IVF)PAOF_VECTOR,      /* Pulse Accumulator A Overflow     */
+    (IISR_IVF)TOF_VECTOR,       /* Timer Overflow                   */
+    (IISR_IVF)TC7_VECTOR,       /* Timer Channel 7                  */
+    (IISR_IVF)TC6_VECTOR,       /* Timer Channel 6                  */
+    (IISR_IVF)TC5_VECTOR,       /* Timer Channel 5                  */
+    (IISR_IVF)TC4_VECTOR,       /* Timer Channel 4                  */
+    (IISR_IVF)TC3_VECTOR,       /* Timer Channel 3                  */
+    (IISR_IVF)TC2_VECTOR,       /* Timer Channel 2                  */
+    (IISR_IVF)TC1_VECTOR,       /* Timer Channel 1                  */
+    (IISR_IVF)TC0_VECTOR,       /* Timer Channel 0                  */
+    (IISR_IVF)RTI_VECTOR,       /* Real Time Interrupt              */
+    (IISR_IVF)IRQ_VECTOR,       /* IRQ                              */
+    (IISR_IVF)XIRQ_VECTOR,      /* XIRQ                             */
+    (IISR_IVF)SWI_VECTOR,       /* SWI                              */
+    (IISR_IVF)TRAP_VECTOR,      /* Unimplement Intruction Trap      */
+    (IISR_IVF)COP_VECTOR,       /* COP failure reset                */
+    (IISR_IVF)CMF_VECTOR,       /* Clock monitor fail reset         */
 #if !defined(__IAR_SYSTEMS_ICC__)
-    (IISR_IVF)RESET_VECTOR,      /* Reset                            */
+    (IISR_IVF)RESET_VECTOR,     /* Reset                            */
 #endif
 };
