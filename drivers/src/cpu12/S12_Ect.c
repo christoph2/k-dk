@@ -24,8 +24,16 @@
 #include "S12_Ect.h"
 #include "Hw_Cfg.h"
 
-S12Ect_StatusType S12Ect_Init(void)
+#if defined(S12ECT_USE_TIMER_OVERFLOW_INTR)
+static uint16 S12Ect_OverflowCount;
+#endif
+
+void S12Ect_Init(void)
 {
+#if defined(S12ECT_USE_TIMER_OVERFLOW_INTR)
+    S12Ect_OverflowCount=(uint16)0x0000;
+#endif
+
     /* Main Timer Setup */
     S12ECT_REG8(TIOS)=ECT.TIos;
     S12ECT_REG8(TCTL1)=ECT.TCtl1;
@@ -56,6 +64,35 @@ S12Ect_StatusType S12Ect_Init(void)
 
     S12ECT_REG8(TSCR2)=ECT.TScr2;
     S12ECT_REG8(TSCR1)=ECT.TScr1;
-
-    return S12ECT_OK;
 }
+
+uint16 S12Ect_GetOverflowCount(void)
+{
+#if defined(S12ECT_USE_TIMER_OVERFLOW_INTR)
+    return S12Ect_OverflowCount;
+#else
+    return (uint16)0x0000U;
+#endif
+}
+
+
+uint32 S12Ect_GetTickCount(void)
+{
+#if defined(S12ECT_USE_TIMER_OVERFLOW_INTR)
+    return (((uint32)S12Ect_OverflowCount)<<16) + S12Ect_TimerCount();
+#else
+    return (uint32)S12Ect_TimerCount();
+#endif
+}
+
+
+#if defined(S12ECT_USE_TIMER_OVERFLOW_INTR)
+ISR1(S12Ect_TofHandler)
+{
+    S12ECT_ACKNOWLEDGE_TOF_INTR();
+
+    /* todo: TOF-UserHandler!!! */
+
+    S12Ect_OverflowCount++;
+}
+#endif

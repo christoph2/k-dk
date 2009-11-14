@@ -35,39 +35,34 @@ extern "C"
 /*
 **  Register-Offsets.
 */
-#define EEDIVH      ((uint8)0x02)
 
-#define EEDIVL      ((uint8)0x03)
-
-#define EEMCR       ((uint8)0x04)
+#define EEMCR       ((uint8)0x00)
     /* EEMCR-Bits.  */
-    #define NOBDML  ((uint8)0x80)
-    #define NOSHW   ((uint8)0x40)
     #define EESWAI  ((uint8)0x04)
     #define PROTLCK ((uint8)0x02)
-    #define DMY     ((uint8)0x01)
+    #define EERC    ((uint8)0x01)
 
-#define EEPROT      ((uint8)0x05)
+#define EEPROT      ((uint8)0x01)
     /* EEPROT-Bits. */
-    #define SHPROT  ((uint8)0x80)
-    #define BPROT5  ((uint8)0x20)
     #define BPROT4  ((uint8)0x10)
     #define BPROT3  ((uint8)0x08)
     #define BPROT2  ((uint8)0x04)
     #define BPROT1  ((uint8)0x02)
     #define BPROT0  ((uint8)0x01)
 
-#define EETST       ((uint8)0x06)
+#define EETST       ((uint8)0x02)
     /* EETST-Bits.  */
-    #define EREVTN  ((uint8)0x40)
-    #define ETMSD   ((uint8)0x04)
-    #define ETMR    ((uint8)0x02)
-    #define ETMSE   ((uint8)0x01)
+    #define EEODD   ((uint8)0x80)
+    #define EEVEN   ((uint8)0x40)
+    #define MARG    ((uint8)0x20)
+    #define EECPD   ((uint8)0x10)
+    #define EECPRD  ((uint8)0x08)
+    #define EECPM   ((uint8)0x02)
 
-#define EEPROG      ((uint8)0x07)
+
+#define EEPROG      ((uint8)0x03)
     /* EEPROG-Bits  */
     #define BULKP   ((uint8)0x80)
-    #define AUTO    ((uint8)0x20)
     #define BYTE    ((uint8)0x10)
     #define ROW     ((uint8)0x08)
     #define ERASE   ((uint8)0x04)
@@ -99,8 +94,6 @@ typedef enum tagHC12Eep_StatusType {
 
 typedef struct tagHC12Eep_ConfigType {
     uint16 BaseAddr;
-
-    uint16 EeDiv;
 } HC12Eep_ConfigType;
 
 /*

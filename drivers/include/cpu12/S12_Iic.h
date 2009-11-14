@@ -24,15 +24,13 @@
 #if !defined(__S12IIC_H)
 #define __S12IIC_H
 
-#define CPU12_HC12
-
-#if defined(CPU12_S12)
-#include "S12_Hw.h"
-#elif defined(CPU12_HC12)
-#include "HC12_Hw.h"
-#define S12_REG8    HC12_REG8
+#if CPU_FAMILY==CPU12_S12
+    #include "S12_Hw.h"
+#elif CPU_FAMILY==CPU12_HC12
+    #include "HC12_Hw.h"
+    #define S12_REG8    HC12_REG8
 #else
-#error Wrong CPU Family.
+    #error Wrong CPU Family.
 #endif
 
 

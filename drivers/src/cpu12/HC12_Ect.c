@@ -65,7 +65,7 @@ uint32 HC12Ect_GetTickCount(void)
 #if defined(HC12ECT_USE_TIMER_OVERFLOW_INTR)
 ISR1(HC12Ect_TofHandler)
 {
-    HC12ECT_REG8(TFLG2)=TOF;
+    HC12ECT_ACKNOWLEDGE_TOF_INTR();
 
     HC12Ect_OverflowCount++;
 }

@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -311,6 +312,9 @@ extern "C"
 #define TC3H        ((uint8)0x3E)
 
 
+/*
+**  Global Types.
+*/
 typedef enum tagS12Ect_StatusType {
     S12ECT_OK
 } S12Ect_StatusType;
@@ -340,10 +344,39 @@ typedef struct tagS12Ect_ConfigType {
 } S12Ect_ConfigType;
 
 
-S12Ect_StatusType S12Ect_Init(void);
+/*
+**  Function-Like-Macros.
+*/
+#define S12ECT_ACKNOWLEDGE_TOF_INTR()   S12ECT_REG8(TFLG2)=TOF
+
+#define S12ECT_ACKNOWLEDGE_TC0_INTR()   S12ECT_REG8(TFLG1)=C0F
+#define S12ECT_ACKNOWLEDGE_TC1_INTR()   S12ECT_REG8(TFLG1)=C1F
+#define S12ECT_ACKNOWLEDGE_TC2_INTR()   S12ECT_REG8(TFLG1)=C2F
+#define S12ECT_ACKNOWLEDGE_TC3_INTR()   S12ECT_REG8(TFLG1)=C3F
+#define S12ECT_ACKNOWLEDGE_TC4_INTR()   S12ECT_REG8(TFLG1)=C4F
+#define S12ECT_ACKNOWLEDGE_TC5_INTR()   S12ECT_REG8(TFLG1)=C5F
+#define S12ECT_ACKNOWLEDGE_TC6_INTR()   S12ECT_REG8(TFLG1)=C6F
+#define S12ECT_ACKNOWLEDGE_TC7_INTR()   S12ECT_REG8(TFLG1)=C7F
+
+#define S12ECT_ACKNOWLEDGE_MC_INTR()    S12ECT_REG8(MCFLG)=MCZF
+
+#define S12ECT_ACKNOWLEDGE_PAOV_INTR()  S12ECT_REG8(PAFLG)=PAOVF
+#define S12ECT_ACKNOWLEDGE_PA_INTR()    S12ECT_REG8(PAFLG)=PAIF
+
+#define S12ECT_ACKNOWLEDGE_PBOV_INTR()  S12ECT_REG8(PBFLG)=PBOVF
+
+
+/*
+** Global Functions.
+*/
+void S12Ect_Init(void);
 
 #define S12Ect_TimerCount()     S12ECT_REG16(TCNT)
 #define S12Ect_CapcomReg(no)    S12ECT_REG16(TC0+((no)<<1))
+
+uint16 S12Ect_GetOverflowCount(void);
+uint32 S12Ect_GetTickCount(void);
+
 
 #if defined(__cplusplus)
 }

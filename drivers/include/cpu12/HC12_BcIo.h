@@ -111,10 +111,10 @@ typedef struct tagHC12BcIo_ConfigType {
     uint8 Rdriv;
 } HC12BcIo_ConfigType;
 
+void HC12BcIo_Init(void);
+
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
-
-void HC12BcIo_Init(void);
 
 #endif /* __HC12_BCIO_H */

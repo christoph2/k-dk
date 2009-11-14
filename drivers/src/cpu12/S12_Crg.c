@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -232,7 +233,7 @@ S12Crg_StatusType S12Crg_ResetMCU(void)
     return S12CRG_OK;                       /* never reached...                             */
 }
 
-
+#if 0
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
@@ -241,4 +242,4 @@ ISR1(RTI_Vector)
 
     cnt++;
 }
-
+#endif

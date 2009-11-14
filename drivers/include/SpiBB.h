@@ -22,23 +22,38 @@
  *
  */
 
-#include "HC12_BcIo.h"
-#include "Hw_Cfg.h"
+#if !defined(__SPI_BB_H)
+#define __SPI_BB_H
 
-/*
-**  todo: PORT-/DDRS, WOMS, etc...
-*/
-void HC12BcIo_Init(void)
+#if defined(__cplusplus)
+extern "C"
 {
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
+#endif  /* __cplusplus */
 
-    HC12BCIO_REG8(PORTB)=BCIO.PortB;
-    HC12BCIO_REG8(DDRB)=BCIO.DdrB;
+#include "Utl.h"
 
-    HC12BCIO_REG8(PORTE)=BCIO.PortE;
-    HC12BCIO_REG8(DDRE)=BCIO.DdrE;
+typedef void (*DelayFunctionType)(uint16 uS);
 
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
+typedef struct tagSpiBB_HWConfigType {
+    uint8 volatile * const Port;
+    uint8 volatile * const Ddr; /* todo: not needed.*/
+
+    DelayFunctionType DelayFct;
+
+    uint8 ClkMsk;
+    uint8 MosiMsk;
+    uint8 MisoMsk;
+} SpiBB_HWConfigType ;
+
+void SpiBB_Init(SpiBB_HWConfigType * const Hw);
+uint8 SpiBB_ExgBit(SpiBB_HWConfigType * const Hw,uint8 bit);
+uint8 SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw,uint8 data,uint8 nbits);
+uint16 SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw,uint16 data,uint8 nbits);
+uint8 SpiBB_GetQ(SpiBB_HWConfigType * const Hw);
+
+#if defined(__cplusplus)
 }
+#endif  /* __cplusplus */
+
+#endif /* __SPI_BB_H */
+

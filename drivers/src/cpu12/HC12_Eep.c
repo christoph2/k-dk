@@ -26,29 +26,24 @@
 #include "Hw_Cfg.h"
 
 
-/*
-**  Prescaler = eXtal / 28571.
-*/
+void HC12Ect_DelayUS(uint16 uS);
 
 void HC12Eep_Init(void)
 {
-    HC12EEP_REG8(EEDIVH)=HIBYTE(EEP.EeDiv);
-    HC12EEP_REG8(EEDIVL)=LOBYTE(EEP.EeDiv);
     HC12EEP_REG8(EEMCR)|=EESWAI;
-    HC12EEP_REG8(EEPROG)|=(BULKP|AUTO);
+    HC12EEP_REG8(EEPROG)|=(BULKP);  /* if Busclock < fPROG, EERC is needed... */
     HC12EEP_REG8(EEPROG)&=~EEPGM;
 }
 
 
 void HC12Eep_Protect(boolean on)
 {
-    /* todo: D60A ??? */
     if (on) {
-        HC12EEP_REG8(EEPROT)|=(uint8)0x3f;
+        HC12EEP_REG8(EEPROT)|=(uint8)0x1f;
         HC12EEP_REG8(EEPROG)|=BULKP;
 
     } else {
-        HC12EEP_REG8(EEPROT)&=~((uint8)0x3f);
+        HC12EEP_REG8(EEPROT)&=~((uint8)0x1f);
         HC12EEP_REG8(EEPROG)&=~BULKP;
     }
 }
@@ -62,10 +57,12 @@ void HC12Eep_LockProtectionState(void)
 
 HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd,boolean b8,uint16 addr,uint16 data)
 {
-    if (HC12EEP_REG8(EEDIVH)==(uint8)0x00 && HC12EEP_REG8(EEDIVL)==(uint8)0x00) {
-        return HC12EEP_UNINIT;
-    }
-
+    /*
+    **
+    **  tPROG:  min: 10.0 ms, max: 10.5 ms.
+    **  tERASE: min: 10.0 ms.
+    **
+    */
     if ((addr<HC12EEP_START) || (addr>=(HC12EEP_START+HC12EEP_LEN))) {
         return HC12EEP_ADDR;
     }
@@ -100,7 +97,8 @@ HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd,boolean b8,uint16 addr,uint16 data)
     HC12EEP_REG8(EEPROG)&=~EEPGM;
 
     /* 1. Write BYTE|ROW|ERASE to desired value, write EELAT=1. */
-    HC12EEP_REG8(EEPROG)=(cmd & (uint8)0x1c) | EELAT | AUTO;
+    /* todo: Delay!!! */
+    HC12EEP_REG8(EEPROG)=(cmd & (uint8)0x1c) | EELAT;
 
     /* 2. *Write a byte or aligned word to an EEPROM-Address. */
     if (b8) {
@@ -156,4 +154,12 @@ HC12Eep_StatusType HC12Eep_WriteWord(uint16 addr,uint16 data)
     }
 
     return HC12Eep_ProgramWord(addr,data);
+}
+
+
+void HC12Ect_DelayUS(uint16 uS)
+{
+    uint16 then=HC12Ect_TimerCount()+uS;
+
+    WAIT_FOR(HC12Ect_TimerCount()>=then);
 }

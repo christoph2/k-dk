@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -79,24 +80,24 @@ static const S12Can_BusTimingType Can_SpeedTable[]={
 S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uint8 btr1)
 {
     S12Can_StatusType ret;
-    
+
     ret=S12Can_InitializationMode(Cfg,TRUE);
     if (ret!=S12CAN_OK) {
-        return ret;   
+        return ret;
     }
 
     S12_REG8(Cfg,CANCTL1)=CANE|LOOPB|WUPM;
-    
+
     (void)S12Can_SetBusTiming(Cfg,btr0,btr1);
     (void)S12Can_SetFilter(Cfg,&Cfg->Filter);
 
     ret=S12Can_InitializationMode(Cfg,FALSE);
     if (ret!=S12CAN_OK) {
-        return ret;   
-    }    
+        return ret;
+    }
 
     S12_REG8(Cfg,CANCTL0)=(CSWAI|TIME|WUPE);
- 
+
     (void)S12Can_EnableInterrupts(Cfg,TRUE);
 
     return S12CAN_OK;
@@ -106,12 +107,12 @@ S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uin
 S12Can_StatusType S12Can_EnableInterrupts(S12Can_ConfigType const * const Cfg,boolean enable)
 {
     boolean initializing;
-    
+
     (void)S12Can_Initializing(Cfg,&initializing);
     if (initializing) {
-        return S12CAN_STATE;        
+        return S12CAN_STATE;
     }
-    
+
     if (enable) {
         S12_REG8(Cfg,CANRIER)=WUPIE|CSCIE|RSTATE0|RSTATE1|TSTATE0|TSTATE1|OVRIE|RXFIE;
     } else {
@@ -141,11 +142,11 @@ S12Can_StatusType S12Can_Initializing(S12Can_ConfigType const * const Cfg,boolea
 S12Can_StatusType S12Can_SetBusTiming(S12Can_ConfigType const * const Cfg,uint8 btr0,uint8 btr1)
 {
    boolean initializing;
-    
-    (void)S12Can_Initializing(Cfg,&initializing);    
+
+    (void)S12Can_Initializing(Cfg,&initializing);
     if (!initializing) {
-        return S12CAN_STATE;        
-    }    
+        return S12CAN_STATE;
+    }
 
     S12_REG8(Cfg,CANBTR0)=btr0;
     S12_REG8(Cfg,CANBTR1)=btr1;
@@ -157,12 +158,12 @@ S12Can_StatusType S12Can_SetBusTiming(S12Can_ConfigType const * const Cfg,uint8 
 S12Can_StatusType S12Can_SetFilter(S12Can_ConfigType const * const Cfg,const S12Can_FilterType *Filter)
 {
     boolean initializing;
-    
-    (void)S12Can_Initializing(Cfg,&initializing);    
+
+    (void)S12Can_Initializing(Cfg,&initializing);
     if (!initializing) {
-        return S12CAN_STATE;        
+        return S12CAN_STATE;
     }
-    
+
     S12_REG8(Cfg,CANIDAC)=Filter->FilterMode;
 
     S12_REG8(Cfg,CANIDAR0)=Filter->IdentifierAcceptance[0];
@@ -181,7 +182,7 @@ S12Can_StatusType S12Can_SetFilter(S12Can_ConfigType const * const Cfg,const S12
     S12_REG8(Cfg,CANIDMR4)=Filter->IdentifierMask[4];
     S12_REG8(Cfg,CANIDMR5)=Filter->IdentifierMask[5];
     S12_REG8(Cfg,CANIDMR6)=Filter->IdentifierMask[6];
-    S12_REG8(Cfg,CANIDMR7)=Filter->IdentifierMask[7];    
+    S12_REG8(Cfg,CANIDMR7)=Filter->IdentifierMask[7];
 
     return S12CAN_OK;
 }
@@ -193,7 +194,7 @@ S12Can_StatusType S12Can_Stop(S12Can_ConfigType const * const Cfg)
     S12_REG8(Cfg,CANCTL1)&=~CANE; /* only in special system operation modes. */
     S12_REG8(Cfg,CANRIER)=(uint8)0x00;
     S12_REG8(Cfg,CANTIER)=(uint8)0x00;
-    
+
     return S12CAN_OK;
 }
 
@@ -233,7 +234,7 @@ S12Can_StatusType S12Can_SleepMode(S12Can_ConfigType const * const Cfg,boolean e
         S12_REG8(Cfg,CANCTL0)&=~SLPRQ;
         WAIT_FOR((S12_REG8(Cfg,CANCTL1) & SLPAK)!=SLPAK);
         (void)S12Can_WaitSynch(Cfg);
-    }    
+    }
     return S12CAN_OK;
 }
 
@@ -242,26 +243,26 @@ S12Can_StatusType S12Can_CancelMessage(S12Can_ConfigType const * const Cfg,uint8
 {
     uint8 Mask;
     boolean initializing;
-    
+
     (void)S12Can_Initializing(Cfg,&initializing);
     if (initializing) {
-        return S12CAN_STATE;        
+        return S12CAN_STATE;
     }
-    
+
     if (Number>(uint8)2) {
         return S12CAN_VALUE;
     }
 
     Mask=(uint8)1<<Number;
-    
+
     if ((S12_REG8(Cfg,CANTARQ) & Mask)==Mask) {
         return S12CAN_STATE; /* request already pending. */
     }
     S12_REG8(Cfg,CANTARQ)|=Mask;
 
     WAIT_FOR((S12_REG8(Cfg,CANTAAK) & Mask)==Mask);
-    
-    
+
+
     return S12CAN_OK;
 }
 
@@ -277,7 +278,7 @@ S12Can_StatusType S12Can_Ready(S12Can_ConfigType const * const Cfg,boolean *read
 S12Can_StatusType S12Can_RxD(S12Can_ConfigType const * const Cfg,boolean *rxd)
 {
     *rxd=((S12_REG8(Cfg,CANRFLG) & RXF)==RXF);
-    
+
     return S12CAN_OK;
 }
 
@@ -288,7 +289,7 @@ S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,S12Can_Mes
     uint8 number_of_buffer;
     boolean ready;
     boolean initializing;
-    
+
     (void)S12Can_Initializing(Cfg,&initializing);
     if (initializing) {
         return S12CAN_STATE;
@@ -301,11 +302,11 @@ S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,S12Can_Mes
     /* wait for at least one free buffer */
     ready=FALSE;
     while (!ready) {
-        (void)S12Can_Ready(Cfg,&ready); 
+        (void)S12Can_Ready(Cfg,&ready);
     }
 
     TxFG=(S12Can_BufferType*)S12_REG8(Cfg,CANTXFG);
-    
+
     S12_REG8(Cfg,CANTBSEL)=S12_REG8(Cfg,CANTFLG);    /* Select Buffer. */
     number_of_buffer=S12_REG8(Cfg,CANTBSEL);
 
@@ -333,8 +334,8 @@ S12Can_StatusType S12Can_Transmit(S12Can_ConfigType const * const Cfg,S12Can_Mes
         *SentOnBuffer=number_of_buffer;
     }
 
-    S12_REG8(Cfg,CANTFLG)=number_of_buffer;   /* Send Buffer. */  
-    
+    S12_REG8(Cfg,CANTFLG)=number_of_buffer;   /* Send Buffer. */
+
     return S12CAN_OK;
 }
 
@@ -346,16 +347,16 @@ S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,S12Can
     boolean ExtendedID;
     boolean RTR;
     boolean initializing;
-    
+
     (void)S12Can_Initializing(Cfg,&initializing);
     if (initializing) {
-        return S12CAN_STATE;        
+        return S12CAN_STATE;
     }
 
     if ((S12_REG8(Cfg,CANRFLG) & RXF)==(uint8)0) {
         return S12CAN_STATE;   /* Foreground receive buffer is empty. */
     }
-    
+
     RxFG=(S12Can_BufferType*)S12_REG8(Cfg,CANRXFG);
     Msg->DLR=RxFG->DLR;
 
@@ -365,7 +366,7 @@ S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,S12Can
     if (ExtendedID) {
         RTR=((RxFG->IDR3 & (uint8)0x01)==(uint8)0x01);
         ID=(((uint32)RxFG->IDR0) << 21) | (((uint32)(RxFG->IDR1 & 0xe0)) << 18) |
-           (((uint32)(RxFG->IDR1 & 0x07)) << 15) | (((uint32)RxFG->IDR2) << 7) | 
+           (((uint32)(RxFG->IDR1 & 0x07)) << 15) | (((uint32)RxFG->IDR2) << 7) |
            (((uint32)(RxFG->IDR3 & 0xfe)) >> 1);
 
     } else {
@@ -375,10 +376,10 @@ S12Can_StatusType S12Can_CopyRxBuffer(S12Can_ConfigType const * const Cfg,S12Can
 
     Msg->ID=ID;
     Msg->RTR=RTR;
-    
+
     if (!RTR && (Msg->DLR!=(uint8)0x00)) {
         Utl_MemCopy((void*)Msg->SDU,(void*)&RxFG->DSR0,(uint16)Msg->DLR);
-    }    
+    }
 
     S12_REG8(Cfg,CANRFLG)=RXF;  /* clear receive buffer full flag. */
 
@@ -398,9 +399,9 @@ S12Can_StatusType S12Can_GetErrorCounters(S12Can_ConfigType const * const Cfg,ui
 S12Can_StatusType S12Can_WaitSynch(S12Can_ConfigType const * const Cfg)
 {
     WAIT_FOR((S12_REG8(Cfg,CANCTL0) & SYNCH)==SYNCH);
-    
+
     S12_REG8(Cfg,CANRFLG)=WUPIF|CSCIF|OVRIF|RXF;
-    
+
     return S12CAN_OK;
 }
 
@@ -419,13 +420,13 @@ S12Can_MessageType Msg;
 
 
 ISR1(CAN0RxVector)
-{    
+{
 /*** TEST ***/
     S12Can_StatusType ret;
     ret=S12Can_CopyRxBuffer(CAN0,&Msg);
-/*** TEST ***/        
-        
-    /* If Vector: call, else clear flag (???). */    
+/*** TEST ***/
+
+    /* If Vector: call, else clear flag (???). */
     BYTE_REG(CAN0.BaseAddr,CANRFLG)=RXF;
 }
 
@@ -433,12 +434,12 @@ ISR1(CAN0ErrorVector)
 {
     uint8 rflags;
     uint8 state;
- 
+
     rflags=BYTE_REG(CAN0.BaseAddr,CANRFLG);
-    
+
     if ((rflags & CSCIF)==CSCIF) {
         state=rflags & (RSTAT1|RSTAT0|TSTAT1|TSTAT0);
-        
+
         if (((state & S12CAN_RSTAT_BUSOFF)==S12CAN_RSTAT_BUSOFF) || ((state & S12CAN_TSTAT_BUSOFF)==S12CAN_TSTAT_BUSOFF)) {
 
         }

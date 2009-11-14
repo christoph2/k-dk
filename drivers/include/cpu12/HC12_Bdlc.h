@@ -25,14 +25,13 @@
 #define	__HC12_BDLC_H
 
 #include "HC12_Hw.h"
+#include "Utl.h"
 
 #if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
-
-#define HC12_BDLC_BASE  ((uint16)0x00f8U)
 
 /*
 **  Register-Offsets.
@@ -89,20 +88,32 @@ extern "C"
     #define DDDLC0  ((uint8)0x01)
 
 
-
-void HC12Bdlc_Init(void);
-
-#if 0
-typedef struct tagHC12BDLC_ConfigType {
+typedef struct tagHC12Bdlc_ConfigType {
     uint16 BaseAddr;
-} HC12BDLC_ConfigType;
+
+    uint8 Bcr1;
+    uint8 Bcr2;
+    uint8 Bard;
+    uint8 DlcScr;
+    uint8 PortDlc;
+    uint8 DdrDlc;
+} HC12Bdlc_ConfigType;
 
 
-#define HC12BDLC_TimerCount()    HC12BDLC_REG16(TCNT)
-#define HC12BDLC_CapcomReg(no)   HC12BDLC_REG16(TC0+((no)<<1))
-uint16 HC12BDLC_GetOverflowCount(void);
-uint32 HC12BDLC_GetTickCount(void);
-#endif
+/*
+** Function-Like Macros.
+*/
+#define HC12Bdlc_IgnoreMessage()    (HC12BDLC_REG8(BCR1)|=IMSG)
+
+
+/*
+**  Functions.
+*/
+void HC12Bdlc_Init(void);
+boolean HC12Bdlc_Busy(void);
+boolean HC12Bdlc_Rxd(void);
+uint8 HC12Bdlc_Transmit(uint8 const * buf,uint8 len);
+
 
 #if defined(__cplusplus)
 }

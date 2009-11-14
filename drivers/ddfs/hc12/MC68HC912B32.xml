@@ -1,0 +1,22 @@
+<device-description id="MC68HC912B32" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\projekte\csProjects\common\drivers\ddfs\ddf.xsd">
+	<module-list>
+		<module id="FLASH" description="32-KByte Flash-EEPROM">
+		</module>
+		<module id="EEPROM" description="768-Byte EEPROM">
+		</module>
+		<module id="ATD" description="8-channel, 10-bit, analog-to-digital converter">
+		</module>
+		<module id="TIM" description="Standard timer module">
+		</module>
+		<module id="ECT" description="Enhanced capture timer">
+		</module>
+		<module id="PWM" description="Pulse-width modulator">
+		</module>
+		<module id="SCI" description="Asynchronous serial communications interface">
+		</module>
+		<module id="SPI" description="Synchronous serial peripheral interface">
+		</module>
+		<module id="BDLC" description="Synchronous serial peripheral interface">
+		</module>
+	</module-list>
+</device-description>

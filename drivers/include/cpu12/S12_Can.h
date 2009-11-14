@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -26,13 +27,18 @@
 #include "S12_Hw.h"
 #include "Utl.h"
 
+/*
+**  todo: 'LSDU' statt 'SDU' !!!
+**  check: 'Frame' statt 'MessageType' ???
+*/
+
 #if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
-/* 
-** Register-Offsets 
+/*
+** Register-Offsets
 */
 #define CANCTL0         ((uint8)0)
 	/*  CANCTL0-Bits. */
@@ -228,14 +234,14 @@ extern "C"
     LOBYTE(c),HIBYTE(d),LOBYTE(d)}
 #define S12CAN_2_32_FILTERS(a,b) {HIBYTE(HIWORD(a)),LOBYTE(HIWORD(a)),HIBYTE(LOWORD(a)),    \
 LOBYTE(LOWORD(a)),HIBYTE(HIWORD(b)),LOBYTE(HIWORD(b)),HIBYTE(LOWORD(b)),LOBYTE(LOWORD(b))}
-    
+
 typedef enum tagS12Can_StatusType {
     S12CAN_OK,
-    S12CAN_UNINIT,    
+    S12CAN_UNINIT,
     S12CAN_ID,
     S12CAN_STATE,
     S12CAN_VALUE
-    
+
 } S12Can_StatusType;
 
 typedef struct tagS12Can_BufferType {
@@ -283,7 +289,7 @@ typedef enum tagS12Can_FilterMode {
 typedef struct tagS12Can_FilterType {
     S12Can_FilterMode FilterMode;
     S12Can_IdentifierType IdentifierAcceptance;
-    S12Can_IdentifierType IdentifierMask;    
+    S12Can_IdentifierType IdentifierMask;
 } S12Can_FilterType;
 
 typedef struct tagS12Can_ConfigType {

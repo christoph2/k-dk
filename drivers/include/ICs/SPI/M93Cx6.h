@@ -22,23 +22,19 @@
  *
  */
 
-#include "HC12_BcIo.h"
+#if !defined(__M93CX6_H)
+#define __M93CX6_H
+
+#include "HC12_Spi.h" /* todo: make independent of SPI-Impl. */
 #include "Hw_Cfg.h"
 
-/*
-**  todo: PORT-/DDRS, WOMS, etc...
-*/
-void HC12BcIo_Init(void)
-{
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
+boolean M93Cx6_Erase(uint16 addr);
+boolean M93Cx6_EraseAll(void);
+boolean M93Cx6_EraseWriteEnable(void);
+boolean M93Cx6_EraseWriteDisable(void);
+uint16 M93Cx6_Read(uint16 addr);
+boolean M93Cx6_Write(uint16 addr,uint16 data);
+boolean M93Cx6_WriteAll(uint16 data);   /* Fill - for convenience.  */
 
-    HC12BCIO_REG8(PORTB)=BCIO.PortB;
-    HC12BCIO_REG8(DDRB)=BCIO.DdrB;
 
-    HC12BCIO_REG8(PORTE)=BCIO.PortE;
-    HC12BCIO_REG8(DDRE)=BCIO.DdrE;
-
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
-}
+#endif /* __M93CX6_H */

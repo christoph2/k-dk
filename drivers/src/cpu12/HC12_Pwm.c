@@ -30,6 +30,7 @@
 **          Channel enable-/disable-Functions.
 **          Channel Phase/Shift-Function (Paramter: disable before Reset?/
 **              if disabled: as input or output (which level?)).
+**          HC12-PWM-Cfg. needs PORTP and DDRP!!!
 */
 
 void HC12Pwm_Init(void)

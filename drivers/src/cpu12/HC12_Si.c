@@ -22,23 +22,11 @@
  *
  */
 
-#include "HC12_BcIo.h"
+#include "HC12_Si.h"
 #include "Hw_Cfg.h"
 
-/*
-**  todo: PORT-/DDRS, WOMS, etc...
-*/
-void HC12BcIo_Init(void)
+void HC12Si_Init(void)
 {
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
-
-    HC12BCIO_REG8(PORTB)=BCIO.PortB;
-    HC12BCIO_REG8(DDRB)=BCIO.DdrB;
-
-    HC12BCIO_REG8(PORTE)=BCIO.PortE;
-    HC12BCIO_REG8(DDRE)=BCIO.DdrE;
-
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
+    HC12SI_REG8(PORTS)=SI.PortS;
+    HC12SI_REG8(DDRS)=SI.Ddrs;
 }
