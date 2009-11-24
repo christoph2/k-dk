@@ -73,13 +73,7 @@ $1C 0111    Symbol invalid or out of range          (SYMINV)
 $20 1000    Wakeup                                  (WUP)
 #endif
 
-/*
-**
-**  todo:       Option 'HC12_BDLC_USE_LOOPBACK'.
-*+  Hinweis:    Sehr gute Idee, auch für andere Module, die Loopback kennen!!!
-**
-**
-*/
+/*  todo: Option 'HC12_BDLC_USE_LOOPBACK'. */
 
 void HC12Bdlc_Init(void)
 {
@@ -89,7 +83,6 @@ void HC12Bdlc_Init(void)
     Bdlc_TxBuffer=NULL;
     Bdlc_TxBytesRemaining=(uint8)0;
 
-    /* todo: Initialisierung-Reihefolge checken!!! */
     HC12BDLC_REG8(PORTDLC)=BDLC.PortDlc;
     HC12BDLC_REG8(DDRDLC)=BDLC.DdrDlc;
 

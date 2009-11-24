@@ -21,9 +21,35 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#if !defined(__COMSTACK_TYPES_H)
-#define	__COMSTACK_TYPES_H
+#if !defined(__DS1904_H)
+#define __DS1904_H
 
-#include "Std_Types.h"
+#include "OW_Api.h"
 
-#endif	/* __COMSTACK_TYPES_H */
+#if defined(__cplusplus)
+extern "C"
+{
+#endif  /* __cplusplus */
+
+
+/*
+**  Global Types.
+*/
+typedef struct tagDS1904_ClockType {
+    uint8 UserFlags;    /* Four non-volatile general-purpose user-flags. */
+    boolean OscEnable;
+    uint32 RefPoint;
+} DS1904_ClockType;
+
+
+/*
+**  Global Functions.
+*/
+void DS1904_ClockRead(OW_ConfigType const * const ConfigPtr,DS1904_ClockType * Clock);
+void DS1904_ClockWrite(OW_ConfigType const * const ConfigPtr,DS1904_ClockType const * Clock);
+
+#if defined(__cplusplus)
+}
+#endif  /* __cplusplus */
+
+#endif /* __DS1904_H */

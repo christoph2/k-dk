@@ -143,7 +143,7 @@
         _BEGIN_BLOCK        \
         _END_BLOCK
 
-
+/* todo: 'Assert.h', 'ASSERT_DBG','ASSERT_RT', Assertion-Handler!!! */
 #if !defined(NDEBUG)
 #define ASSERT(cond)            \
    _BEGIN_BLOCK                 \
@@ -200,8 +200,8 @@ typedef void (*VoidFunctionType)(void);
 #define FREF(f,o)           (*((float64*) ((uint8*)(f)+(o))))
 #define FPTR(f,o)           (((float64*) ((uint8*)(f)+(o))))
 
-#define BYTE_REG(base,offs) *(volatile uint8*)BPTR((base),(offs))
-#define WORD_REG(base,offs) *(volatile uint16*)WPTR((base),(offs))
+#define BYTE_REG(base,offs) *(volatile uint8 *)BPTR((base),(offs))
+#define WORD_REG(base,offs) *(volatile uint16 *)WPTR((base),(offs))
 
 
 #define BIT0                ((uint16)0x01)

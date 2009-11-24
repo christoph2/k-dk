@@ -85,7 +85,8 @@ typedef struct tagS12Spi_VariablesType {
 
 typedef struct tagS12Spi_ConfigType {
     uint16 BaseAddr;
-    uint32 BaudRate;
+/*    uint32 BaudRate;  */
+    uint8 BaudRateDivisor;
     S12Spi_VariablesType * const Vars;
 } S12Spi_ConfigType;
 
@@ -94,7 +95,6 @@ void S12Spi_Init(S12Spi_ConfigType const * const Cfg);
 void S12Spi_SetSpeed(S12Spi_ConfigType const * const Cfg,uint8 prescaler);
 void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean cpha,boolean lsbfe);
 
-boolean S12Spi_Ready(S12Spi_ConfigType  const * const Cfg);
 uint8 S12Spi_IOByte(S12Spi_ConfigType const * const Cfg,uint8 data);
 
 void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,boolean use_interrupt);

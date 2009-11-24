@@ -21,39 +21,54 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#if !defined(__MAX548_H)
+#define __MAX548_H
 
-#if !defined(__SPI_BB_H)
-#define __SPI_BB_H
+#include "S12_Spi.h"    /* todo: make HW-Independent.   */
 
 #if defined(__cplusplus)
 extern "C"
 {
 #endif  /* __cplusplus */
 
-#include "Utl.h"
+/*
+**  Global Defines.
+*/
+/*
+**
+**  Control-Byte
+**  ============
+**
+**  Bit | Name | Meaning / Operation
+**  ----------------------------------------------------------------------------------
+**  7   | UB1  | Unassigned Bit #1.
+**  6   | UB2  | Unassigned Bit #2.
+**  5   | UB3  | Unassigned Bit #3.
+**  4   | C2   | 0 ==> Power Up, 1 ==> Power Down.
+**  3   | C1   | DAC Register Load (0 ==> Disabled, 1 ==> Enabled).
+**  2   | C0   | DAC Register Updated on (0 ==> /CS Rising, 1 ==> /LDAC Falling) Edge.
+**  1   | A1   | 1 ==> Address DAC-B (MAX550A == don't care).
+**  0   | A0   | 1 ==> Address DAC-A.
+**
+**
+*/
 
-typedef void (*DelayFunctionType)(uint16 uS);
+#define MAX548_POWER_DOWN   ((uint8)0x10)
+#define MAX548_UPDATE_DAC   ((uint8)0x08)
+#define MAX548_ASYNCH_LOAD  ((uint8)0x04)
+#define MAX548_DACB         ((uint8)0x02)
+#define MAX548_DACA         ((uint8)0x01)
 
-typedef struct tagSpiBB_HWConfigType {
-    uint8 volatile * const Port;
-    uint8 volatile * const Ddr; /* todo: not needed!?*/
 
-    DelayFunctionType DelayFct;
+/*
+**  Global Functions.
+*/
+void MAX548_Init(void);
+void MAX548_Write(uint8 control,uint8 data);
 
-    uint8 ClkMsk;
-    uint8 MosiMsk;
-    uint8 MisoMsk;
-} SpiBB_HWConfigType ;
-
-void SpiBB_Init(SpiBB_HWConfigType * const Hw);
-uint8 SpiBB_ExgBit(SpiBB_HWConfigType * const Hw,uint8 bit);
-uint8 SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw,uint8 data,uint8 nbits);
-uint16 SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw,uint16 data,uint8 nbits);
-uint8 SpiBB_GetQ(SpiBB_HWConfigType * const Hw);
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __SPI_BB_H */
-
+#endif /* __MAX548_H */

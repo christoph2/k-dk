@@ -29,7 +29,7 @@
 extern "C"
 {
 #endif  /* __cplusplus */
-   
+
 /*
 **  Register-Offsets.
 */
@@ -266,8 +266,8 @@ extern "C"
 #define MODRR           ((uint8)0x17)
     /* MODRR-Bits.  */
     /* !!! */
-    
-    
+
+
 /*  PortP   */
 #define PTP             ((uint8)0x18)
     /*  PTP-Bits. */
@@ -356,7 +356,7 @@ extern "C"
     #define PIFP2       ((uint8)0x04)
     #define PIFP1       ((uint8)0x02)
     #define PIFP0       ((uint8)0x01)
-    
+
 /*  PortH   */
 #define PTH             ((uint8)0x20)
     /*  PTH-Bits. */
@@ -506,16 +506,16 @@ extern "C"
 /*
 **  0x30-0x3f - Reserved.
 */
-  
 
-    
+
+
 typedef enum tagS12Pim_StatusType {
     S12PIM_OK
 } S12Pim_StatusType;
 
 
 typedef struct tagS12Pim_ConfigType {
-    uint16 BaseAddr;
+    const uint16 BaseAddr;
     uint8 Modrr;
 
     /* PortT */
@@ -534,7 +534,7 @@ typedef struct tagS12Pim_ConfigType {
     uint8 WomsS;
 
     /* PortM */
-    uint8 DdrM;    
+    uint8 DdrM;
     uint8 PtM;
     uint8 RdrM;
     uint8 PerM;
@@ -542,7 +542,7 @@ typedef struct tagS12Pim_ConfigType {
     uint8 WomM;
 
     /* PortP */
-    uint8 DdrP;    
+    uint8 DdrP;
     uint8 PtP;
     uint8 RdrP;
     uint8 PerP;
@@ -550,7 +550,7 @@ typedef struct tagS12Pim_ConfigType {
     uint8 PieP;
 
     /* PortH */
-    uint8 DdrH;    
+    uint8 DdrH;
     uint8 PtH;
     uint8 RdrH;
     uint8 PerH;
@@ -558,7 +558,7 @@ typedef struct tagS12Pim_ConfigType {
     uint8 PieH;
 
     /* PortJ */
-    uint8 DdrJ;    
+    uint8 DdrJ;
     uint8 PtJ;
     uint8 RdrJ;
     uint8 PerJ;
@@ -569,7 +569,7 @@ typedef struct tagS12Pim_ConfigType {
 
 
 S12Pim_StatusType S12Pim_Init(void);
-    
+
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */

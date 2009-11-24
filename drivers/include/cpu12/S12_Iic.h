@@ -28,7 +28,7 @@
     #include "S12_Hw.h"
 #elif CPU_FAMILY==CPU12_HC12
     #include "HC12_Hw.h"
-    #define S12_REG8    HC12_REG8
+/*    #define S12_REG8    HC12_REG8 */
 #else
     #error Wrong CPU Family.
 #endif

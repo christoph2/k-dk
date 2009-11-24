@@ -40,11 +40,11 @@ void S12Spi_Init(S12Spi_ConfigType const * const Cfg)
 {
     uint8 ch;
 
-    S12_REG8(Cfg,SPICR1)=SPE|MSTR|SSOE;
-    S12_REG8(Cfg,SPICR2)=MODFEN|BIDIROE|SPISWAI;
+    S12_REG8(Cfg,SPICR1)=SPE|MSTR/*|SSOE*/;
+    S12_REG8(Cfg,SPICR2)=/*MODFEN|BIDIROE|*/SPISWAI;
 
     ch=S12_REG8(Cfg,SPIDR);
-    S12_REG8(Cfg,SPIBR)=(uint8)0x00;
+    S12_REG8(Cfg,SPIBR)=Cfg->BaudRateDivisor;
 /*    S12_REG8(Cfg,SPICR1)|=SPIE; */
 }
 
@@ -83,27 +83,25 @@ void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean c
 }
 
 
-boolean S12Spi_Ready(S12Spi_ConfigType const * const Cfg)
-{
-    return (S12_REG8(Cfg,SPISR) & SPIF)!=(uint8)0;
-}
-
-
 boolean S12Spi_TxReady(S12Spi_ConfigType const * const Cfg)    /* TransmitterEmpty */
 {
-    if ((S12_REG8(Cfg,SPISR) & SPTEF) || (S12_REG8(Cfg,SPICR1) & SPTIE)) {
-        return FALSE;
-    } else {
+    if ((S12_REG8(Cfg,SPISR) & SPTEF)==SPTEF /*|| (S12_REG8(Cfg,SPICR1) & SPTIE)*/) {
         return TRUE;
+    } else {
+        return FALSE;
     }
 }
 
-
+/*
+**  todo: Convinience-Makros: 'ReadByte','WriteByte'!!!
+*/
 uint8 S12Spi_IOByte(S12Spi_ConfigType const * const Cfg,uint8 data)
 {
     WAIT_FOR(S12Spi_TxReady(Cfg));
     S12_REG8(Cfg,SPIDR)=data;
-    WAIT_FOR(S12Spi_Ready(Cfg));
+
+    while ((S12_REG8(Cfg,SPISR) & SPIF)==(uint8)0x00)
+        {}
 
     return S12_REG8(Cfg,SPIDR);
 }
