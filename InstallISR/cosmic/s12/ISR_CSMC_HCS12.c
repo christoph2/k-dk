@@ -27,7 +27,8 @@
 **
 */
 
-#include "InstallIsr\\ISR.h"
+/* #include "InstallIsr\ISR.h" */
+#include "ISR.h"
 
 DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 
