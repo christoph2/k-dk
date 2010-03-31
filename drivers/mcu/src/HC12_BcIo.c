@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -21,37 +22,23 @@
  *
  */
 
+#include "HC12_BcIo.h"
+#include "Hw_Cfg.h"
+
 /*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
+**  todo: PORT-/DDRS, WOMS, etc...
 */
-
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
+void HC12BcIo_Init(void)
 {
+    HC12BCIO_REG8(PORTA)=BCIO.PortA;
+    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
 
+    HC12BCIO_REG8(PORTB)=BCIO.PortB;
+    HC12BCIO_REG8(DDRB)=BCIO.DdrB;
+
+    HC12BCIO_REG8(PORTE)=BCIO.PortE;
+    HC12BCIO_REG8(DDRE)=BCIO.DdrE;
+
+    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
+    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
 }
-
-
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
-{
-
-}
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-

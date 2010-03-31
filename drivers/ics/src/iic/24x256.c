@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,38 +21,47 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#include "24x256.h"
+#include "Hw_Cfg.h"
 
-/*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
-*/
 
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
+void M24x256_Init(void)
 {
 
 }
 
 
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
+boolean M24x256_Busy(uint8 slave_addr)
 {
+    boolean ack=S12Iic_ReadMode(&IIC0,slave_addr);
 
+    S12Iic_Stop(&IIC0);
+    return ack;
 }
 
-
-void Det_Start(void)
+boolean M24x256_WriteByte(uint8 slave_addr,uint16 mem_addr,uint8 data)
 {
+    if (!S12Iic_WriteMode(&IIC0,slave_addr)) {
+         S12Iic_Stop(&IIC0);
+        return FALSE;
+    }
 
+    (void)S12Iic_Write(&IIC0,HIBYTE(mem_addr));
+    (void)S12Iic_Write(&IIC0,LOBYTE(mem_addr));
+    (void)S12Iic_Write(&IIC0,data);
+
+    S12Iic_Stop(&IIC0);
+
+    return TRUE;
 }
 
+#if 0
+M24x256_WritePage
 
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
+M24x256_ReadCurrent
 
-}
+M24x256_ReadRandom
 
+M24x256_ReadSequential
 
-
+#endif

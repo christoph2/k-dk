@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -21,37 +22,11 @@
  *
  */
 
-/*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
-*/
+#include "HC12_Si.h"
+#include "Hw_Cfg.h"
 
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
+void HC12Si_Init(void)
 {
-
+    HC12SI_REG8(PORTS)=SI.PortS;
+    HC12SI_REG8(DDRS)=SI.Ddrs;
 }
-
-
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
-{
-
-}
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-

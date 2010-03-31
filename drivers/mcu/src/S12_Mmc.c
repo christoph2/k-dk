@@ -20,38 +20,25 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#include "S12_Mmc.h"
+#include "Hw_Cfg.h"
 
-/*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
-*/
-
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
+void S12Mmc_Init(void)
 {
+    BYTE_REG(0x00,INITRG)=MMC.InitRG; /* must use default address of 'INITRG' !!! */
 
+    S12MMC_REG8(INITRM)=MMC.InitRM;
+    S12MMC_REG8(INITEE)=MMC.InitEE;
+    S12MMC_REG8(MISC)=MMC.Misc;
+}
+
+void S12Mmc_SetPPage(uint8 ppage)
+{
+    S12MMC_REG8(PPAGE)=ppage;
 }
 
 
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
+uint8 S12Mmc_GetPPage(void)
 {
-
+    return S12MMC_REG8(PPAGE);
 }
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-

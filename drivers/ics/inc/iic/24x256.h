@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,38 +21,28 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#if !defined(__24X256_H)
+#define __24X256_H
+
+#include "S12_Iic.h"    /* todo: make HW-Independent.   */
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif  /* __cplusplus */
 
 /*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
+**  Global Functions.
 */
 
-#include "Det.h"
-#include "MemMap.h"
+void M24x256_Init(void);
 
-void Det_Init(void)
-{
+boolean M24x256_WriteByte(uint8 slave_addr,uint16 mem_addr,uint8 data);
 
+boolean M24x256_Busy(uint8 slave_addr);
+
+#if defined(__cplusplus)
 }
+#endif  /* __cplusplus */
 
-
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
-{
-
-}
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-
+#endif /* __24X256_H */

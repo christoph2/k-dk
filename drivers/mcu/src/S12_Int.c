@@ -20,38 +20,5 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-
-/*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
-*/
-
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
-{
-
-}
-
-
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
-{
-
-}
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-
+#include "S12_Int.h"
+#include "Hw_Cfg.h"

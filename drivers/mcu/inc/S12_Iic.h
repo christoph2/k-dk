@@ -111,11 +111,11 @@ typedef void (*IIC_PresenceCallback)(uint8 addr);
 
 /* Basic-Functions.     */
 void S12Iic_Init(S12Iic_ConfigType const * const Cfg);
-S12Iic_StatusType S12Iic_Start(S12Iic_ConfigType const * const Cfg);
-S12Iic_StatusType S12Iic_Restart(S12Iic_ConfigType const * const Cfg);
-S12Iic_StatusType S12Iic_Stop(S12Iic_ConfigType const * const Cfg);
-S12Iic_StatusType S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b,/*@out@*/boolean *ack);
-S12Iic_StatusType S12Iic_Read(S12Iic_ConfigType const * const Cfg,/*@out@*/uint8 *b,boolean ack);
+void S12Iic_Start(S12Iic_ConfigType const * const Cfg);
+void S12Iic_Restart(S12Iic_ConfigType const * const Cfg);
+void S12Iic_Stop(S12Iic_ConfigType const * const Cfg);
+boolean S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b);
+void S12Iic_Read(S12Iic_ConfigType const * const Cfg,/*@out@*/uint8 *b,boolean ack);
 
 /* Highlevel-Functions. */
 boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_base_addr,uint8 nbits,IIC_PresenceCallback callback);

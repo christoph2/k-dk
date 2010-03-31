@@ -29,9 +29,15 @@
 **  Device Driver for the Maxim Single-(MAX550A)-/Dual(MAX548A/MAX549A) 8-Bit DACs.
 **
 **      - Clock-Freq. up to 10MHz.
+**      - The DAC-Outputs are directly connected to a R-2R-Ladder, i.e. unbuffered.
+**        Apply only high resistive loads > 1M. Connecting a 200..1000pF Capacitor
+**        suppresses spikes/crosstalk from the digital part.
 **
 */
 
+/*
+**  TESTED: YES (28.11.2009).
+*/
 
 
 void MAX548_Init(void)

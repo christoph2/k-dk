@@ -1,7 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -20,38 +21,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+#if !defined(__HC12IIC_H)
+#define __HC12IIC_H
 
-/*
-**
-**  TODO: ADJUST TO YOUR NEEDS.
-**
-*/
-
-#include "Det.h"
-#include "MemMap.h"
-
-void Det_Init(void)
+#if defined(__cplusplus)
+extern "C"
 {
+#endif  /* __cplusplus */
 
+
+#include "S12_Iic.h"
+
+#define HC12Iic_ConfigType  S12Iic_ConfigType
+
+#define HC12Iic_Init        S12Iic_Init
+#define HC12Iic_Start       S12Iic_Start
+#define HC12Iic_Restart     S12Iic_Restart
+#define HC12Iic_Stop        S12Iic_Stop
+#define HC12Iic_Write       S12Iic_Write
+#define HC12Iic_Read        S12Iic_Read
+
+#define HC12Iic_ReadMode    S12Iic_ReadMode
+#define HC12Iic_WriteMode   S12Iic_WriteMode
+#define HC12Iic_PresenceCheck   S12Iic_PresenceCheck
+
+#if defined(__cplusplus)
 }
+#endif  /* __cplusplus */
 
-
-void Det_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
-{
-
-}
-
-
-void Det_Start(void)
-{
-
-}
-
-
-void Det_GetVersionOnfo(Std_VersionInfoType *versioninfo)
-{
-
-}
-
-
-
+#endif  /* __HC12IIC_H */
