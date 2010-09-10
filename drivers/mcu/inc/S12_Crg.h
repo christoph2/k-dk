@@ -1,7 +1,9 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -144,9 +146,6 @@ typedef enum tagS12Crg_PllLockType {
 
 typedef struct tagS12Crg_ConfigType {
     uint16 BaseAddr;
-    uint8 OscFreq;
-    /* todo: Bus-Freq. */
-    uint8 MaxBusFreq;
     boolean EnableWatchdog;
     uint8 WatchdogPrescaler;
     boolean EnableRTI;

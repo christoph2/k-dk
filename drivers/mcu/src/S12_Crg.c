@@ -1,7 +1,8 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -32,11 +33,6 @@ static boolean CRG_PowerOnRest;
 **
 */
 
-/*
-**
-**  todo: Clock-Failure Interrupts und dgl.
-**
-*/
 
 S12Crg_StatusType S12Crg_Init(uint8 freq)
 {
@@ -50,9 +46,11 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
     }
 
 /*    S12CRG_REG8(CLKSEL)&=~PLLSEL; */
-    S12CRG_REG8(CLKSEL)=/*PSTP|ROAWAI*/COPWAI;
-    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;    /*todo: Die PLL erst zu einem späteren Zeitpunkt auswählen!!! */
 
+    S12CRG_REG8(CLKSEL)=/*PSTP|ROAWAI*/COPWAI;      /* todo: Cfg. */
+    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;
+
+#if 0
     if (S12Mebi_SpecialMode()==FALSE) {
         status=S12Crg_SetPLLFreq(freq);
         if (status!=S12CRG_OK) {
@@ -66,6 +64,7 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
         /* we don't use PLL-Clock in Specialmodes (==> BDM). */
         (void)S12Crg_DisablePLL();
     }
+#endif
 
     if (CRG.EnableRTI==TRUE) {
         status=S12Crg_SetRTIRate(((CRG.RTIPrescaler & (uint8)0x07)<<4) | (CRG.RTIModulo & ((uint8)0x0f)));
@@ -113,14 +112,13 @@ boolean S12Crg_PLLEnabled(void)
     return ((S12CRG_REG8(CLKSEL) & PLLSEL)==PLLSEL);
 }
 
+
 /*
 **  PLL_CLOCK = 2 * OSC_CLOCK * ((SYNR+1)/(REFDV+1))
 */
-
-
 S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq)
 {
-    if ((freq==((uint8)0)) || freq > CRG.MaxBusFreq) {  /* MaxBusFreq: PRE_COMPILE!? */
+    if ((freq==((uint8)0)) || freq > (uint8)(BUS_FREQUENCY_MAX / 1000u) ) {
         return S12CRG_VALUE;
     }
 
@@ -128,7 +126,7 @@ S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq)
         return S12CRG_STATE;
     }
 
-    S12CRG_REG8(REFDV)=CRG.OscFreq-((uint8)1);  /* divide, to get 1MHz. */
+    S12CRG_REG8(REFDV)=(uint8)(XTAL_FREQUENCY / 1000u)  - ((uint8)1);  /* divide, to get 1MHz. */
     S12CRG_REG8(SYNR)=freq-((uint8)1);
 
 #if (S12CRG_SYNCH_PLL==1)
@@ -141,7 +139,7 @@ S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq)
 
 S12Crg_StatusType S12Crg_SetPLLParams(uint8 refdv,uint8 synr)
 {
-    /* todo: Frequenz-Check!!!  */
+    /* todo: check resulting Frequency!!! */
     if (S12Crg_PLLEnabled()) {
         return S12CRG_STATE;
     }
@@ -151,6 +149,7 @@ S12Crg_StatusType S12Crg_SetPLLParams(uint8 refdv,uint8 synr)
 
     return S12CRG_OK;
 }
+
 
 boolean S12Crg_PLLLocked(void)
 {
@@ -167,10 +166,10 @@ uint8 S12Crg_GetBusFreq(void)
     uint8 bus_freq;
 
     if (S12Crg_PLLEnabled()) {
-        bus_freq=CRG.OscFreq / (S12CRG_REG8(REFDV) + 1);
+        bus_freq=(uint8)(XTAL_FREQUENCY / 1000u) / (S12CRG_REG8(REFDV) + 1);
         bus_freq*=(S12CRG_REG8(SYNR)+1);
     } else {
-        bus_freq=CRG.OscFreq/(uint8)2;  /* todo: OSC-Freq. Precompile Parameter !? */
+        bus_freq=(uint8)(XTAL_FREQUENCY / 1000u) / (uint8)2;
     }
 
     return bus_freq;
@@ -179,7 +178,7 @@ uint8 S12Crg_GetBusFreq(void)
 
 uint8 S12Crg_GetOscFreq(void)
 {
-    return CRG.OscFreq;
+    return (uint8)(XTAL_FREQUENCY / 1000u);
 }
 
 
@@ -243,10 +242,8 @@ void S12Crg_ResetMCU(void)
     S12CRG_REG8(ARMCOP)=(uint8)0xcc;        /* Write garbage to 'ARMCOP' ==> instant RESET. */
 }
 
-/*
-**  todo: CFG-Parameter f. die ISRs!!!
-*/
 
+#if defined(S12CRG_USE_LOCK_INTERRUPT)
 ISR1(CRG_LockInterrupt)
 {
     /* State-Change: [LOCKED,UNLOCKED] */
@@ -257,17 +254,20 @@ ISR1(CRG_LockInterrupt)
 
     S12CRG_REG8(CRGFLG)=LOCKIF;
 }
+#endif /* S12CRG_USE_LOCK_INTERRUPT */
 
 
+#if defined (S12CRG_USE_SELF_CLOCK_MODE_INTERRUPT)
 ISR1(CRG_SelfClockModeInterrupt)
 {
     /* SCM-Condition Changed: [ENTERED|EXITED]Self-Clock-Mode.    */
     /* todo: Callout */
     S12CRG_REG8(CRGFLG)=SCMIF;
 }
+#endif  /* S12CRG_USE_SELF_CLOCK_MODE_INTERRUPT */
 
 
-#if 0
+#if defined(S12CRG_USE_REALTIME_INTERRUPT)
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
@@ -276,4 +276,4 @@ ISR1(RTI_Vector)
 
     cnt++;
 }
-#endif
+#endif  /* S12CRG_USE_REALTIME_INTERRUPT */
