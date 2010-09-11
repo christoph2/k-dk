@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -25,11 +25,10 @@
 #include "S12_Mebi.h"
 #include "Hw_Cfg.h"
 
+
 /*
 **  • Port A, B, E, and K related to the core logic and multiplexed bus interface
 */
-
-
 void S12Mebi_Init(S12Mebi_ConfigType const * ConfigPtr)
 {
     S12MEBI_REG8(PUCR)=ConfigPtr->Pucr;

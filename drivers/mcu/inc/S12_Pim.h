@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -509,77 +509,109 @@ extern "C"
 **  0x30-0x3f - Reserved.
 */
 
+/*
+**  Common  global Macros.
+*/
 
 /*
-**  Defines for AUTOSAR.
+Common register offsets
+=======================
+
+Offset	Register
+-----------------------------------------
+0x00		Port I/O            (PT)
+0x01		Input               (PTI)
+0x02		Data-Direction      (DDR)
+0x03		Reduced-Drive       (RDR)
+0x04		Pull Device Enable  (PER)
+0x05		Polarity Select     (PPS)
+0x06		n/a
+0x07		n/a
 */
-#define DIO_CHANNEL_T_0     BIT(0)
-#define DIO_CHANNEL_T_1     BIT(1)
-#define DIO_CHANNEL_T_2     BIT(2)
-#define DIO_CHANNEL_T_3     BIT(3)
-#define DIO_CHANNEL_T_4     BIT(4)
-#define DIO_CHANNEL_T_5     BIT(5)
-#define DIO_CHANNEL_T_6     BIT(6)
-#define DIO_CHANNEL_T_7     BIT(7)
+#define S12PIM_PT       ((uint8)0x00)
+#define S12PIM_PTI      ((uint8)0x01)
+#define S12PIM_DDR      ((uint8)0x02)
+#define S12PIM_RDR      ((uint8)0x03)
+#define S12PIM_PER      ((uint8)0x04)
+#define S12PIM_PPS      ((uint8)0x05)
 
-#define DIO_CHANNEL_S_0     BIT(0)
-#define DIO_CHANNEL_S_1     BIT(1)
-#define DIO_CHANNEL_S_2     BIT(2)
-#define DIO_CHANNEL_S_3     BIT(3)
-#define DIO_CHANNEL_S_4     BIT(4)
-#define DIO_CHANNEL_S_5     BIT(5)
-#define DIO_CHANNEL_S_6     BIT(6)
-#define DIO_CHANNEL_S_7     BIT(7)
+#define S12PIM_PORT_BASE(port)  ((uint8)(((uint8)port)<<3))
 
-#define DIO_CHANNEL_M_0     BIT(0)
-#define DIO_CHANNEL_M_1     BIT(1)
-#define DIO_CHANNEL_M_2     BIT(2)
-#define DIO_CHANNEL_M_3     BIT(3)
-#define DIO_CHANNEL_M_4     BIT(4)
-#define DIO_CHANNEL_M_5     BIT(5)
-#define DIO_CHANNEL_M_6     BIT(6)
-#define DIO_CHANNEL_M_7     BIT(7)
 
-#define DIO_CHANNEL_P_0     BIT(0)
-#define DIO_CHANNEL_P_1     BIT(1)
-#define DIO_CHANNEL_P_2     BIT(2)
-#define DIO_CHANNEL_P_3     BIT(3)
-#define DIO_CHANNEL_P_4     BIT(4)
-#define DIO_CHANNEL_P_5     BIT(5)
-#define DIO_CHANNEL_P_6     BIT(6)
-#define DIO_CHANNEL_P_7     BIT(7)
+/*
+**  Defines for AUTOSAR and other use-cases.
+*/
+#define DIO_CHANNEL_T_0     ((uint8)((0*8)+0))
+#define DIO_CHANNEL_T_1     ((uint8)((0*8)+1))
+#define DIO_CHANNEL_T_2     ((uint8)((0*8)+2))
+#define DIO_CHANNEL_T_3     ((uint8)((0*8)+3))
+#define DIO_CHANNEL_T_4     ((uint8)((0*8)+4))
+#define DIO_CHANNEL_T_5     ((uint8)((0*8)+5))
+#define DIO_CHANNEL_T_6     ((uint8)((0*8)+6))
+#define DIO_CHANNEL_T_7     ((uint8)((0*8)+7))
 
-#define DIO_CHANNEL_H_0     BIT(0)
-#define DIO_CHANNEL_H_1     BIT(1)
-#define DIO_CHANNEL_H_2     BIT(2)
-#define DIO_CHANNEL_H_3     BIT(3)
-#define DIO_CHANNEL_H_4     BIT(4)
-#define DIO_CHANNEL_H_5     BIT(5)
-#define DIO_CHANNEL_H_6     BIT(6)
-#define DIO_CHANNEL_H_7     BIT(7)
+#define DIO_CHANNEL_S_0     ((uint8)((1*8)+0))
+#define DIO_CHANNEL_S_1     ((uint8)((1*8)+1))
+#define DIO_CHANNEL_S_2     ((uint8)((1*8)+2))
+#define DIO_CHANNEL_S_3     ((uint8)((1*8)+3))
+#define DIO_CHANNEL_S_4     ((uint8)((1*8)+4))
+#define DIO_CHANNEL_S_5     ((uint8)((1*8)+5))
+#define DIO_CHANNEL_S_6     ((uint8)((1*8)+6))
+#define DIO_CHANNEL_S_7     ((uint8)((1*8)+7))
 
-#define DIO_CHANNEL_J_0     BIT(0)
-#define DIO_CHANNEL_J_1     BIT(1)
-#define DIO_CHANNEL_J_2     BIT(2)
-#define DIO_CHANNEL_J_3     BIT(3)
-#define DIO_CHANNEL_J_4     BIT(4)
-#define DIO_CHANNEL_J_5     BIT(5)
-#define DIO_CHANNEL_J_6     BIT(6)
-#define DIO_CHANNEL_J_7     BIT(7)
+#define DIO_CHANNEL_M_0     ((uint8)((2*8)+0))
+#define DIO_CHANNEL_M_1     ((uint8)((2*8)+1))
+#define DIO_CHANNEL_M_2     ((uint8)((2*8)+2))
+#define DIO_CHANNEL_M_3     ((uint8)((2*8)+3))
+#define DIO_CHANNEL_M_4     ((uint8)((2*8)+4))
+#define DIO_CHANNEL_M_5     ((uint8)((2*8)+5))
+#define DIO_CHANNEL_M_6     ((uint8)((2*8)+6))
+#define DIO_CHANNEL_M_7     ((uint8)((2*8)+7))
 
-#define DIO_PORT_T          ((uint8)0x00)
-#define DIO_PORT_S          ((uint8)0x01)
-#define DIO_PORT_M          ((uint8)0x02)
-#define DIO_PORT_P          ((uint8)0x03)
-#define DIO_PORT_H          ((uint8)0x04)
-#define DIO_PORT_J          ((uint8)0x05)
+#define DIO_CHANNEL_P_0     ((uint8)((3*8)+0))
+#define DIO_CHANNEL_P_1     ((uint8)((3*8)+1))
+#define DIO_CHANNEL_P_2     ((uint8)((3*8)+2))
+#define DIO_CHANNEL_P_3     ((uint8)((3*8)+3))
+#define DIO_CHANNEL_P_4     ((uint8)((3*8)+4))
+#define DIO_CHANNEL_P_5     ((uint8)((3*8)+5))
+#define DIO_CHANNEL_P_6     ((uint8)((3*8)+6))
+#define DIO_CHANNEL_P_7     ((uint8)((3*8)+7))
+
+#define DIO_CHANNEL_H_0     ((uint8)((4*8)+0))
+#define DIO_CHANNEL_H_1     ((uint8)((4*8)+1))
+#define DIO_CHANNEL_H_2     ((uint8)((4*8)+2))
+#define DIO_CHANNEL_H_3     ((uint8)((4*8)+3))
+#define DIO_CHANNEL_H_4     ((uint8)((4*8)+4))
+#define DIO_CHANNEL_H_5     ((uint8)((4*8)+5))
+#define DIO_CHANNEL_H_6     ((uint8)((4*8)+6))
+#define DIO_CHANNEL_H_7     ((uint8)((4*8)+7))
+
+#define DIO_CHANNEL_J_0     ((uint8)((5*8)+0))
+#define DIO_CHANNEL_J_1     ((uint8)((5*8)+1))
+#define DIO_CHANNEL_J_2     ((uint8)((5*8)+2))
+#define DIO_CHANNEL_J_3     ((uint8)((5*8)+3))
+#define DIO_CHANNEL_J_4     ((uint8)((5*8)+4))
+#define DIO_CHANNEL_J_5     ((uint8)((5*8)+5))
+#define DIO_CHANNEL_J_6     ((uint8)((5*8)+6))
+#define DIO_CHANNEL_J_7     ((uint8)((5*8)+7))
+
+#define DIO_PORT_T          ((uint8)0x00)   /* 0x00 */
+#define DIO_PORT_S          ((uint8)0x01)   /* 0x08 */
+#define DIO_PORT_M          ((uint8)0x02)   /* 0x10 */
+#define DIO_PORT_P          ((uint8)0x03)   /* 0x18 */
+#define DIO_PORT_H          ((uint8)0x04)   /* 0x20 */
+#define DIO_PORT_J          ((uint8)0x05)   /* 0x28 */
+#define PIO_PORT_MAX        DIO_PORT_J
 
 
 /*
 **  Global Types.
 */
+typedef uint8 S12Pim_PortType;
+
 typedef enum tagS12Pim_StatusType {
-    S12PIM_OK
+    S12PIM_OK,
+    S12PIM_NOT_OK
 } S12Pim_StatusType;
 
 typedef struct tagS12Pim_ConfigType {
@@ -639,10 +671,13 @@ typedef struct tagS12Pim_ConfigType {
 /*
 **  Global Functions.
 */
-S12Pim_StatusType S12Pim_Init(void);
+void S12Pim_Init(void);
+
+boolean S12Pim_WritePort(S12Pim_PortType port,uint8 value);
+S12Pim_PortType S12Pim_ReadPort(S12Pim_PortType port);
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __S12_MMC_H*/
+#endif /* __S12_PIM_H*/

@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -26,6 +26,14 @@
 #include "Hw_Cfg.h"
 
 /*
+**
+**  REFERENCES:
+**  ===========
+**  MC9S12DP256 Port Intergration Module (PIM) Block User Guide V02.07.
+**
+*/
+
+/*
     • Port A, B, E, and K related to the core logic and multiplexed bus interface
     • Port T connected to the timer module
     • The serial port S associated with 2 SCI and 1 SPI modules
@@ -35,18 +43,18 @@
       can also be used as external interrupt sources.
 */
 
-/*
-**
-**  todo: Zusätzlicher Parameter für Output:
-**  - OUTPUT_MODE: OUTPUT_NORMAL, OUTPUT_CHECKED (Output-State mit
-**    Input-Latch vergleichen und eventuellen Fehler melden!!!).
-**
-*/
+// Added shortcircuit-/collision detection for PIM.
+
+#define S12PIM_ASSERT_VALID_PORT(port)  \
+    _BEGIN_BLOCK                        \
+        if (port>PIO_PORT_MAX) {        \
+/*            ErrorHandler(...); */     \
+            return FALSE;               \
+        }                               \
+    _END_BLOCK
 
 
-
-
-S12Pim_StatusType S12Pim_Init(void)
+void S12Pim_Init(void)
 {
     S12PIM_REG8(MODRR)=PIM.Modrr;
 
@@ -96,6 +104,61 @@ S12Pim_StatusType S12Pim_Init(void)
     S12PIM_REG8(PIEJ)=PIM.PieJ;
     S12PIM_REG8(PTJ)=PIM.PtJ;
     S12PIM_REG8(DDRJ)=PIM.DdrJ;
-
-    return S12PIM_OK;
 }
+
+
+boolean S12Pim_WritePort(S12Pim_PortType port,uint8 value)
+{
+    S12PIM_ASSERT_VALID_PORT(port);
+
+    S12PIM_REG8(S12PIM_PORT_BASE(port)+S12PIM_PT)=value;
+#if defined(S12PIM_OUTPUT_CHECKED)
+    return S12PIM_REG8(S12PIM_PORT_BASE(port)+S12PIM_PTI)==value;
+#else
+    return TRUE;
+#endif /* S12PIM_OUTPUT_CHECKED */
+}
+
+
+S12Pim_PortType S12Pim_ReadPort(S12Pim_PortType port)
+{
+    S12PIM_ASSERT_VALID_PORT(port);
+
+#if defined(S12PIM_READ_OUTPUT_LATCH)
+    return S12PIM_REG8(S12PIM_PORT_BASE(port)+S12PIM_PT);   /* output-latch   */
+#else
+    return S12PIM_REG8(S12PIM_PORT_BASE(port)+S12PIM_PTI)   /* input register */
+#endif /* S12PIM_READ_OUTPUT_LATCH */
+}
+
+/*
+**
+**  USE-CASES for 'S12PIM_OUTPUT_CHECKED' and 'S12PIM_READ_OUTPUT_LATCH'.
+**  =====================================================================
+**
+**  - 'S12PIM_OUTPUT_CHECKED': read back the value written from input-register,
+**                             return 'FALSE' if not equal.
+**  - 'S12PIM_READ_OUTPUT_LATCH': read port output-latch instead of input-register.
+**
+**
+**  a) Short-/Open-Circuit detection:
+**  ---------------------------------
+**  Obviously, the written should equal to the value read back.
+**  'S12Pim_WritePort' returns FALSE, if this is not the case.
+**  (requires 'S12PIM_OUTPUT_CHECKED'-Option).
+**
+**  b) Bit-banged implementation of a Bus-Protocol in a wired-AND, open-drain fashion:
+**  ----------------------------------------------------------------------------------
+**
+**  w  | rb | description
+**  ---------------------
+**  0  | 0  | OK
+**  1  | 1  | OK
+**  0  | 1  | short circuit to VCC
+**  1  | 0  | collision - passive H-level overridden by an active L-level
+**
+**  (requires 'S12PIM_OUTPUT_CHECKED'- and 'S12PIM_READ_OUTPUT_LATCH'-Options,
+**   furthermore either 'real' (appropriate bit in Wired-Or mode register set)
+**   or 'pseudo' (diode-circuit) opendrain outputs).
+**
+*/
