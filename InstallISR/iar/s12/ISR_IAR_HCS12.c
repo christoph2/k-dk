@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -335,7 +335,7 @@ __root void (* const interrupt_vectors[])(void) =
     (IISR_IVF)TRAP_VECTOR,       /* Unimplement Intruction Trap      */
     (IISR_IVF)COP_VECTOR,        /* COP failure reset                */
     (IISR_IVF)CMF_VECTOR,        /* Clock monitor fail reset         */
-#if !defined(__IAR_SYSTEMS_ICC__)       
+#if !defined(__IAR_SYSTEMS_ICC__)
     (IISR_IVF)RESET_VECTOR,      /* Reset                            */
-#endif        
+#endif
 };

@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -101,7 +101,7 @@ typedef  void (*const IISR_IVF)(void);
 
 #define IMPLEMENT_ISR2_VECTOR(IsrName)              \
         DEFINE_ISR2_VECTOR(IsrName)                 \
-                                    {               \
+        {                                           \
         _BEGIN_BLOCK                                \
             OSEnterISR();                           \
             OS_SET_ISRID(ISRID_##IsrName);          \

@@ -1,5 +1,6 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
@@ -20,28 +21,41 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
+#if !defined(__KDK_ERROR_H)
+#define __KDK_ERROR_H
 
-#if defined(__ICCARM__)
-    #define II_INC_TARGET_C   "./arm/ISR_IAR_ARM.c"
-#elif defined(__ICCHCS12__)
+#if defined(__cplusplus)
+extern "C"
+{
+#endif  /* __cplusplus */
 
-#else
-    #error Unsupported Target for IAR-Compiler.
-#endif
 
-#if CPU_FAMILY==CPU12_HC12
+#include "Std_Types.h"
+#include "KDK_ModuleIDs.h"
 
-    #if CPU_DERIVATE==CPU12_HC12B32 || CPU_DERIVATE==CPU12_HC12BC32
-        #define II_INC_TARGET_C   "./hc12/ISR_IAR_HC12B.c"
-    #elif CPU_DERIVATE==CPU12_HC12DG128A || CPU_DERIVATE==CPU12_HC12DT128A
-        #define II_INC_TARGET_C   "./hc12/ISR_IAR_HC12Dx128.c"
-    #endif
+/*
+**  Global Macros.
+*/
+#define KDK_DEV_ERROR_DETECT(mod)    GLUE2(mod,_DEV_ERROR_DETECT)
 
-#elif CPU_FAMILY==CPU12_S12
-    #define II_INC_TARGET_C   "./s12/ISR_IAR_HCS12.c"
-#else
 
-#endif
+/*
+**  Global Types.
+*/
+typedef void (*KDKError_Hook)(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
 
-#include II_INC_TARGET_C
+/*
+**  Global Functions.
+*/
+void KDKError_Init(void);
+void KDKError_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
+void KDKError_Start(void);
+
+
+#if defined(__cplusplus)
+}
+#endif  /* __cplusplus */
+
+#endif /* __KDK_ERROR_H */
