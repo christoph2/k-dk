@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -21,6 +21,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__S12CRG_H)
 #define __S12CRG_H
@@ -146,6 +147,8 @@ typedef enum tagS12Crg_PllLockType {
 
 typedef struct tagS12Crg_ConfigType {
     uint16 BaseAddr;
+    boolean EnablePll;
+    uint8 Frequency;
     boolean EnableWatchdog;
     uint8 WatchdogPrescaler;
     boolean EnableRTI;
@@ -157,16 +160,29 @@ typedef void (*S12Crg_CB_PllLockChanged)(S12Crg_PllLockType Lock);
 
 
 /*
+**  Function-like Macros.
+*/
+#define S12CRG_ACKNOWLEDGE_RTI_INTR()   (S12CRG_REG8(CRGFLG)=RTIF)
+#define S12CRG_ACKNOWLEDGE_SCM_INTR()   (S12CRG_REG8(CRGFLG)=SCMIF)
+#define S12CRG_ACKNOWLEDGE_LOCK_INTR()  (S12CRG_REG8(CRGFLG)=LOCKIF)
+
+/*
 **  Function-Prototypes.
 */
-S12Crg_StatusType S12Crg_Init(uint8 freq);
+S12Crg_StatusType S12Crg_Init(void);
+void S12Crg_Uninit(void);
 
-S12Crg_StatusType S12Crg_EnablePLL(void);
-S12Crg_StatusType S12Crg_DisablePLL(void);
-boolean S12Crg_PLLEnabled(void);
-S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq);
-S12Crg_StatusType S12Crg_SetPLLParams(uint8 refdv,uint8 synr);
-boolean S12Crg_PLLLocked(void);
+S12Crg_StatusType S12Crg_EnablePll(void);
+S12Crg_StatusType S12Crg_DisablePll(void);
+boolean S12Crg_PllEnabled(void);
+
+S12Crg_StatusType S12Crg_SetPllFreq(uint8 freq);
+S12Crg_StatusType S12Crg_SetPllParams(uint8 refdv,uint8 synr);
+boolean S12Crg_PllLocked(void);
+
+void S12Crg_SelectPll(void);
+void S12Crg_UnselectPll(void);
+boolean S12Crg_PllSelected(void);
 
 S12Crg_StatusType S12Crg_EnableRTI(void);
 S12Crg_StatusType S12Crg_DisableRTI(void);
@@ -176,15 +192,14 @@ S12Crg_StatusType S12Crg_SetRTIRate(uint8 rate);
 uint8 S12Crg_GetBusFreq(void);
 uint8 S12Crg_GetOscFreq(void);
 
-void S12Crg_TriggerWDG(void);
+void S12Crg_EnableWatchdog(void);
+void S12Crg_TriggerWatchdog(void);
 void S12Crg_ResetMCU(void);
 
 
 /*
 **  Configuration Parameter.
 */
-#define S12CRG_SYNCH_PLL 0
-
 #if 0
 S12CRG_RTI_API
 S12CRG_LOCK_API

@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  * All Rights Reserved
  *
@@ -20,6 +20,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__S12_MEBI_H)
 #define __S12_MEBI_H
@@ -99,53 +100,57 @@ extern "C"
 #define DDRK        ((uint8)0x33)
 
 /*
-**  Defines for AUTOSAR.
+**  Defines for AUTOSAR and other use-cases.
 */
-#define DIO_CHANNEL_A_0             ((uint8)0x00)
-#define DIO_CHANNEL_A_1             ((uint8)0x01)
-#define DIO_CHANNEL_A_2             ((uint8)0x02)
-#define DIO_CHANNEL_A_3             ((uint8)0x03)
-#define DIO_CHANNEL_A_4             ((uint8)0x04)
-#define DIO_CHANNEL_A_5             ((uint8)0x05)
-#define DIO_CHANNEL_A_6             ((uint8)0x06)
-#define DIO_CHANNEL_A_7             ((uint8)0x07)
+#define S12MEBI_CHANNEL_A_0             ((Kdk_ChannelType)0x00)
+#define S12MEBI_CHANNEL_A_1             ((Kdk_ChannelType)0x01)
+#define S12MEBI_CHANNEL_A_2             ((Kdk_ChannelType)0x02)
+#define S12MEBI_CHANNEL_A_3             ((Kdk_ChannelType)0x03)
+#define S12MEBI_CHANNEL_A_4             ((Kdk_ChannelType)0x04)
+#define S12MEBI_CHANNEL_A_5             ((Kdk_ChannelType)0x05)
+#define S12MEBI_CHANNEL_A_6             ((Kdk_ChannelType)0x06)
+#define S12MEBI_CHANNEL_A_7             ((Kdk_ChannelType)0x07)
 
-#define DIO_CHANNEL_B_0             ((uint8)0x08)
-#define DIO_CHANNEL_B_1             ((uint8)0x09)
-#define DIO_CHANNEL_B_2             ((uint8)0x0a)
-#define DIO_CHANNEL_B_3             ((uint8)0x0b)
-#define DIO_CHANNEL_B_4             ((uint8)0x0c)
-#define DIO_CHANNEL_B_5             ((uint8)0x0d)
-#define DIO_CHANNEL_B_6             ((uint8)0x0e)
-#define DIO_CHANNEL_B_7             ((uint8)0x0f)
+#define S12MEBI_CHANNEL_B_0             ((Kdk_ChannelType)0x08)
+#define S12MEBI_CHANNEL_B_1             ((Kdk_ChannelType)0x09)
+#define S12MEBI_CHANNEL_B_2             ((Kdk_ChannelType)0x0a)
+#define S12MEBI_CHANNEL_B_3             ((Kdk_ChannelType)0x0b)
+#define S12MEBI_CHANNEL_B_4             ((Kdk_ChannelType)0x0c)
+#define S12MEBI_CHANNEL_B_5             ((Kdk_ChannelType)0x0d)
+#define S12MEBI_CHANNEL_B_6             ((Kdk_ChannelType)0x0e)
+#define S12MEBI_CHANNEL_B_7             ((Kdk_ChannelType)0x0f)
 
-#define DIO_CHANNEL_E_0             ((uint8)0x10)
-#define DIO_CHANNEL_E_1             ((uint8)0x11)
-#define DIO_CHANNEL_E_2             ((uint8)0x12)
-#define DIO_CHANNEL_E_3             ((uint8)0x13)
-#define DIO_CHANNEL_E_4             ((uint8)0x14)
-#define DIO_CHANNEL_E_5             ((uint8)0x15)
-#define DIO_CHANNEL_E_6             ((uint8)0x16)
-#define DIO_CHANNEL_E_7             ((uint8)0x17)
+#define S12MEBI_CHANNEL_E_0             ((Kdk_ChannelType)0x10)
+#define S12MEBI_CHANNEL_E_1             ((Kdk_ChannelType)0x11)
+#define S12MEBI_CHANNEL_E_2             ((Kdk_ChannelType)0x12)
+#define S12MEBI_CHANNEL_E_3             ((Kdk_ChannelType)0x13)
+#define S12MEBI_CHANNEL_E_4             ((Kdk_ChannelType)0x14)
+#define S12MEBI_CHANNEL_E_5             ((Kdk_ChannelType)0x15)
+#define S12MEBI_CHANNEL_E_6             ((Kdk_ChannelType)0x16)
+#define S12MEBI_CHANNEL_E_7             ((Kdk_ChannelType)0x17)
 
-#define DIO_CHANNEL_K_0             ((uint8)0x18)
-#define DIO_CHANNEL_K_1             ((uint8)0x19)
-#define DIO_CHANNEL_K_2             ((uint8)0x1a)
-#define DIO_CHANNEL_K_3             ((uint8)0x1b)
-#define DIO_CHANNEL_K_4             ((uint8)0x1c)
-#define DIO_CHANNEL_K_5             ((uint8)0x1d)
-#define DIO_CHANNEL_K_6             ((uint8)0x1e)
-#define DIO_CHANNEL_K_7             ((uint8)0x1f)
+#define S12MEBI_CHANNEL_K_0             ((Kdk_ChannelType)0x18)
+#define S12MEBI_CHANNEL_K_1             ((Kdk_ChannelType)0x19)
+#define S12MEBI_CHANNEL_K_2             ((Kdk_ChannelType)0x1a)
+#define S12MEBI_CHANNEL_K_3             ((Kdk_ChannelType)0x1b)
+#define S12MEBI_CHANNEL_K_4             ((Kdk_ChannelType)0x1c)
+#define S12MEBI_CHANNEL_K_5             ((Kdk_ChannelType)0x1d)
+#define S12MEBI_CHANNEL_K_6             ((Kdk_ChannelType)0x1e)
+#define S12MEBI_CHANNEL_K_7             ((Kdk_ChannelType)0x1f)
+#define S12MEBI_CHANNEL_MAX             S12MEBI_CHANNEL_K_7
 
-#define DIO_PORT_A                  ((uint8)0x00)
-#define DIO_PORT_B                  ((uint8)0x01)
-#define DIO_PORT_E                  ((uint8)0x02)
-#define DIO_PORT_K                  ((uint8)0x04)
+#define S12MEBI_PORT_A                  ((Kdk_PortType)0x00)
+#define S12MEBI_PORT_B                  ((Kdk_PortType)0x01)
+#define S12MEBI_PORT_E                  ((Kdk_PortType)0x02)
+#define S12MEBI_PORT_K                  ((Kdk_PortType)0x03)
+#define S12MEBI_PORT_MAX                S12MEBI_PORT_K
 
 
 /*
 **  Global Types.
 */
+typedef uint8 S12Mebi_PortType;
+
 typedef enum tagS12Mebi_ModeType {
     S12MODE_SPECIAL_SINGLE_CHIP,
     S12MODE_EMULATION_NARROW,
@@ -180,7 +185,10 @@ typedef struct tagS12Mebi_ConfigType {
     /* PortK */
     uint8 DdrK;
     uint8 PortK;
-
+#if defined(__K_AUTOSAR)
+    const uint8 DirectionChangeable[4];
+    const uint8 ModeChangeable[4];
+#endif /* __K_AUTOSAR */
 } S12Mebi_ConfigType;
 
 
@@ -191,6 +199,29 @@ void S12Mebi_Init(S12Mebi_ConfigType const * ConfigPtr);
 S12Mebi_ModeType S12Mebi_GetMode(void);
 boolean S12Mebi_SpecialMode(void);
 
+void S12Mebi_WritePort(Kdk_PortType port,Kdk_PortLevelType value);
+Kdk_PortLevelType S12Mebi_ReadPort(Kdk_PortType port);
+
+#if defined(__K_AUTOSAR)
+void S12Mebi_WriteChannel(Kdk_PortType port,Kdk_ChannelType bit,Kdk_LevelType level);
+Kdk_LevelType S12Mebi_ReadChannel(Kdk_PortType port,Kdk_ChannelType bit);
+#else
+void S12Mebi_WriteChannel(Kdk_ChannelType channel,Kdk_LevelType level);
+Kdk_LevelType S12Mebi_ReadChannel(Kdk_ChannelType channel);
+#endif /* __K_AUTOSAR */
+
+void S12Mebi_WriteChannelGroup(Kdk_ChannelGroupType const * group,Kdk_PortLevelType level);
+Kdk_PortLevelType S12Mebi_ReadChannelGroup(Kdk_ChannelGroupType const * group);
+
+#if defined(__K_AUTOSAR)
+void S12Mebi_RefreshPortDirection(S12Mebi_ConfigType const * ConfigPtr);
+#endif /* __K_AUTOSAR */
+
+#if defined(__K_AUTOSAR)
+void S12Mebi_SetPinDirection(Kdk_PortType port,Kdk_ChannelType bit,Kdk_PinDirectionType Direction);
+#else
+void S12Mebi_SetPinDirection(Kdk_PinType Pin,Kdk_PinDirectionType Direction);
+#endif /* __K_AUTOSAR */
 
 #if defined(__cplusplus)
 }

@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -22,7 +22,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "S12_Sci.h"
+#include "mcu/s12/inc/S12_Sci.h"
 #include "Hw_Cfg.h"
 
 /*

@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -21,9 +21,10 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
 
-#include "S12_Iic.h"
+#include "mcu/s12/inc/S12_Iic.h"
 
 /*
 **  "non-autosar-but-autosar-lookalike-iic-module."
@@ -55,7 +56,11 @@
 
 
 typedef enum tagIic_OpcodeType {
-    START,RESTART,WRITE,READ,STOP
+    IIC_START,
+    IIC_RESTART,
+    IIC_WRITE,
+    IIC_READ,
+    IIC_STOP
 } Iic_OpcodeType;
 
 

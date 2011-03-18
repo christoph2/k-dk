@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -224,12 +224,11 @@ typedef enum tagS12Atd_ConversionTimeType{
 typedef struct tagS12Atd_ConfigType {
     uint16 BaseAddr;
     uint8 Prescaler;
-    boolean TenBit;
     S12Atd_ExternalTriggerType ExternalTrigger;
+    S12Atd_ConversionTimeType ConversionTime;
+    boolean TenBit; // todo: Flags!!!
     boolean EnableCompletionInterrupt;
     boolean ContinuousConversion;
-    S12Atd_ConversionTimeType ConversionTime;
-    /* todo: boolean EnableInterrupts*/
     /* todo: Callout!? */
 } S12Atd_ConfigType;
 
@@ -241,6 +240,12 @@ typedef struct tagS12Atd_ConfigType {
 
 void S12Atd_Init(S12Atd_ConfigType const * const Cfg);
 uint16 S12Atd_GetChannel(S12Atd_ConfigType const * const Cfg,uint8 chn);
+
+Kdk_PortLevelType S12Atd_ReadPort(S12Atd_ConfigType const * Cfg,Kdk_PortType port);
+
+Kdk_LevelType S12Atd_ReadChannel(S12Atd_ConfigType const * Cfg,Kdk_ChannelType channel);
+
+Kdk_PortLevelType S12Atd_ReadChannelGroup(S12Atd_ConfigType const * Cfg,Kdk_ChannelGroupType const * group);
 
 #if defined(__cplusplus)
 }

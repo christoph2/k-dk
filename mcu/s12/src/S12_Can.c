@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -39,7 +39,7 @@
 **  todo: GML (Garantied Message Latency) rechachieren!!!
 */
 
-#include "Can.h"
+#include "mcu/s12/inc/Can.h"
 #if AR_VERSION_CHECK_INTERNAL_FAILS(CAN,3,1,0,1,0)
     #error Wrong Version-Information of Include-File 'Can.h' !
 #endif
@@ -645,6 +645,12 @@ typedef struct tagCan_HardwareObjectConfigType {
             LISTEN  - Listen Only; Busmonitor, no Ack generation.
 #endif
 
+
+/*
+**
+**  Hinweis: die Baudrate ist kein Parameter, sondern Cfg.
+**           ebenso der Interrupt-Betrieb!!!
+*/
 S12Can_StatusType S12Can_Init(S12Can_ConfigType const * const Cfg,uint8 btr0,uint8 btr1)
 {
     S12Can_StatusType ret;
@@ -844,7 +850,7 @@ S12Can_StatusType S12Can_Ready(S12Can_ConfigType const * const Cfg,boolean *read
 S12Can_StatusType S12Can_RxD(S12Can_ConfigType const * const Cfg,boolean *rxd)
 {
     *rxd=((S12_REG8(Cfg,CANRFLG) & RXF)==RXF);
-
+    /* todo: der RXHandler muss aus Performance-Gründen WORD-weise kopieren!!! */
     return S12CAN_OK;
 }
 

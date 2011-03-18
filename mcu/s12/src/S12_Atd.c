@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -21,8 +21,9 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
-#include "S12_Atd.h"
+#include "mcu/s12/inc/S12_Atd.h"
 #include "Hw_Cfg.h"
 
 /*
@@ -39,6 +40,10 @@
 **  ATD_10B8C Block User Guide V02.12.
 **
 */
+
+static const uint8 S12Atd_Ports[]={
+    PORTAD0
+};
 
 static uint8 S12Atd_CalculatePrescaler(void);
 
@@ -119,8 +124,21 @@ void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
 }
 
 
+/*
+**  Implementation of common functions.
+*/
+#if 0
+IMPLEMENT_IO_READ_PORT(S12ATD,S12Atd)
+
+IMPLEMENT_IO_READ_CHANNEL(S12ATD,S12Atd)
+
+IMPLEMENT_IO_READ_CHANNEL_GROUP(S12ATD,S12Atd)
+#endif
+
+#if 0
 ISR1(ATD0_Vector)
 {
     S12Atd_Handler(ATD0);
 
 }
+#endif

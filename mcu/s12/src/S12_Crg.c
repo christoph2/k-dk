@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -21,20 +21,14 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
-#include "S12_Crg.h"
+#include "mcu/s12/inc/S12_Crg.h"
 #include "Hw_Cfg.h"
 
 static boolean CRG_PowerOnRest;
 
-/*
-**
-**  todo: S12_(CPU12_)TimerIf !?.
-**
-*/
-
-
-S12Crg_StatusType S12Crg_Init(uint8 freq)
+S12Crg_StatusType S12Crg_Init(void)
 {
     S12Crg_StatusType status;
 
@@ -45,26 +39,22 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
         CRG_PowerOnRest=FALSE;  /* Other Reset Reason.  */
     }
 
-/*    S12CRG_REG8(CLKSEL)&=~PLLSEL; */
+    S12Crg_UnselectPll();
+    S12Crg_DisablePll();
 
-    S12CRG_REG8(CLKSEL)=/*PSTP|ROAWAI*/COPWAI;      /* todo: Cfg. */
-    S12CRG_REG8(PLLCTL)=CME|PLLON|AUTO|ACQ|SCME;
+    S12CRG_REG8(CLKSEL)=/*ROAWAI*/PSTP|COPWAI;      /* todo: Cfg. */
+    S12CRG_REG8(PLLCTL)=CME|AUTO|SCME;
 
-#if 0
-    if (S12Mebi_SpecialMode()==FALSE) {
-        status=S12Crg_SetPLLFreq(freq);
+    if ((S12Mebi_SpecialMode()==FALSE) && (CRG.EnablePll==TRUE)) {  /* we don't use PLL-Clock in Specialmodes (==> BDM). */
+        status=S12Crg_SetPllFreq(CRG.Frequency);
         if (status!=S12CRG_OK) {
             return status;
         }
-        status=S12Crg_EnablePLL();
+        status=S12Crg_EnablePll();
         if (status!=S12CRG_OK) {
             return status;
         }
-    } else {
-        /* we don't use PLL-Clock in Specialmodes (==> BDM). */
-        (void)S12Crg_DisablePLL();
     }
-#endif
 
     if (CRG.EnableRTI==TRUE) {
         status=S12Crg_SetRTIRate(((CRG.RTIPrescaler & (uint8)0x07)<<4) | (CRG.RTIModulo & ((uint8)0x0f)));
@@ -75,6 +65,7 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
     } else {
         status=S12Crg_DisableRTI();
     }
+
     if (status!=S12CRG_OK) {
         return status;
     }
@@ -83,64 +74,71 @@ S12Crg_StatusType S12Crg_Init(uint8 freq)
 }
 
 
-S12Crg_StatusType S12Crg_EnablePLL(void)
+void S12Crg_Uninit(void)
 {
-    if (S12Crg_PLLEnabled()) {
+    S12Crg_UnselectPll();
+    S12Crg_DisablePll();
+
+    if (CRG.EnableRTI==TRUE) {
+        S12Crg_DisableRTI();
+    }
+}
+
+
+S12Crg_StatusType S12Crg_EnablePll(void)
+{
+    if (S12Crg_PllEnabled()) {
         return S12CRG_STATE;
     }
 
-    S12CRG_REG8(CLKSEL)|=PLLSEL;
+    S12CRG_REG8(PLLCTL)|=PLLON;
 
     return S12CRG_OK;
 }
 
 
-S12Crg_StatusType S12Crg_DisablePLL(void)
+S12Crg_StatusType S12Crg_DisablePll(void)
 {
-    if (!S12Crg_PLLEnabled()) {
+    if (!S12Crg_PllEnabled()) {
         return S12CRG_STATE;
     }
 
-    S12CRG_REG8(CLKSEL)&=~PLLSEL;
+    S12CRG_REG8(PLLCTL)&=~PLLON;
 
     return S12CRG_OK;
 }
 
 
-boolean S12Crg_PLLEnabled(void)
+boolean S12Crg_PllEnabled(void)
 {
-    return ((S12CRG_REG8(CLKSEL) & PLLSEL)==PLLSEL);
+    return (S12CRG_REG8(PLLCTL) & PLLON)==PLLON;
 }
 
 
 /*
 **  PLL_CLOCK = 2 * OSC_CLOCK * ((SYNR+1)/(REFDV+1))
 */
-S12Crg_StatusType S12Crg_SetPLLFreq(uint8 freq)
+S12Crg_StatusType S12Crg_SetPllFreq(uint8 freq)
 {
     if ((freq==((uint8)0)) || freq > (uint8)(BUS_FREQUENCY_MAX / 1000u) ) {
         return S12CRG_VALUE;
     }
 
-    if (S12Crg_PLLEnabled()) {
+    if (S12Crg_PllEnabled()) {
         return S12CRG_STATE;
     }
 
     S12CRG_REG8(REFDV)=(uint8)(XTAL_FREQUENCY / 1000u)  - ((uint8)1);  /* divide, to get 1MHz. */
     S12CRG_REG8(SYNR)=freq-((uint8)1);
 
-#if (S12CRG_SYNCH_PLL==1)
-    WAIT_FOR((S12CRG_REG8(CRGFLG) & LOCK)==LOCK);
-#endif
-
     return S12CRG_OK;
 }
 
 
-S12Crg_StatusType S12Crg_SetPLLParams(uint8 refdv,uint8 synr)
+S12Crg_StatusType S12Crg_SetPllParams(uint8 refdv,uint8 synr)
 {
     /* todo: check resulting Frequency!!! */
-    if (S12Crg_PLLEnabled()) {
+    if (S12Crg_PllEnabled()) {
         return S12CRG_STATE;
     }
 
@@ -151,9 +149,9 @@ S12Crg_StatusType S12Crg_SetPLLParams(uint8 refdv,uint8 synr)
 }
 
 
-boolean S12Crg_PLLLocked(void)
+boolean S12Crg_PllLocked(void)
 {
-    if (S12Crg_PLLEnabled()) {
+    if (S12Crg_PllEnabled()) {
         return (S12CRG_REG8(CRGFLG) & LOCK)==LOCK;
     } else {
         return TRUE;
@@ -161,11 +159,29 @@ boolean S12Crg_PLLLocked(void)
 }
 
 
+void S12Crg_SelectPll(void)
+{
+    S12CRG_REG8(CLKSEL)|=PLLSEL;
+}
+
+
+void S12Crg_UnselectPll(void)
+{
+    S12CRG_REG8(CLKSEL)&=~PLLSEL;
+}
+
+
+boolean S12Crg_PllSelected(void)
+{
+    return (S12CRG_REG8(CLKSEL)& PLLSEL)==PLLSEL;
+}
+
+
 uint8 S12Crg_GetBusFreq(void)
 {
     uint8 bus_freq;
 
-    if (S12Crg_PLLEnabled()) {
+    if (S12Crg_PllEnabled()) {
         bus_freq=(uint8)(XTAL_FREQUENCY / 1000u) / (S12CRG_REG8(REFDV) + 1);
         bus_freq*=(S12CRG_REG8(SYNR)+1);
     } else {
@@ -227,7 +243,12 @@ boolean S12Crg_RTIEnabled(void)
 }
 
 
-void S12Crg_TriggerWDG(void)
+void S12Crg_EnableWatchdog(void)
+{
+    S12CRG_REG8(COPCTL)=(RSBCK|(CRG.WatchdogPrescaler & (uint8)0x07));
+}
+
+void S12Crg_TriggerWatchdog(void)
 {
     S12CRG_REG8(ARMCOP)=(uint8)0x55;
     S12CRG_REG8(ARMCOP)=(uint8)0xaa;;

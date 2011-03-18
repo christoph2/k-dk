@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -21,6 +21,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__S12_PIM_H)
 #define __S12_PIM_H
@@ -31,6 +32,29 @@
 extern "C"
 {
 #endif  /* __cplusplus */
+
+#if 0
+/*
+**  Service-IDs.
+*/
+#define KDK_SERVICE_S12PIM_READ_CHANNEL         ((uint8)0x00)
+#define KDK_SERVICE_S12PIM_WRITE_CHANNEL        ((uint8)0x01)
+#define KDK_SERVICE_S12PIM_READ_PORT            ((uint8)0x02)
+#define KDK_SERVICE_S12PIM_WRITE_PORT           ((uint8)0x03)
+#define KDK_SERVICE_S12PIM_READ_CHANNEL_GROUP   ((uint8)0x04)
+#define KDK_SERVICE_S12PIM_WRITE_CHANNEL_GROUP  ((uint8)0x05)
+#define KDK_SERVICE_S12PIM_GET_VERSION_INFO     ((uint8)0x12)
+
+
+/*
+**  Module-Errors.
+*/
+#define S12PIM_E_PARAM_INVALID_CHANNEL_ID       ((uint8)10)
+#define S12PIM_E_PARAM_INVALID_PORT_ID          ((uint8)20)
+#define S12PIM_E_PARAM_INVALID_GROUP_ID         ((uint8)31)
+
+#define S12PIM_DEV_ERROR_DETECT                 STD_ON
+#endif
 
 /*
 **  Register-Offsets.
@@ -536,79 +560,79 @@ Offset	Register
 #define S12PIM_PPS      ((uint8)0x05)
 
 #define S12PIM_PORT_BASE(port)  ((uint8)(((uint8)port)<<3))
+/* #define S12PIM_PORT_BASE(port)  (S12PIM_PORT_BASES[(port)]) */
 
 
 /*
 **  Defines for AUTOSAR and other use-cases.
 */
-#define DIO_CHANNEL_T_0     ((uint8)((0*8)+0))
-#define DIO_CHANNEL_T_1     ((uint8)((0*8)+1))
-#define DIO_CHANNEL_T_2     ((uint8)((0*8)+2))
-#define DIO_CHANNEL_T_3     ((uint8)((0*8)+3))
-#define DIO_CHANNEL_T_4     ((uint8)((0*8)+4))
-#define DIO_CHANNEL_T_5     ((uint8)((0*8)+5))
-#define DIO_CHANNEL_T_6     ((uint8)((0*8)+6))
-#define DIO_CHANNEL_T_7     ((uint8)((0*8)+7))
+#define S12PIM_CHANNEL_T_0     ((Kdk_ChannelType)((0*8)+0))
+#define S12PIM_CHANNEL_T_1     ((Kdk_ChannelType)((0*8)+1))
+#define S12PIM_CHANNEL_T_2     ((Kdk_ChannelType)((0*8)+2))
+#define S12PIM_CHANNEL_T_3     ((Kdk_ChannelType)((0*8)+3))
+#define S12PIM_CHANNEL_T_4     ((Kdk_ChannelType)((0*8)+4))
+#define S12PIM_CHANNEL_T_5     ((Kdk_ChannelType)((0*8)+5))
+#define S12PIM_CHANNEL_T_6     ((Kdk_ChannelType)((0*8)+6))
+#define S12PIM_CHANNEL_T_7     ((Kdk_ChannelType)((0*8)+7))
 
-#define DIO_CHANNEL_S_0     ((uint8)((1*8)+0))
-#define DIO_CHANNEL_S_1     ((uint8)((1*8)+1))
-#define DIO_CHANNEL_S_2     ((uint8)((1*8)+2))
-#define DIO_CHANNEL_S_3     ((uint8)((1*8)+3))
-#define DIO_CHANNEL_S_4     ((uint8)((1*8)+4))
-#define DIO_CHANNEL_S_5     ((uint8)((1*8)+5))
-#define DIO_CHANNEL_S_6     ((uint8)((1*8)+6))
-#define DIO_CHANNEL_S_7     ((uint8)((1*8)+7))
+#define S12PIM_CHANNEL_S_0     ((Kdk_ChannelType)((1*8)+0))
+#define S12PIM_CHANNEL_S_1     ((Kdk_ChannelType)((1*8)+1))
+#define S12PIM_CHANNEL_S_2     ((Kdk_ChannelType)((1*8)+2))
+#define S12PIM_CHANNEL_S_3     ((Kdk_ChannelType)((1*8)+3))
+#define S12PIM_CHANNEL_S_4     ((Kdk_ChannelType)((1*8)+4))
+#define S12PIM_CHANNEL_S_5     ((Kdk_ChannelType)((1*8)+5))
+#define S12PIM_CHANNEL_S_6     ((Kdk_ChannelType)((1*8)+6))
+#define S12PIM_CHANNEL_S_7     ((Kdk_ChannelType)((1*8)+7))
 
-#define DIO_CHANNEL_M_0     ((uint8)((2*8)+0))
-#define DIO_CHANNEL_M_1     ((uint8)((2*8)+1))
-#define DIO_CHANNEL_M_2     ((uint8)((2*8)+2))
-#define DIO_CHANNEL_M_3     ((uint8)((2*8)+3))
-#define DIO_CHANNEL_M_4     ((uint8)((2*8)+4))
-#define DIO_CHANNEL_M_5     ((uint8)((2*8)+5))
-#define DIO_CHANNEL_M_6     ((uint8)((2*8)+6))
-#define DIO_CHANNEL_M_7     ((uint8)((2*8)+7))
+#define S12PIM_CHANNEL_M_0     ((Kdk_ChannelType)((2*8)+0))
+#define S12PIM_CHANNEL_M_1     ((Kdk_ChannelType)((2*8)+1))
+#define S12PIM_CHANNEL_M_2     ((Kdk_ChannelType)((2*8)+2))
+#define S12PIM_CHANNEL_M_3     ((Kdk_ChannelType)((2*8)+3))
+#define S12PIM_CHANNEL_M_4     ((Kdk_ChannelType)((2*8)+4))
+#define S12PIM_CHANNEL_M_5     ((Kdk_ChannelType)((2*8)+5))
+#define S12PIM_CHANNEL_M_6     ((Kdk_ChannelType)((2*8)+6))
+#define S12PIM_CHANNEL_M_7     ((Kdk_ChannelType)((2*8)+7))
 
-#define DIO_CHANNEL_P_0     ((uint8)((3*8)+0))
-#define DIO_CHANNEL_P_1     ((uint8)((3*8)+1))
-#define DIO_CHANNEL_P_2     ((uint8)((3*8)+2))
-#define DIO_CHANNEL_P_3     ((uint8)((3*8)+3))
-#define DIO_CHANNEL_P_4     ((uint8)((3*8)+4))
-#define DIO_CHANNEL_P_5     ((uint8)((3*8)+5))
-#define DIO_CHANNEL_P_6     ((uint8)((3*8)+6))
-#define DIO_CHANNEL_P_7     ((uint8)((3*8)+7))
+#define S12PIM_CHANNEL_P_0     ((Kdk_ChannelType)((3*8)+0))
+#define S12PIM_CHANNEL_P_1     ((Kdk_ChannelType)((3*8)+1))
+#define S12PIM_CHANNEL_P_2     ((Kdk_ChannelType)((3*8)+2))
+#define S12PIM_CHANNEL_P_3     ((Kdk_ChannelType)((3*8)+3))
+#define S12PIM_CHANNEL_P_4     ((Kdk_ChannelType)((3*8)+4))
+#define S12PIM_CHANNEL_P_5     ((Kdk_ChannelType)((3*8)+5))
+#define S12PIM_CHANNEL_P_6     ((Kdk_ChannelType)((3*8)+6))
+#define S12PIM_CHANNEL_P_7     ((Kdk_ChannelType)((3*8)+7))
 
-#define DIO_CHANNEL_H_0     ((uint8)((4*8)+0))
-#define DIO_CHANNEL_H_1     ((uint8)((4*8)+1))
-#define DIO_CHANNEL_H_2     ((uint8)((4*8)+2))
-#define DIO_CHANNEL_H_3     ((uint8)((4*8)+3))
-#define DIO_CHANNEL_H_4     ((uint8)((4*8)+4))
-#define DIO_CHANNEL_H_5     ((uint8)((4*8)+5))
-#define DIO_CHANNEL_H_6     ((uint8)((4*8)+6))
-#define DIO_CHANNEL_H_7     ((uint8)((4*8)+7))
+#define S12PIM_CHANNEL_H_0     ((Kdk_ChannelType)((4*8)+0))
+#define S12PIM_CHANNEL_H_1     ((Kdk_ChannelType)((4*8)+1))
+#define S12PIM_CHANNEL_H_2     ((Kdk_ChannelType)((4*8)+2))
+#define S12PIM_CHANNEL_H_3     ((Kdk_ChannelType)((4*8)+3))
+#define S12PIM_CHANNEL_H_4     ((Kdk_ChannelType)((4*8)+4))
+#define S12PIM_CHANNEL_H_5     ((Kdk_ChannelType)((4*8)+5))
+#define S12PIM_CHANNEL_H_6     ((Kdk_ChannelType)((4*8)+6))
+#define S12PIM_CHANNEL_H_7     ((Kdk_ChannelType)((4*8)+7))
 
-#define DIO_CHANNEL_J_0     ((uint8)((5*8)+0))
-#define DIO_CHANNEL_J_1     ((uint8)((5*8)+1))
-#define DIO_CHANNEL_J_2     ((uint8)((5*8)+2))
-#define DIO_CHANNEL_J_3     ((uint8)((5*8)+3))
-#define DIO_CHANNEL_J_4     ((uint8)((5*8)+4))
-#define DIO_CHANNEL_J_5     ((uint8)((5*8)+5))
-#define DIO_CHANNEL_J_6     ((uint8)((5*8)+6))
-#define DIO_CHANNEL_J_7     ((uint8)((5*8)+7))
+#define S12PIM_CHANNEL_J_0     ((Kdk_ChannelType)((5*8)+0))
+#define S12PIM_CHANNEL_J_1     ((Kdk_ChannelType)((5*8)+1))
+#define S12PIM_CHANNEL_J_2     ((Kdk_ChannelType)((5*8)+2))
+#define S12PIM_CHANNEL_J_3     ((Kdk_ChannelType)((5*8)+3))
+#define S12PIM_CHANNEL_J_4     ((Kdk_ChannelType)((5*8)+4))
+#define S12PIM_CHANNEL_J_5     ((Kdk_ChannelType)((5*8)+5))
+#define S12PIM_CHANNEL_J_6     ((Kdk_ChannelType)((5*8)+6))
+#define S12PIM_CHANNEL_J_7     ((Kdk_ChannelType)((5*8)+7))
+#define S12PIM_CHANNEL_MAX      S12PIM_CHANNEL_J_7
 
-#define DIO_PORT_T          ((uint8)0x00)   /* 0x00 */
-#define DIO_PORT_S          ((uint8)0x01)   /* 0x08 */
-#define DIO_PORT_M          ((uint8)0x02)   /* 0x10 */
-#define DIO_PORT_P          ((uint8)0x03)   /* 0x18 */
-#define DIO_PORT_H          ((uint8)0x04)   /* 0x20 */
-#define DIO_PORT_J          ((uint8)0x05)   /* 0x28 */
-#define PIO_PORT_MAX        DIO_PORT_J
+#define S12PIM_PORT_T          ((Kdk_PortType)0x00)   /* 0x00 */
+#define S12PIM_PORT_S          ((Kdk_PortType)0x01)   /* 0x08 */
+#define S12PIM_PORT_M          ((Kdk_PortType)0x02)   /* 0x10 */
+#define S12PIM_PORT_P          ((Kdk_PortType)0x03)   /* 0x18 */
+#define S12PIM_PORT_H          ((Kdk_PortType)0x04)   /* 0x20 */
+#define S12PIM_PORT_J          ((Kdk_PortType)0x05)   /* 0x28 */
+#define S12PIM_PORT_MAX         S12PIM_PORT_J
 
 
 /*
 **  Global Types.
 */
-typedef uint8 S12Pim_PortType;
-
 typedef enum tagS12Pim_StatusType {
     S12PIM_OK,
     S12PIM_NOT_OK
@@ -664,17 +688,51 @@ typedef struct tagS12Pim_ConfigType {
     uint8 PerJ;
     uint8 PpsJ;
     uint8 PieJ;
-
+#if defined(__K_AUTOSAR)
+    const uint8 DirectionChangeable[6];
+    const uint8 ModeChangeable[6];
+#endif /* __K_AUTOSAR */
 } S12Pim_ConfigType;
 
+
+typedef void (*S12Pim_PortWriteFailedCallout)(Kdk_PortType port,Kdk_PortLevelType expectedValue,Kdk_PortLevelType actualValue);
+#if defined(__K_AUTOSAR)
+typedef void (*S12Pim_ChannelWriteFailedCallout)(Kdk_PortType port,Kdk_ChannelType bit,
+    Kdk_LevelType expectedLevel,Kdk_LevelType actualLevel);
+#else
+typedef void (*S12Pim_ChannelWriteFailedCallout)(Kdk_ChannelType channel,Kdk_LevelType expectedLevel,Kdk_LevelType actualLevel);
+#endif /* __K_AUTOSAR */
+typedef void (*S12Pim_ChannelGroupWriteFailedCallout)(Kdk_ChannelGroupType const * group,Kdk_PortLevelType ExpectedLevel,
+          Kdk_PortLevelType actualLevel);
 
 /*
 **  Global Functions.
 */
-void S12Pim_Init(void);
+void S12Pim_Init(S12Pim_ConfigType const * ConfigPtr);
 
-boolean S12Pim_WritePort(S12Pim_PortType port,uint8 value);
-S12Pim_PortType S12Pim_ReadPort(S12Pim_PortType port);
+void S12Pim_WritePort(Kdk_PortType port,Kdk_PortLevelType value);
+Kdk_PortLevelType S12Pim_ReadPort(Kdk_PortType port);
+
+#if defined(__K_AUTOSAR)
+void S12Pim_WriteChannel(Kdk_PortType port,Kdk_ChannelType bit,Kdk_LevelType level);
+Kdk_LevelType S12Pim_ReadChannel(Kdk_PortType port,Kdk_ChannelType bit);
+#else
+void S12Pim_WriteChannel(Kdk_ChannelType channel,Kdk_LevelType level);
+Kdk_LevelType S12Pim_ReadChannel(Kdk_ChannelType channel);
+#endif /* __K_AUTOSAR */
+
+void S12Pim_WriteChannelGroup(Kdk_ChannelGroupType const * group,Kdk_PortLevelType level);
+Kdk_PortLevelType S12Pim_ReadChannelGroup(Kdk_ChannelGroupType const * group);
+
+#if defined(__K_AUTOSAR)
+void S12Pim_RefreshPortDirection(S12Pim_ConfigType const * ConfigPtr);
+#endif /* __K_AUTOSAR */
+
+#if defined(__K_AUTOSAR)
+void S12Pim_SetPinDirection(Kdk_PortType port,Kdk_ChannelType bit,Kdk_PinDirectionType Direction);
+#else
+void S12Pim_SetPinDirection(Kdk_PinType Pin,Kdk_PinDirectionType Direction);
+#endif /* __K_AUTOSAR */
 
 #if defined(__cplusplus)
 }
