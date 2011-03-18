@@ -21,52 +21,49 @@
 
    s. FLOSS-EXCEPTION.txt
 */
+#if !defined(__CPU_PRIMITIVES_MCU_H)
+#define __CPU_PRIMITIVES_MCU_H
+
 /*
 **
 **  CPU-Primitives.
 **
 */
 
-#if !defined(__CPU_PRIMITIVES_MCU_H)
-#define __CPU_PRIMITIVES_MCU_H
-
-#include <intrinsics.h>
-
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_POWERDOWN_MODE()            __wait_for_interrupt()
+#define CPU_POWERDOWN_MODE()            _asm("wai")
 
-/* __stop_CPU() */
 
 /*
 **  Software-Interrupt.
 */
-#define CPU_SOFTWARE_INTERRUPT()        __software_interrupt()
+#define CPU_SOFTWARE_INTERRUPT()        _asm("swi")
 
 
 /*
 **  Return from Interrupt.
 */
-#define CPU_RETURN_FROM_INTERRUPT()     asm("rti")
+#define CPU_RETURN_FROM_INTERRUPT()     _asm("rti")
 
 
 /*
 **  Software-Breakpoint.
 */
-#define CPU_BREAKPOINT()                asm("bgnd")
+#define CPU_BREAKPOINT()                _asm("bgnd")
 
 
 /*
 **  No-Operation.
 */
-#define CPU_NO_OPERATION()              __no_operation()
+#define CPU_NO_OPERATION()              _asm("nop")
 
 
 /*
 **  Disable All Interrupts.
 */
-#define CPU_DISABLE_ALL_INTERRUPTS()    __disable_interrupt()
+#define CPU_DISABLE_ALL_INTERRUPTS()    _asm("sei")
 
 
 /*
@@ -74,34 +71,46 @@
 */
 #define CPU_ENABLE_ALL_INTERRUPTS()         \
     _BEGIN_BLOCK                            \
-        __enable_interrupt();               \
-        __no_operation();                   \
+        _asm("cli");                        \
+        _asm("nop");                        \
     _END_BLOCK
 
 
 /*
+**
+**  COSMIC-Makros
+**  --------------
+**  #define SWI _asm("swi")
+**  #define GET_CCR (unsigned char)(_asm("tfr ccr, b") )
+**  #define PUT_CCR(X) (_asm("tfr b,ccr", ((unsigned char)X )) )
+*/
+
+/*
 **  Check for Interrupts disabled.
 */
-#define CPU_INTERRUPTS_DISABLED()  (((boolean)__get_ccr_register() & ((uint8)0x10))==((uint8)0x10))
+#define CPU_INTERRUPTS_DISABLED()  (((uint8)_asm("tfr ccr,b\n") & ((uint8)0x10))==((uint8)0x10))
 
 
 /*
 **  Save Interrupt-State before Disabling.
 */
-#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)              \
-    _BEGIN_BLOCK                                            \
-	state=(InterruptStateType)__get_interrupt_state();  \
-	CPU_DISABLE_ALL_INTERRUPTS();                       \
+#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)  \
+    _BEGIN_BLOCK                                \
+	state=CPU_INTERRUPTS_DISABLED();        \
+	CPU_DISABLE_ALL_INTERRUPTS();           \
     _END_BLOCK	
 
 
 /*
 **  Restore Interrupt-State.
 */
-#define CPU_RESTORE_INTERRUPTS(state)               \
-    _BEGIN_BLOCK                                    \
-        __set_interrupt_state((__istate_t)state);   \
-        __no_operation();                           \
+#define CPU_RESTORE_INTERRUPTS(state)           \
+    _BEGIN_BLOCK                                \
+	if ((state)==TRUE) {                    \
+	    CPU_ENABLE_ALL_INTERRUPTS();        \
+	} else {                                \
+	    CPU_DISABLE_ALL_INTERRUPTS();       \
+	}                                       \
     _END_BLOCK	
 
 #endif /* __CPU_PRIMITIVES_MCU_H */

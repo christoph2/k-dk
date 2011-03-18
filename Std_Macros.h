@@ -1,8 +1,8 @@
 /*
    k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
 
-   (C) 2007-2010 by Christoph Schueler <chris@konnex-tools.de,
-                                       cpu12.gems@googlemail.com>
+ * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ *                                      cpu12.gems@googlemail.com>
 
    All Rights Reserved
 
@@ -82,10 +82,9 @@
 #define PROGRAM_STARTUP     int main    /* ISO-C only requires 'int main()'-signatures for hosted environments !!! */
 #endif /* PROGRAM_STARTUP */
 
-#define VOID_EXPR()         ((void)0)
+#define VOID_EXPRESSION()           ((void)0)
 
-#define UNREFERENCED_PARAMETER(p) \
-                            ((p)=(p))
+#define UNREFERENCED_PARAMETER(p)   ((p)=(p))
 
 #define MIN(a,b)            (((a)>(b)) ? (b) : (a))
 #define MAX(a,b)            (((a)>(b)) ? (a) : (b))
@@ -94,12 +93,12 @@
 
 #define ABS(i)              (((i)<0) ? ((i) * -1) : ((i)))
 
-#define SWAP_VALUES(l,r)    \
+#define SWAP_INPLACE(a,b)   \
     _BEGIN_BLOCK            \
-        (l)^=(r);           \
-        (r)^=(l);           \
-        (l)^=(r);           \
-    _END_BLOCK              \
+    (a) = (a) ^ (b);        \
+    (b) = (a) ^ (b);        \
+    (a) = (a) ^ (b);        \
+    _END_BLOCK
 
 #define LOBYTE(w)           ((uint8)((uint16)((uint16)(w) & 0x00ffU)))
 #define HIBYTE(w)           ((uint8)((uint16)(((uint16)(w )>> 8) & 0x00ffU)))

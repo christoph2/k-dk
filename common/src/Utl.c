@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,39 +23,55 @@
  */
  #include "Utl.h"
 
-static uint32 NextRandomNumber=1;
+const uint8 Utl_SetBitTab8[8]={
+    (uint8)0x01,(uint8)0x02,(uint8)0x04,(uint8)0x08,(uint8)0x10,(uint8)0x20,(uint8)0x40,(uint8)0x80
+};
 
-static const uint16 PowerOfTwoTab16[16]={
+const uint8 Utl_ClearBitTab8[8]={
+    (uint8)0xFE,(uint8)0xFD,(uint8)0xFB,(uint8)0xF7,(uint8)0xEF,(uint8)0xDF,(uint8)0xBF,(uint8)0x7F
+};
+
+const uint16 Utl_SetBitTab16[16]={
     (uint16)0x0001U,(uint16)0x0002U,(uint16)0x0004U,(uint16)0x0008U,
     (uint16)0x0010U,(uint16)0x0020U,(uint16)0x0040U,(uint16)0x0080U,
     (uint16)0x0100U,(uint16)0x0200U,(uint16)0x0400U,(uint16)0x0800U,
     (uint16)0x1000U,(uint16)0x2000U,(uint16)0x4000U,(uint16)0x8000U
 };
 
+const uint16 Utl_ClearBitTab16[16]={
+    (uint16)0xFFFEU,(uint16)0xFFFDU,(uint16)0xFFFBU,(uint16)0xFFF7U,
+    (uint16)0xFFEFU,(uint16)0xFFDFU,(uint16)0xFFBFU,(uint16)0xFF7FU,
+    (uint16)0xFEFFU,(uint16)0xFDFFU,(uint16)0xFBFFU,(uint16)0xF7FFU,
+    (uint16)0xEFFFU,(uint16)0xDFFFU,(uint16)0xBFFFU,(uint16)0x7FFFU
+};
+
+#if 0
+#define BIT_8(n)    ((const uint8[8]){1,2,4,8,16,32,64,128})[n];
+#endif
+
+static uint32 NextRandomNumber=1;
 
 boolean Utl_BitGet(uint16 w,uint8 num)
 {
-    return ((w & PowerOfTwoTab16[num])!=(uint16)0x0000U);
+    return ((w & Utl_SetBitTab16[num])!=(uint16)0x0000U);
 }
-
 
 uint16 Utl_BitSet(uint16 w,uint8 num)
 {
-    return w|=PowerOfTwoTab16[num];
+    return w|=Utl_SetBitTab16[num];
 }
 
 
 uint16 Utl_BitReset(uint16 w,uint8 num)
 {
-    return w&=~(PowerOfTwoTab16[num]);
+    return w&=~(Utl_SetBitTab16[num]);
 }
 
 
 uint16 Utl_BitToggle(uint16 w,uint8 num)
 {
-    return w^=PowerOfTwoTab16[num];
+    return w^=Utl_SetBitTab16[num];
 }
-
 
 uint16 Utl_BitGetHighest(uint16 w)
 {

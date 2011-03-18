@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -20,6 +20,7 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__STD_TYPES_H)
 #define	__STD_TYPES_H
@@ -27,14 +28,7 @@
 #include "Std_Macros.h"
 #include "Platform_Types.h"
 #include "Compiler.h"
-
-#if 0   /* todo: HOWTO RESOLVE !?   */
-#if !defined(STATUSTYPEDEFINED)
-    #define E_OK        ((uint8)0x00)
-    typedef uint8 StatusType;
-    #define STATUSTYPEDEFINED
-#endif /* STATUSTYPEDEFINED */
-#endif
+#include "Os_Types.h"
 
 #define E_NOT_OK    ((uint8)0x01)
 
@@ -44,11 +38,17 @@
 #define STD_ACTIVE  ((uint8)0x01)
 #define STD_IDLE    ((uint8)0x00)
 
-#define STD_ON      /*((uint8)*/0x01/*)*/
-#define STD_OFF     /*((uint8)*/0x00/*)*/
-
+#define STD_ON      0x01
+#define STD_OFF     0x00
 
 typedef uint8 Std_ReturnType;
+
+/*
+typedef enum tagStd_ReturnType {
+    E_OK,
+    E_NOT_OK
+} Std_ReturnType;
+*/
 
 typedef struct tagStd_VersionInfoType {
     uint16 vendorID;
@@ -59,16 +59,11 @@ typedef struct tagStd_VersionInfoType {
     uint8 sw_patch_version;
 } Std_VersionInfoType;
 
-#if 0
-vendorId(<MODULE>_VENDOR_ID)
-moduleId(<MODULE>_MODULE_ID)
-arMajorVersion(<MODULE>_AR_MAJOR_VERSION)
-arMinorVersion(<MODULE>_AR_MINOR_VERSION)
-arPatchVersion(<MODULE>_AR_PATCH_VERSION)
-swMajorVersion(<MODULE>_SW_MAJOR_VERSION)
-swMinorVersion(<MODULE>_SW_MINOR_VERSION)
-swPatchVersion(<MODULE>_SW_PATCH_VERSION)
-vendorApiInfix(<MODULE>_VENDOR_API_INFIX)
-#endif
+
+typedef enum tagStd_LevelType {
+    Std_Low=STD_LOW,
+    Std_High=STD_HIGH
+} Std_LevelType;
 
 #endif	/* __STD_TYPES_H  */
+
