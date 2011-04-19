@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -33,9 +33,9 @@ extern "C" {
 #include "Sys_Cfg.h"
 
 #if !defined(CPU_FAMILY)
-    #error CPU_FAMILY must be specified. Valid: [CPU12_HC12|CPU12_S12].
-#elif (CPU_FAMILY!=CPU12_HC12) && (CPU_FAMILY!=CPU12_S12)
-    #error wrong CPU_FAMILY specified. Valid: [CPU12_HC12|CPU12_S12].
+    #error CPU_FAMILY must be specified. Valid: [CPU12_HC12|CPU12_S12|PIC_F18].
+#elif (CPU_FAMILY!=CPU12_HC12) && (CPU_FAMILY!=CPU12_S12) && (CPU_FAMILY!=PIC_F18)
+    #error wrong CPU_FAMILY specified. Valid: [CPU12_HC12|CPU12_S12|PIC_F18].
 #endif  /* CPU_FAMILY */
 
 #if !defined(CPU_DERIVATE)
@@ -78,11 +78,14 @@ CPU_DERIVATE  ==>
 #elif defined(__IMAGECRAFT__)       /* Imagecraft           */
     #define II_INC_COMP_H             "imagecraft/ISR_ICC.h"
     #define II_INC_PATH_COMP          "imagecraft/"
+#elif defined(__PCH__) || defined(__PCB__) || defined(__PCM__)
+    #define II_INC_COMP_H             "ccsc/ISR_CCSC.h"
+    #define II_INC_PATH_COMP          "ccsc/"   
 #else                               /* todo: Add Support    */
     #error Unsupported Compiler.
 #endif
 
-typedef  void (*const IISR_IVF)(void);
+//typedef  void (*const IISR_IVF)(void);
 
 /*
 **  OSEK-ISR2-Wrapper.

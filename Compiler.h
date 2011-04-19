@@ -23,10 +23,12 @@
  *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__COMPILER_H)
-#define	__COMPILER_H
+#define   __COMPILER_H
 
+#if 0
 #include "Std_Macros.h"
 #include "Compiler_Cfg.h"
+#endif
 
 /* todo: spezifische Include-Files!!! */
 #if defined(__CSMC__)               /* Cosmic               */
@@ -72,15 +74,36 @@
     #else
         #error Unsupported Target for Imagecraft-Compiler.
     #endif
+#elif defined(__18CXX )
+    /* MPlab C18 Compiler for the PIC family. */
+
+    #define _MPLAB_C18_
+
+    #if defined(__SMALL__)
+        #define _MPLAB_C18_SMALL_
+    #elif defined(__LARGE__)
+        #define _MPLAB_C18_LARGE_
+    #elif defined(__TRADITIONAL18__)
+        #define _MPLAB_C18_TRADITIONAL18_
+    #elif defined(__EXTENDED18__)
+        #define _MPLAB_C18_EXTENDED18_
+    #endif
+
+#elif defined(__PCH__) || defined(__PCB__) || defined(__PCM__)
+
+   /* CCSC Compiler for the PIC family. */
+
+   #define _CCSC_C_PIC_
+
 #else
     #error Unsupported Compiler.
 #endif
 
 
-#define	AUTOMATIC
+#define   AUTOMATIC
 #define TYPEDEF
-#define	STATIC          static
-#define	NULL_PTR	((void*)0)
+#define   STATIC          static
+#define   NULL_PTR   ((void*)0)
 /* 'INLINE ' defined in 'Std_Macros.h'. */
 
 /*
@@ -90,7 +113,7 @@
 /*
 **  Macros for Functions.
 */
-#define	FUNC(rettype,memclass)  memclass rettype
+#define   FUNC(rettype,memclass)  memclass rettype
 
 /*
 **  Macros for Pointers.
@@ -112,9 +135,12 @@
 */
 #define VAR(type,memclass)                      memclass const type
 
+#include "Std_Macros.h"
+#include "Compiler_Cfg.h"
+
 
 /*
 **  Other Compilers.
 */
 
-#endif	/*  __COMPILER_H  */
+#endif   /*  __COMPILER_H  */

@@ -27,7 +27,7 @@
 
 #if defined(__CSMC__)               /* Cosmic               */
     #define CP_COMP             "cosmic/"
-    #define CP_TARGET		"compiler/cpu12/cosmic/CPU_Primitives.h"
+    #define CP_TARGET      "compiler/cpu12/cosmic/CPU_Primitives.h"
 #elif defined(__GNUC__)             /* GNU GCC              */
 
     #if defined(__arm__)
@@ -65,6 +65,14 @@
 
 #elif defined(__IMAGECRAFT__)       /* Imagecraft           */
     #define CP_COMP             "imagecraft/"
+#elif defined(__18CXX )
+
+    #define CP_TARGET       "compiler/pic/mpl_c18/CPU_Primitives.h"
+
+#elif defined(__PCH__) || defined(__PCB__) || defined(__PCM__)
+
+    #define CP_TARGET       "compiler/pic/ccsc/CPU_Primitives.h"
+
 #else                               /* todo: Add Support    */
     #error Unsupported Compiler.
 #endif

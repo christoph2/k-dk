@@ -1,5 +1,6 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
@@ -20,33 +21,39 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- *  s. FLOSS-EXCEPTION.txt
+ * s. FLOSS-EXCEPTION.txt
  */
 
-#if !defined(__KDK_CPUS_H)
-#define __KDK_CPUS_H
+#include "Kdk_Error.h"
 
-/*
-**  Supported CPU-Families.
-*/
-#define CPU12_HC12          1
-#define CPU12_S12           2
-#define CPU12_S12X          3
+// _DEV_ERROR_DETECT
+#if 0
+#if AR_DEV_ERROR_DETECT(DIO_4711_MEBI)==STD_ON
+AR_IMPLEMENT_MODULE_STATE_VAR(DIO_4711_MEBI);
+#endif
 
-#define PIC_F18             4
+#if AR_DEV_ERROR_DETECT(PORT)==STD_ON
+    AR_ASSERT_MODULE_INITIALZATION(PORT,AR_SERVICE_PORT_SET_PIN_DIRECTION);
 
-/*
-**  HC12-Family-Members.
-*/
-#define CPU12_HC12B32       1
-#define CPU12_HC12BC32      2
-#define CPU12_HC12DG128A    3
-#define CPU12_HC12DT128A    4
+#if 0
+    if (!AR_MODULE_IS_INITIALIZED(PORT)) {
+        Det_ReportError(PORT_MODULE_ID,PORT_INSTANCE_ID,AR_SERVICE_PORT_SET_PIN_DIRECTION,PORT_E_UNINIT);
+    }
+#endif
+#endif
+#endif
 
-/*
-**  S12-Family-Members.
-*/
-#define CPU12_S12DP256B     1
+void KDKError_Init(void)
+{
 
-#endif /* __KDK_CPUS_H */
+}
 
+void KDKError_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
+{
+
+}
+
+void KDKError_Start(void)
+{
+
+}

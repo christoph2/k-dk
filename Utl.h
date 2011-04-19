@@ -46,7 +46,7 @@ typedef struct tagUtl_DivremType {
 } Utl_DivremType;
 
 
-typedef sint8 (*Utl_CompareFuncType)(void const * lhs,void const * rhs);
+//typedef sint8 (*Utl_CompareFuncType)(void const * lhs,void const * rhs);
 
 /*
 **  Global Constants.
@@ -84,7 +84,7 @@ void Utl_StrNCpy(/*@out@*/uint8 * RESTRICT dst,/*@in@*/const uint8 * RESTRICT  s
 void Utl_StrRev(/*@in@*//*@out@*/uint8 *str);
 const uint8 *Utl_StrChr(/*@in@*/const uint8 * str,uint8 ch);
 
-void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,uint16 elem_size,Utl_CompareFuncType compare_func);
+//void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,uint16 elem_size,Utl_CompareFuncType compare_func);
 
 void Utl_Divrem(uint16 dividend,uint16 divisor,/*@out@*/Utl_DivremType *res);
 boolean Utl_FloatsAreNearlyEqual(float32 lhs,float32 rhs,sint32 max_difference);
@@ -109,8 +109,8 @@ uint32 Utl_Swap32(uint32 *dw);
 /*
 **  Global Function-like Macros.
 */
-#define UTL_BIT_GET8(value,bit)	    ((( (value) & Utl_SetBitTab8[(bit)]) != (uint8)0x00) ? Std_High : Std_Low)
-#define UTL_BIT_SET8(value,bit)	    ((value)  |= Utl_SetBitTab8[(bit)])
+#define UTL_BIT_GET8(value,bit)       ((( (value) & Utl_SetBitTab8[(bit)]) != (uint8)0x00) ? Std_High : Std_Low)
+#define UTL_BIT_SET8(value,bit)       ((value)  |= Utl_SetBitTab8[(bit)])
 #define UTL_BIT_RESET8(value,bit)   ((value)  &= Utl_ClearBitTab8[(bit)])
 #define UTL_BIT_TOGGLE8(value,bit)  ((value)  ^= Utl_SetBitTab8[(bit)])
 

@@ -22,51 +22,19 @@
  *
  *  s. FLOSS-EXCEPTION.txt
  */
-#if !defined( __PLATFORM_TYPES_H)
-#define __PLATFORM_TYPES_H
+#if !defined( __PLATFORM_TYPES_PIC_H)
+#define __PLATFORM_TYPES_PIC_H
 
-//#include "Sys_Cfg.h"
 
-#define CPU_TYPE_8      8
-#define CPU_TYPE_16     16
-#define CPU_TYPE_32     32
-
-#define MSB_FIRST       0
-#define LSB_FIRST       1
-
-#define HIGH_BYTE_FIRST 0
-#define   LOW_BYTE_FIRST  1
-
-#if !defined(NULL)
-    #define NULL        0
-#endif
-
-#if CPU_FAMILY==CPU12_HC12
-
-   #include "mcu/hc12/inc/Platform_Types_HC12.h"
-
-#elif CPU_FAMILY==CPU12_S12
-
-   #include "mcu/s12/inc/Platform_Types_S12.h"
-
-#elif CPU_FAMILY==PIC_F18
-
-   #include "mcu/pic/inc/Platform_Types_PIC.h"
-
-#else
-   #error Unknown CPU family.
-#endif
-
-#if 0
-
-/* Definitions for CPU12. */
+/* Definitions for PIC. */
 
 /* Symbols  */
 #define   CPU_TYPE        CPU_TYPE_16
 #define   CPU_BIT_ORDER   LSB_FIST
 #define   CPU_BYTE_ORDER  HIGH_BYTE_FIRST
 
-#if (defined(__IAR_SYSTEMS_ICC__) && defined(_DLIB_ADD_C99_SYMBOLS)) || (defined(_C99_COMPILER)) || (defined(_CPP_COMPILER))
+#if ((defined(__PCH__) || defined(__PCB__) || defined(__PCM__)) && defined(_DLIB_ADD_C99_SYMBOLS)) || (defined(_C99_COMPILER)) || (defined(_CPP_COMPILER))
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -97,20 +65,26 @@ typedef /*@unsigned-integral-type@*/    uint_least32_t  uint32_least;
 
 #else
 /* Types  */
-typedef unsigned char   boolean;
+typedef int1            boolean;
+#if 0
+typedef signed int8     sint8;
+typedef unsigned int8   uint8;
+#endif
 typedef signed char     sint8;
 typedef unsigned char   uint8;
-typedef signed short    sint16;
-typedef unsigned short  uint16;
-typedef signed long     sint32;
-typedef unsigned long   uint32;
 
-typedef signed char     sint8_least;
-typedef unsigned char   uint8_least;
-typedef signed short    sint16_least;
-typedef unsigned short  uint16_least;
-typedef signed long     sint32_least;
-typedef unsigned long   uint32_least;
+typedef signed int16    sint16;
+typedef unsigned int16  uint16;
+typedef signed int32    sint32;
+typedef unsigned int32  uint32;
+
+typedef signed int8     sint8_least;
+typedef unsigned int8   uint8_least;
+typedef signed int16    sint16_least;
+typedef unsigned int16  uint16_least;
+typedef signed int32    sint32_least;
+typedef unsigned int32  uint32_least;
+
 
 #if !defined(TRUE)
     #define TRUE        ((boolean)1)
@@ -122,12 +96,11 @@ typedef unsigned long   uint32_least;
 
 #endif
 
-typedef float           float32;
-typedef double          float64;
+//typedef float           float32;
+//typedef double          float64;
 typedef void *          pvoid;
-typedef unsigned int    SizeType;
-typedef int             PtrDiffType;
+typedef unsigned int16  SizeType;
+typedef signed int16    PtrDiffType;
 
-#endif
+#endif /* __PLATFORM_TYPES_PIC_H  */
 
-#endif /* __PLATFORM_TYPES_H  */

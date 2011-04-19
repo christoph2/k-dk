@@ -34,6 +34,8 @@
     #define II_INC_COMP_C             "iar/ISR_IAR.c"
 #elif defined(__IMAGECRAFT__)       /* Imagecraft           */
     #define II_INC_COMP_C             "imagecraft/ISR_ICC.c"
+#elif defined(__PCH__) || defined(__PCB__) || defined(__PCM__)
+   #define II_INC_COMP_C              "ccsc/ISR_CCSC.c"
 #else                               /* todo: Add Support    */
     #error Unsupported Compiler.
 #endif

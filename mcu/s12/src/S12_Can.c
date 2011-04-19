@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -39,7 +39,8 @@
 **  todo: GML (Garantied Message Latency) rechachieren!!!
 */
 
-#include "mcu/s12/inc/Can.h"
+#if 0
+#include "mcu/s12/inc/S12_Can.h"
 #if AR_VERSION_CHECK_INTERNAL_FAILS(CAN,3,1,0,1,0)
     #error Wrong Version-Information of Include-File 'Can.h' !
 #endif
@@ -48,8 +49,9 @@
 #if AR_VERSION_CHECK_FAILS(DET,3,1)
     #error Wrong Version-Information of Include-File 'Det.h' !
 #endif
+#endif
 
-#include "S12_Can.h"
+#include "mcu/s12/inc/S12_Can.h"
 #include "Hw_Cfg.h"
 
 
@@ -57,14 +59,14 @@
 **  Local Functions.
 */
 
-static void Can_Init_Impl(const Can_ConfigType *Config);
+static void Can_Init_Impl(const S12Can_ConfigType *Config);
 static void Can_GetVersionInfo_Impl(Std_VersionInfoType *versioninfo);
-static void Can_InitController_Impl(uint8 Controller,const Can_ControllerConfigType *Config);
-static Can_ReturnType Can_SetControllerMode_Impl(uint8 Controller,Can_StateTransitionType Transition);
+//static void Can_InitController_Impl(uint8 Controller,const Can_ControllerConfigType *Config);
+//static Can_ReturnType Can_SetControllerMode_Impl(uint8 Controller,Can_StateTransitionType Transition);
 static void Can_DisableControllerInterrupts_Impl(uint8 Controller);
 static void Can_EnableControllerInterrupts_Impl(uint8 Controller);
 static Std_ReturnType Can_Cbk_CheckWakeup_Impl(uint8 Controller);
-static Can_ReturnType Can_Write_Impl(uint8 Hth,const Can_PduType *PduInfo);
+//static Can_ReturnType Can_Write_Impl(uint8 Hth,const Can_PduType *PduInfo);
 static void Can_MainFunction_Write_Impl(void);
 static void Can_MainFunction_Read_Impl(void);
 static void Can_MainFunction_BusOff_Impl(void);
@@ -279,11 +281,7 @@ static const S12Can_BusTimingType Can_SpeedTable[]={
 #endif
 
 
-/*
-**  Initialization-State can be determined be HW, we don't need a static var.
-*/
-AR_IMPLEMENT_MODULE_STATE_VAR(CAN);
-
+#if 0
 /*
 **  This is only needed if the CAN-Driver is not used in AUTOSAR-Context,
 **  where CanIf-Callbacks are fixed.
@@ -301,6 +299,7 @@ typedef struct tagCan_DriverNotificationsType {
     Can_CancelTxConfirmationNotificationType CancelTxNotification;
     Can_ControllerBusoffNotificationType ControllerBusoffNotification;
 } Can_DriverNotificationsType;
+#endif
 
 #if 0
     Notifications/Callbacks.
@@ -338,6 +337,7 @@ typedef enum tagCan_HwStateType {
 static Can_HwStateType Can_GetHwState(S12Can_ConfigType const * const Cfg,boolean *TransitState);
 static boolean Can_HwInterruptsEnabled(void);
 
+#if 0
 const Can_PublicIfType Can_PublicIf={
     Can_Init_Impl,
     Can_GetVersionInfo_Impl,
@@ -352,6 +352,7 @@ const Can_PublicIfType Can_PublicIf={
     Can_MainFunction_BusOff_Impl,
     Can_MainFunction_Wakeup_Impl
 };
+#endif
 
 #if 0
 
@@ -386,7 +387,7 @@ const Can_PublicIfType Can_PublicIf={
 
 
 
-void Can_Init_Impl(const Can_ConfigType *Config)
+void Can_Init_Impl(const S12Can_ConfigType *Config)
 {
 #if CAN_DEV_ERROR_DETECT==STD_ON
     if (CAN_State!=BSW_UNINIT) {
@@ -398,7 +399,7 @@ void Can_Init_Impl(const Can_ConfigType *Config)
 #endif  /* CAN_DEV_ERROR_DETECT */
 
     /*!REQ!AR!CAN175!*/
-    CAN_DET_ASSERT(Config!=(const Can_ConfigType *)NULL,AR_SERVICE_CAN_INIT,CAN_E_PARAM_POINTER);
+    CAN_DET_ASSERT(Config!=(const S12Can_ConfigType *)NULL,AR_SERVICE_CAN_INIT,CAN_E_PARAM_POINTER);
 }
 
 
@@ -417,10 +418,12 @@ void Can_GetVersionInfo_Impl(Std_VersionInfoType *versioninfo)
 }
 
 
+#if 0
 void Can_InitController_Impl(uint8 Controller,const Can_ControllerConfigType *Config)
 {
 
 }
+#endif
 
 /*
                         |
@@ -434,6 +437,7 @@ void Can_InitController_Impl(uint8 Controller,const Can_ControllerConfigType *Co
 
 */
 
+#if 0
 Can_ReturnType Can_SetControllerMode_Impl(uint8 Controller,Can_StateTransitionType Transition)
 {
     /*
@@ -446,8 +450,8 @@ Can_ReturnType Can_SetControllerMode_Impl(uint8 Controller,Can_StateTransitionTy
     CAN_T_SLEEP
     CAN_T_WAKEUP
 #endif
-
 }
+#endif
 
 
 void Can_DisableControllerInterrupts_Impl(uint8 Controller)
@@ -494,7 +498,7 @@ Std_ReturnType Can_Cbk_CheckWakeup_Impl(uint8 Controller) /* Std_ReturnType Can_
 /*
 **  Struktur f. Controller-Variablen.
 */
-
+#if 0
 typedef struct tagCan_ControllerStateType {
     PduIdType PduHandleTransmittedOnHTH[3]; /* todo: Parameter 'CAN_NUM_HTHS' oder so!!! */
 
@@ -548,7 +552,7 @@ Can_ReturnType Can_Write_Impl(uint8 Hth,const Can_PduType *PduInfo)
     **
     */
 }
-
+#endif
 
 void Can_MainFunction_Write_Impl(void)
 {
@@ -586,6 +590,7 @@ void Can_MainFunction_Wakeup_Impl(void)
                                         'PASS_THROUG_IDENTIFIERS'
 #endif
 
+#if 0
 /*
 ** Filter-Masken sind als Sub-Container Controllern zugeordnet (0..*)
 */
@@ -599,6 +604,7 @@ typedef struct tagCan_FilterMaskType {
                                   - Extended identifier mask.
 */
 } Can_FilterMaskType;
+#endif
 
 
 typedef struct tagCan_HardwareObjectConfigType {
@@ -613,7 +619,7 @@ typedef struct tagCan_HardwareObjectConfigType {
                                 - mixed mode
                              ImplementationType: Can_IdType
                             */
-    Can_IdType CanIdValue;  /* Specifies (together with the filter mask) the identifiers range that passes the hardware filter. */
+//    Can_IdType CanIdValue;  /* Specifies (together with the filter mask) the identifiers range that passes the hardware filter. */
 
     uint8 CanObjectType;    /* enum: [RECEIVE|TRANSMIT] - Specifies if the HardwareObject is used as Transmit */
                             /* or as Receive object */
@@ -630,7 +636,7 @@ typedef struct tagCan_HardwareObjectConfigType {
                             */
 
     /* todo: Für die folgenden beiden Referenz-Parameter optimale Datenstrukturen finden!!! */
-    Can_ControllerConfigType const * const CanControllerRef;    /* Reference to CAN Controller to which the HOH */
+//    Can_ControllerConfigType const * const CanControllerRef;    /* Reference to CAN Controller to which the HOH */
                                                                 /* is associated to. */
     /* einem Identifier ist genau eine Filter-Maske zugeordnet. */
 #if 0

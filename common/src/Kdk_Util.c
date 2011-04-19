@@ -1,8 +1,8 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
- *                                      cpu12.gems@googlemail.com>
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -23,30 +23,9 @@
  *  s. FLOSS-EXCEPTION.txt
  */
 
-#if !defined(__KDK_CPUS_H)
-#define __KDK_CPUS_H
+#include "Kdk.h"
 
-/*
-**  Supported CPU-Families.
-*/
-#define CPU12_HC12          1
-#define CPU12_S12           2
-#define CPU12_S12X          3
-
-#define PIC_F18             4
-
-/*
-**  HC12-Family-Members.
-*/
-#define CPU12_HC12B32       1
-#define CPU12_HC12BC32      2
-#define CPU12_HC12DG128A    3
-#define CPU12_HC12DT128A    4
-
-/*
-**  S12-Family-Members.
-*/
-#define CPU12_S12DP256B     1
-
-#endif /* __KDK_CPUS_H */
-
+uint8 Kdk_CalculatePinDirection(uint8 changeable,uint8 initialValue,uint8 ActualValue)
+{
+    return (~changeable & initialValue) | (changeable & ActualValue);
+}

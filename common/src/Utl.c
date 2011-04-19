@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
- #include "Utl.h"
+#include "Utl.h"
 
 const uint8 Utl_SetBitTab8[8]={
     (uint8)0x01,(uint8)0x02,(uint8)0x04,(uint8)0x08,(uint8)0x10,(uint8)0x20,(uint8)0x40,(uint8)0x80
@@ -51,6 +51,7 @@ const uint16 Utl_ClearBitTab16[16]={
 
 static uint32 NextRandomNumber=1;
 
+#if 0
 boolean Utl_BitGet(uint16 w,uint8 num)
 {
     return ((w & Utl_SetBitTab16[num])!=(uint16)0x0000U);
@@ -72,6 +73,7 @@ uint16 Utl_BitToggle(uint16 w,uint8 num)
 {
     return w^=Utl_SetBitTab16[num];
 }
+#endif
 
 uint16 Utl_BitGetHighest(uint16 w)
 {
@@ -285,6 +287,7 @@ void Utl_Itoa(uint32 value,uint8 base,uint8 * buf)
     }
 }
 
+#if 0
 void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,uint16 elem_size,Utl_CompareFuncType compare_func)
 {
     uint16 mid;
@@ -310,7 +313,7 @@ void const * Utl_BinSearch(void const * key,void const * base,uint16 num_elems,u
 
     return (void const *)NULL;
 }
-
+#endif
 
 boolean Utl_FloatsAreNearlyEqual(float lhs,float rhs,sint32 max_difference)
 {

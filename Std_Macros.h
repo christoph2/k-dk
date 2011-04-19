@@ -24,6 +24,8 @@
 #if !defined(__STD_MACROS_H)
 #define __STD_MACROS_H
 
+#include "Sys_Cfg.h"
+
 #if defined(__IAR_SYSTEMS_ICC__)
 #pragma diag_suppress=Pe236
 #endif
@@ -42,6 +44,7 @@
 
 
 /* check for C1x-Compiler */
+/*
 #if 0
 #if defined(__STDC_VERSION__)
     #if __STDC_VERSION__>=??????L
@@ -49,6 +52,7 @@
     #endif
 #endif
 #endif
+*/
 
 #if defined(_C99_COMPILER) || defined(_C1x_COMPILER)
 #define _MODERN_C
@@ -74,7 +78,9 @@
     #define INLINE inline
     #define RESTRICT
 #else
+#if !defined(INLINE)
     #define INLINE
+#endif
     #define RESTRICT
 #endif
 
@@ -251,3 +257,4 @@ typedef void (*VoidFunctionType)(void);
     _END_BLOCK                                                      \
 
 #endif /* __STD_MACROS_H */
+

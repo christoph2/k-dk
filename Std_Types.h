@@ -23,12 +23,13 @@
  *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__STD_TYPES_H)
-#define	__STD_TYPES_H
+#define   __STD_TYPES_H
 
+#include "Compiler.h"
 #include "Std_Macros.h"
 #include "Platform_Types.h"
-#include "Compiler.h"
-#include "Os_Types.h"
+
+//#include "Os_Types.h"
 
 #define E_NOT_OK    ((uint8)0x01)
 
@@ -59,11 +60,12 @@ typedef struct tagStd_VersionInfoType {
     uint8 sw_patch_version;
 } Std_VersionInfoType;
 
-
+#if !(defined(__PCH__) || defined(__PCB__) || defined(__PCM__))
 typedef enum tagStd_LevelType {
-    Std_Low=STD_LOW,
-    Std_High=STD_HIGH
+   Std_Low,
+   Std_High
 } Std_LevelType;
+#endif
 
-#endif	/* __STD_TYPES_H  */
+#endif   /* __STD_TYPES_H  */
 

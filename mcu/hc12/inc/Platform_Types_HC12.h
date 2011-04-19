@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -22,49 +22,16 @@
  *
  *  s. FLOSS-EXCEPTION.txt
  */
-#if !defined( __PLATFORM_TYPES_H)
-#define __PLATFORM_TYPES_H
+#if !defined( __PLATFORM_TYPES_HC12_H)
+#define __PLATFORM_TYPES_HC12_H
 
-//#include "Sys_Cfg.h"
-
-#define CPU_TYPE_8      8
-#define CPU_TYPE_16     16
-#define CPU_TYPE_32     32
-
-#define MSB_FIRST       0
-#define LSB_FIRST       1
-
-#define HIGH_BYTE_FIRST 0
-#define   LOW_BYTE_FIRST  1
-
-#if !defined(NULL)
-    #define NULL        0
-#endif
-
-#if CPU_FAMILY==CPU12_HC12
-
-   #include "mcu/hc12/inc/Platform_Types_HC12.h"
-
-#elif CPU_FAMILY==CPU12_S12
-
-   #include "mcu/s12/inc/Platform_Types_S12.h"
-
-#elif CPU_FAMILY==PIC_F18
-
-   #include "mcu/pic/inc/Platform_Types_PIC.h"
-
-#else
-   #error Unknown CPU family.
-#endif
-
-#if 0
 
 /* Definitions for CPU12. */
 
 /* Symbols  */
-#define   CPU_TYPE        CPU_TYPE_16
-#define   CPU_BIT_ORDER   LSB_FIST
-#define   CPU_BYTE_ORDER  HIGH_BYTE_FIRST
+#define	CPU_TYPE        CPU_TYPE_16
+#define	CPU_BIT_ORDER   LSB_FIST
+#define	CPU_BYTE_ORDER  HIGH_BYTE_FIRST
 
 #if (defined(__IAR_SYSTEMS_ICC__) && defined(_DLIB_ADD_C99_SYMBOLS)) || (defined(_C99_COMPILER)) || (defined(_CPP_COMPILER))
 #include <stdint.h>
@@ -128,6 +95,5 @@ typedef void *          pvoid;
 typedef unsigned int    SizeType;
 typedef int             PtrDiffType;
 
-#endif
+#endif /* __PLATFORM_TYPES_HC12_H  */
 
-#endif /* __PLATFORM_TYPES_H  */
