@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -24,63 +24,76 @@
  * s. FLOSS-EXCEPTION.txt
  */
 
+ 
 #include "HC12_BcIo.h"
 #include "Hw_Cfg.h"
 
 
-static const uint8 HC12BcIo_Ports[]={
+/*
+** Global Variables.
+*/
+
+
+
+/*
+** Local Constants.
+*/
+static const uint8 HC12BcIo_Ports[] = {
     PORTA,
     PORTB,
     PORTE
 };
 
-static const uint8 HC12BcIo_PortDDRs[]={
+static const uint8 HC12BcIo_PortDDRs[] = {
     DDRA,
     DDRB,
     DDRE
 };
 
 
+/*
+**	Global Functions.
+*/
 void HC12BcIo_Init(void)
 {
-    HC12BCIO_REG8(PORTA)=BCIO.PortA;
-    HC12BCIO_REG8(DDRA)=BCIO.DdrA;
+    HC12BCIO_REG8(PORTA)   = BCIO.PortA;
+    HC12BCIO_REG8(DDRA)    = BCIO.DdrA;
 
-    HC12BCIO_REG8(PORTB)=BCIO.PortB;
-    HC12BCIO_REG8(DDRB)=BCIO.DdrB;
+    HC12BCIO_REG8(PORTB)   = BCIO.PortB;
+    HC12BCIO_REG8(DDRB)    = BCIO.DdrB;
 
-    HC12BCIO_REG8(PORTE)=BCIO.PortE;
-    HC12BCIO_REG8(DDRE)=BCIO.DdrE;
+    HC12BCIO_REG8(PORTE)   = BCIO.PortE;
+    HC12BCIO_REG8(DDRE)    = BCIO.DdrE;
 
-    HC12BCIO_REG8(PUCR)=BCIO.Pucr;
-    HC12BCIO_REG8(RDRIV)=BCIO.Rdriv;
+    HC12BCIO_REG8(PUCR)    = BCIO.Pucr;
+    HC12BCIO_REG8(RDRIV)   = BCIO.Rdriv;
 }
-
 
 HC12BcIo_ModeType HC12BcIo_GetMode(void)
 {
     return (HC12BcIo_ModeType)((HC12BCIO_REG8(MODE) & (uint8)0xe0) >> 5);
 }
 
-
 boolean HC12BcIo_SpecialMode(void)
 {
-    uint8 mode=(HC12BCIO_REG8(MODE) & (uint8)0xe0) >> 5;
+    uint8 mode = (HC12BCIO_REG8(MODE) & (uint8)0xe0) >> 5;
 
-    return !(((mode & ((uint8)0x04))==((uint8)0x04)) && !((mode & ((uint8)0x06))==((uint8)0x06)));
+    return !(((mode & ((uint8)0x04)) == ((uint8)0x04)) && !((mode & ((uint8)0x06)) == ((uint8)0x06)));
 }
-
 
 /*
 **  Implementation of common functions.
 */
-IMPLEMENT_IO_WRITE_PORT(HC12BCIO,HC12BcIo)
-IMPLEMENT_IO_READ_PORT(HC12BCIO,HC12BcIo)
+#if 0
+IMPLEMENT_IO_WRITE_PORT(HC12BCIO, HC12BcIo)
+IMPLEMENT_IO_READ_PORT(HC12BCIO, HC12BcIo)
 
-IMPLEMENT_IO_WRITE_CHANNEL(HC12BCIO,HC12BcIo)
-IMPLEMENT_IO_READ_CHANNEL(HC12BCIO,HC12BcIo)
+IMPLEMENT_IO_WRITE_CHANNEL(HC12BCIO, HC12BcIo)
+IMPLEMENT_IO_READ_CHANNEL(HC12BCIO, HC12BcIo)
 
-IMPLEMENT_IO_WRITE_CHANNEL_GROUP(HC12BCIO,HC12BcIo)
-IMPLEMENT_IO_READ_CHANNEL_GROUP(HC12BCIO,HC12BcIo)
+IMPLEMENT_IO_WRITE_CHANNEL_GROUP(HC12BCIO, HC12BcIo)
+IMPLEMENT_IO_READ_CHANNEL_GROUP(HC12BCIO, HC12BcIo)
 
-IMPLEMENT_IO_SET_PIN_DIRECTION(HC12BCIO,HC12BcIo)
+IMPLEMENT_IO_SET_PIN_DIRECTION(HC12BCIO, HC12BcIo)
+#endif
+

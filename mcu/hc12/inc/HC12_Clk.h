@@ -33,34 +33,34 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-#define HC12_DG128_CLK_BASE        ((uint8)0x14)
+#define HC12_DG128_CLK_BASE ((uint8)0x14)
 
-#define RTICTL          ((uint8)0x00)
-    /* RTICTL-Bits. */
-    #define RTIE        ((uint8)0x80)
-    #define RSWAI       ((uint8)0x40)
-    #define RSBCK       ((uint8)0x20)
-    #define RTBYP       ((uint8)0x08)
-    #define RTR2        ((uint8)0x04)
-    #define RTR1        ((uint8)0x02)
-    #define RTR0        ((uint8)0x01)
+#define RTICTL              ((uint8)0x00)
+/* RTICTL-Bits. */
+    #define RTIE            ((uint8)0x80)
+    #define RSWAI           ((uint8)0x40)
+    #define RSBCK           ((uint8)0x20)
+    #define RTBYP           ((uint8)0x08)
+    #define RTR2            ((uint8)0x04)
+    #define RTR1            ((uint8)0x02)
+    #define RTR0            ((uint8)0x01)
 
-#define RTIFLG          ((uint8)0x01)
-    /*  RTIFLG-Flags. */
-    #define RTIF        ((uint8)0x80)
+#define RTIFLG              ((uint8)0x01)
+/*  RTIFLG-Flags. */
+    #define RTIF            ((uint8)0x80)
 
-#define COPCTL          ((uint8)0x02)
-    /*  COPCTL-Flags. */
-    #define CME         ((uint8)0x80)
-    #define FCME        ((uint8)0x40)
-    #define FCMCOP      ((uint8)0x20)
-    #define WCOP        ((uint8)0x10)
-    #define DISR        ((uint8)0x08)
-    #define CR2         ((uint8)0x04)
-    #define CR1         ((uint8)0x02)
-    #define CR0         ((uint8)0x01)
+#define COPCTL              ((uint8)0x02)
+/*  COPCTL-Flags. */
+    #define CME             ((uint8)0x80)
+    #define FCME            ((uint8)0x40)
+    #define FCMCOP          ((uint8)0x20)
+    #define WCOP            ((uint8)0x10)
+    #define DISR            ((uint8)0x08)
+    #define CR2             ((uint8)0x04)
+    #define CR1             ((uint8)0x02)
+    #define CR0             ((uint8)0x01)
 
-#define COPRST          ((uint8)0x03)
+#define COPRST              ((uint8)0x03)
 
 /*
 ** Global Types.
@@ -72,31 +72,36 @@ typedef enum tagHC12Clk_StatusType {
 } HC12Clk_StatusType;
 
 typedef struct tagHC12Clk_ConfigType {
-    uint16 BaseAddr;
+    uint16  BaseAddr;
     boolean EnableWatchdog;
-    uint8 WatchdogPrescaler;
+    uint8   WatchdogPrescaler;
     boolean EnableRTI;
-    uint8 RTIPrescaler;
+    uint8   RTIPrescaler;
+    uint8   RTIModulo;
 } HC12Clk_ConfigType;
+
+typedef enum tagHC12Clk_PllLockType {
+    HC12CLK_PLL_LOCKED,
+    HC12CLK_PLL_UNLOCKED
+} HC12Clk_PllLockType;
 
 /*
 **  Function-like Macros.
 */
-#define HC12CLK_ACKNOWLEDGE_RTI_INTR()   (HC12CLK_REG8(RTIFLG)=RTIF)
-
+#define HC12CLK_ACKNOWLEDGE_RTI_INTR() (HC12CLK_REG8(RTIFLG) = RTIF)
 
 /*
 **  Function-Prototypes.
 */
-void HC12Clk_Init(void);
-HC12Clk_StatusType HC12Clk_EnableRTI(void);
-HC12Clk_StatusType HC12Clk_DisableRTI(void);
-boolean HC12Clk_RTIEnabled(void);
-HC12Clk_StatusType HC12Clk_SetRTIRate(uint8 rate);
+void                HC12Clk_Init(void);
+HC12Clk_StatusType  HC12Clk_EnableRTI(void);
+HC12Clk_StatusType  HC12Clk_DisableRTI(void);
+boolean             HC12Clk_RTIEnabled(void);
+HC12Clk_StatusType  HC12Clk_SetRTIRate(uint8 rate);
 
-void HC12Clk_EnableWatchdog(void);
-void HC12Clk_TriggerWatchdog(void);
-void HC12Clk_ResetMCU(void);
+void    HC12Clk_EnableWatchdog(void);
+void    HC12Clk_TriggerWatchdog(void);
+void    HC12Clk_ResetMCU(void);
 
 typedef void (*HC12Clk_CB_PllLockChanged)(HC12Clk_PllLockType Lock);
 

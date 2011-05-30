@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -29,103 +29,98 @@
 **  todo: HC12-SPI u. SCI zu SI (Serial Interface) bzw. MSI (Multiple Serial Interface) zusammenfassen.
 */
 
-
-static void HC12Spi_Handler(HC12Spi_ConfigType const * const Cfg);
-static boolean HC12Spi_TxReady(HC12Spi_ConfigType const * const Cfg);
-
+static void     HC12Spi_Handler(HC12Spi_ConfigType const * const Cfg);
+static boolean  HC12Spi_TxReady(HC12Spi_ConfigType const * const Cfg);
 
 void HC12Spi_Init(HC12Spi_ConfigType const * const Cfg)
 {
     uint8 ch;
 
-    HC12_REG8(Cfg,PORTS)=(uint8)0x00;
-    HC12_REG8(Cfg,DDRS)=(uint8)0xe0;
+    HC12_REG8(Cfg, PORTS)  = (uint8)0x00;
+    HC12_REG8(Cfg, DDRS)   = (uint8)0xe0;
 
-    HC12_REG8(Cfg,SPICR1)=MSTR|SWOM|SSOE;
-    HC12_REG8(Cfg,SPICR2)=(uint8)0x00;
+    HC12_REG8(Cfg, SPICR1) = MSTR | SWOM | SSOE;
+    HC12_REG8(Cfg, SPICR2) = (uint8)0x00;
 
-    HC12_REG8(Cfg,SPIBR)=(uint8)0x06;
+    HC12_REG8(Cfg, SPIBR) = (uint8)0x06;
 
-    ch=HC12_REG8(Cfg,SPISR);
-    ch=HC12_REG8(Cfg,SPIDR);
-    HC12_REG8(Cfg,SPICR1)|=SPE;
+    ch                         = HC12_REG8(Cfg, SPISR);
+    ch                         = HC12_REG8(Cfg, SPIDR);
+    HC12_REG8(Cfg, SPICR1)    |= SPE;
 }
 
-
-void HC12Spi_SetSpeed(HC12Spi_ConfigType const * const Cfg,uint8 prescaler)
+void HC12Spi_SetSpeed(HC12Spi_ConfigType const * const Cfg, uint8 prescaler)
 {
-    HC12_REG8(Cfg,SPIBR)=(prescaler & (uint8)0x07);
+    HC12_REG8(Cfg, SPIBR) = (prescaler & (uint8)0x07);
 }
-
 
 /*
     CPOL — SPI Clock Polarity Bit   (Active low/high clock).
     CPHA — SPI Clock Phase Bit      (ClockInPhase).
     LSBFE — SPI LSB-First Enable    (LSB-First).
-*/
-void HC12Spi_SetFormat(HC12Spi_ConfigType const * const Cfg,boolean cpol,boolean cpha,boolean lsbfe)
+ */
+void HC12Spi_SetFormat(HC12Spi_ConfigType const * const Cfg, boolean cpol, boolean cpha, boolean lsbfe)
 {
     uint8 mask;
+
     /* todo: Fehlercode, falls SPI 'BUSY' !!! */
 
-    mask=HC12_REG8(Cfg,SPICR1) & (uint8)0xf2;
+    mask = HC12_REG8(Cfg, SPICR1) & (uint8)0xf2;
 
-    if (cpol==TRUE) {
-        mask|=CPOL;
+    if (cpol == TRUE) {
+        mask |= CPOL;
     }
 
-    if (cpha==TRUE) {
-        mask|=CPHA;
+    if (cpha == TRUE) {
+        mask |= CPHA;
     }
 
-    if (lsbfe==TRUE) {
-        mask|=LSBF;
+    if (lsbfe == TRUE) {
+        mask |= LSBF;
     }
 
-    HC12_REG8(Cfg,SPICR1)=mask;
+    HC12_REG8(Cfg, SPICR1) = mask;
 }
-
 
 boolean HC12Spi_Ready(HC12Spi_ConfigType const * const Cfg)
 {
-    return (HC12_REG8(Cfg,SPISR) & SPIF)!=(uint8)0;
+    return (HC12_REG8(Cfg, SPISR) & SPIF) != (uint8)0;
 }
-
 
 boolean HC12Spi_TxReady(HC12Spi_ConfigType const * const Cfg)    /* TransmitterEmpty */
 {
 #if 0
-    if ((HC12_REG8(Cfg,SPISR) & SPTEF) || (HC12_REG8(Cfg,SPICR1) & SPTIE)) {
+
+    if ((HC12_REG8(Cfg, SPISR) & SPTEF) || (HC12_REG8(Cfg, SPICR1) & SPTIE)) {
         return FALSE;
     } else {
         return TRUE;
     }
+
 #endif
     return TRUE;
 }
 
-
-uint8 HC12Spi_IOByte(HC12Spi_ConfigType const * const Cfg,uint8 data)
+uint8 HC12Spi_IOByte(HC12Spi_ConfigType const * const Cfg, uint8 data)
 {
-    HC12_REG8(Cfg,SPIDR)=data;
+    HC12_REG8(Cfg, SPIDR) = data;
     WAIT_FOR(HC12Spi_Ready(Cfg));
 /*    WAIT_FOR(HC12Spi_TxReady(Cfg)); */
 
-    return HC12_REG8(Cfg,SPIDR);
+    return HC12_REG8(Cfg, SPIDR);
 }
 
-
-void HC12Spi_IOBuffer(HC12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,boolean use_interrupt)
+void HC12Spi_IOBuffer(HC12Spi_ConfigType const * const Cfg, uint8 * data, uint8 len, boolean use_interrupt)
 {
     uint8 idx;
 
     if (len) {
-        if (len==(uint8)1) {
-            data[0]=HC12Spi_IOByte(Cfg,data[0]);
+        if (len == (uint8)1) {
+            data[0] = HC12Spi_IOByte(Cfg, data[0]);
         } else {
-            if (use_interrupt==FALSE) {
-                for (idx=(uint8)0;idx<len;++idx) {
-                    data[idx]=HC12Spi_IOByte(Cfg,data[idx]);
+            if (use_interrupt == FALSE) {
+                for (idx = (uint8)0; idx < len; ++idx) {
+                    data[idx] = HC12Spi_IOByte(Cfg, data[idx]);
                 }
             } else {
 
@@ -136,21 +131,24 @@ void HC12Spi_IOBuffer(HC12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len
     }
 }
 
-
 void HC12Spi_Handler(HC12Spi_ConfigType const * const Cfg)
 {
     uint8 ch;
+
 #if 0
-    if ((HC12_REG8(Cfg,SPISR) & SPTEF)==SPTEF) {
-        if (Cfg->Vars->IOBufPtr<Cfg->Vars->IOBufLength) {
-            HC12_REG8(Cfg,SPIDR)=Cfg->Vars->IOBufAddr[Cfg->Vars->IOBufPtr++];
+
+    if ((HC12_REG8(Cfg, SPISR) & SPTEF) == SPTEF) {
+        if (Cfg->Vars->IOBufPtr < Cfg->Vars->IOBufLength) {
+            HC12_REG8(Cfg, SPIDR) = Cfg->Vars->IOBufAddr[Cfg->Vars->IOBufPtr++];
         } else {
-            HC12_REG8(Cfg,SPICR1)&=~SPTIE;
+            HC12_REG8(Cfg, SPICR1) &= ~SPTIE;
         }
     }
+
 #endif
-    if ((HC12_REG8(Cfg,SPISR) & SPIF)==SPIF) {
-        ch=HC12_REG8(Cfg,SPIDR);
+
+    if ((HC12_REG8(Cfg, SPISR) & SPIF) == SPIF) {
+        ch = HC12_REG8(Cfg, SPIDR);
     }
 }
 

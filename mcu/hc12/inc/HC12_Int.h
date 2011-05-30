@@ -21,10 +21,9 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- * s. FLOSS-EXCEPTION.txt
  */
-#if !defined(__HC12_SI_H)
-#define __HC12_SI_H
+#if !defined(__HC12_INT_H)
+#define __HC12_INT_H
 
 #include "HC12_Hw.h"
 
@@ -36,46 +35,46 @@ extern "C"
 /*
 **  Register-Offsets.
 */
+#define INTCR        ((uint8)0x00)
+/*  INTCR-Bits.  */
+    #define IRQE    ((uint8)0x80)
+    #define IRQEN   ((uint8)0x40)
+    #define DLY		((uint8)0x20)
 
-#define PORTS       ((uint8)0x00)
+#define HPRIO       ((uint8)0x1F)
+/*  HPRIO-Bits. */
+    #define PSEL7   ((uint8)0x80)
+    #define PSEL6   ((uint8)0x40)
+    #define PSEL5   ((uint8)0x20)
+    #define PSEL4   ((uint8)0x10)
+    #define PSEL3   ((uint8)0x08)
+    #define PSEL2   ((uint8)0x04)
+    #define PSEL1   ((uint8)0x02)
 
-#define DDRS        ((uint8)0x01)
-
-#if CPU_DERIVATE == CPU12_HC12B32 || CPU_DERIVATE == CPU12_HC12BC32 || CPU_DERIVATE == CPU12_HC12BD32
-#define PURDS       ((uint8)0x05)
-/* PURDS-Bits.  */
-    #define RDPS2   ((uint8)0x40)
-    #define RDPS1   ((uint8)0x20)
-    #define RDPS0   ((uint8)0x10)
-    #define PUPS2   ((uint8)0x04)
-    #define PUPS1   ((uint8)0x02)
-    #define PUPS0   ((uint8)0x01)
-#endif /* CPU12_HC12B32 || CPU12_HC12BC32 || CPU12_HC12BD32 */
-
-#if CPU_DERIVATE == CPU12_HC12D60 || CPU_DERIVATE == CPU12_HC12D60A
-#define PURDS       ((uint8)0x03)
-/* PURDS-Bits.  */
-    #define RDPS2   ((uint8)0x40)
-    #define RDPS1   ((uint8)0x20)
-    #define RDPS0   ((uint8)0x10)
-    #define PUPS2   ((uint8)0x04)
-    #define PUPS1   ((uint8)0x02)
-    #define PUPS0   ((uint8)0x01)
-#endif /* CPU12_HC12D60 || CPU12_HC12D60A */
-
-typedef struct tagHC12Si_ConfigType {
+/*
+**	Global Types.
+*/	
+typedef struct tagHC12Int_ConfigType {
     uint16 BaseAddr;
 
-    uint8   PortS;
-    uint8   Ddrs;
+	uint8 IntCr;
+	uint8 HPrio;
+} HC12Int_ConfigType;
 
-    uint8 PurdS;
-} HC12Si_ConfigType;
 
-void HC12Si_Init(void);
+/*
+**	Global Variables.
+*/
+extern HC12Int_ConfigType const * INT;
+
+/*
+** Global Functions.
+*/
+void    HC12Int_Init(HC12Int_ConfigType const * const ConfigPtr);
+void HC12Int_SetHighestPriorityInterrupt(uint8 value);
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif  /* __HC12_SI_H */
+#endif  /* __HC12_INT_H */

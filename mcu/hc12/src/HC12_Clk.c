@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -26,33 +26,34 @@
 #include "HC12_Clk.h"
 #include "Hw_Cfg.h"
 
-
 void HC12Clk_Init(void)
 {
-    if (CLK.EnableRTI==TRUE) {
-        status=HC12Clk_SetRTIRate(((CLK.RTIPrescaler & (uint8)0x07)<<4) | (CLK.RTIModulo & ((uint8)0x0f)));
-        if (status!=HC12CLK_OK) {
-            return status;
+    HC12Clk_StatusType status;
+
+    if (CLK.EnableRTI == TRUE) {
+        status = HC12Clk_SetRTIRate(((CLK.RTIPrescaler & (uint8)0x07) << 4) | (CLK.RTIModulo & ((uint8)0x0f)));
+
+        if (status != HC12CLK_OK) {
+/*            return status; */
         }
-        status=HC12Clk_EnableRTI();
+
+        status = HC12Clk_EnableRTI();
     } else {
-        status=HC12Clk_DisableRTI();
+        status = HC12Clk_DisableRTI();
     }
 }
 
-
-HC12Clk_StatusType HC12Clk_EnableRTI(void)  // todo: Rate.
+HC12Clk_StatusType HC12Clk_EnableRTI(void)  /* todo: Rate. */
 {
     if (HC12Clk_RTIEnabled()) {
         return HC12CLK_STATE;
     }
 
-    HC12CLK_REG8(RTIFLG)=RTIF;
-    HC12CLK_REG8(RTICTL)|=(RTIE|RSWAI|RSBCK);
+    HC12CLK_REG8(RTIFLG)   = RTIF;
+    HC12CLK_REG8(RTICTL)  |= (RTIE | RSWAI | RSBCK);
 
     return HC12CLK_OK;
 }
-
 
 HC12Clk_StatusType HC12Clk_DisableRTI(void)
 {
@@ -60,12 +61,11 @@ HC12Clk_StatusType HC12Clk_DisableRTI(void)
         return HC12CLK_STATE;
     }
 
-    HC12CLK_REG8(RTICTL=(uint8)0x00;
-    HC12CLK_REG8(RTIFLG)=RTIF;
+    HC12CLK_REG8(RTICTL)   = (uint8)0x00;
+    HC12CLK_REG8(RTIFLG)   = RTIF;
 
     return HC12CLK_OK;
 }
-
 
 HC12Clk_StatusType HC12Clk_SetRTIRate(uint8 rate)
 {
@@ -73,47 +73,44 @@ HC12Clk_StatusType HC12Clk_SetRTIRate(uint8 rate)
         return HC12CLK_STATE;
     }
 
-    HC12CLK_REG8(RTICTL)|=(rate & (uint8)0x07);
+    HC12CLK_REG8(RTICTL) |= (rate & (uint8)0x07);
 
     return HC12CLK_OK;
 }
 
-
 boolean HC12Clk_RTIEnabled(void)
 {
-    return (HC12CLK_REG8(RTICTL) & RTIE)==RTIE;
+    return (HC12CLK_REG8(RTICTL) & RTIE) == RTIE;
 }
-
 
 void HC12Clk_EnableWatchdog(void)
 {
-    HC12CLK_REG8(COPCTL)=(CME|FCME|(CLK.WatchdogPrescaler & (uint8)0x07));
+    HC12CLK_REG8(COPCTL) = (CME | FCME | (CLK.WatchdogPrescaler & (uint8)0x07));
 }
-
 
 void HC12Clk_TriggerWatchdog(void)
 {
-    HC12CLK_REG8(COPRST)=(uint8)0x55;
-    HC12CLK_REG8(COPRST)=(uint8)0xaa;;
+    HC12CLK_REG8(COPRST)   = (uint8)0x55;
+    HC12CLK_REG8(COPRST)   = (uint8)0xaa;
 }
-
 
 void HC12Clk_ResetMCU(void)
 {
-    if (!(HC12CLK_REG8(COPCTL) & (CR2|CR1|CR0))) {
-        HC12CLK_REG8(COPCTL)=CR0;           /* Enable COP if disabled.                      */
+    if (!(HC12CLK_REG8(COPCTL) & (CR2 | CR1 | CR0))) {
+        HC12CLK_REG8(COPCTL) = CR0;           /* Enable COP if disabled.                      */
     }
-    HC12CLK_REG8(COPRST)=(uint8)0xcc;       /* Write garbage to 'ARMCOP' ==> instant RESET. */
-}
 
+    HC12CLK_REG8(COPRST) = (uint8)0xcc;       /* Write garbage to 'ARMCOP' ==> instant RESET. */
+}
 
 #if defined(HC12CLK_USE_REALTIME_INTERRUPT)
 ISR1(RTI_Vector)
 {
     static uint32 cnt;
 
-    HC12PLL_REG8(RTIFLG)=RTIF;
+    HC12PLL_REG8(RTIFLG) = RTIF;
 
     cnt++;
 }
 #endif  /* HC12CLK_USE_REALTIME_INTERRUPT */
+

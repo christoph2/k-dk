@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -23,7 +23,7 @@
  *
  */
 #if !defined(__HC12_BDLC_H)
-#define	__HC12_BDLC_H
+#define __HC12_BDLC_H
 
 #include "HC12_Hw.h"
 #include "Utl.h"
@@ -33,12 +33,11 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-
 /*
 **  Register-Offsets.
 */
 #define BCR1        ((uint8)0x00)
-    /* BCR1-Bits.   */
+/* BCR1-Bits.   */
     #define IMSG    ((uint8)0x80)
     #define CLKS    ((uint8)0x40)
     #define R1      ((uint8)0x20)
@@ -49,7 +48,7 @@ extern "C"
 #define BSVR        ((uint8)0x01)
 
 #define BCR2        ((uint8)0x02)
-    /* BCR2-Bits.   */
+/* BCR2-Bits.   */
     #define ALOOP   ((uint8)0x80)
     #define DLOOP   ((uint8)0x40)
     #define RX4XE   ((uint8)0x20)
@@ -62,7 +61,7 @@ extern "C"
 #define BDR         ((uint8)0x03)
 
 #define BARD        ((uint8)0x04)
-    /* BARD-Bits.   */
+/* BARD-Bits.   */
     #define ATE     ((uint8)0x80)
     #define RXPOL   ((uint8)0x40)
     #define BO3     ((uint8)0x08)
@@ -71,7 +70,7 @@ extern "C"
     #define BO0     ((uint8)0x01)
 
 #define DLCSCR      ((uint8)0x05)
-    /* DLCSCR-Bits. */
+/* DLCSCR-Bits. */
     #define BDLCEN  ((uint8)0x04)
     #define PUPDLC  ((uint8)0x02)
     #define RDPDLC  ((uint8)0x01)
@@ -79,7 +78,7 @@ extern "C"
 #define PORTDLC     ((uint8)0x06)
 
 #define DDRDLC      ((uint8)0x07)
-    /* DDRDLC-Bits. */
+/* DDRDLC-Bits. */
     #define DDDLC6  ((uint8)0x40)
     #define DDDLC5  ((uint8)0x20)
     #define DDDLC4  ((uint8)0x10)
@@ -88,33 +87,29 @@ extern "C"
     #define DDDLC1  ((uint8)0x02)
     #define DDDLC0  ((uint8)0x01)
 
-
 typedef struct tagHC12Bdlc_ConfigType {
     uint16 BaseAddr;
 
-    uint8 Bcr1;
-    uint8 Bcr2;
-    uint8 Bard;
-    uint8 DlcScr;
-    uint8 PortDlc;
-    uint8 DdrDlc;
+    uint8   Bcr1;
+    uint8   Bcr2;
+    uint8   Bard;
+    uint8   DlcScr;
+    uint8   PortDlc;
+    uint8   DdrDlc;
 } HC12Bdlc_ConfigType;
-
 
 /*
 ** Function-Like Macros.
 */
-#define HC12Bdlc_IgnoreMessage()    (HC12BDLC_REG8(BCR1)|=IMSG)
-
+#define HC12Bdlc_IgnoreMessage() (HC12BDLC_REG8(BCR1) |= IMSG)
 
 /*
 **  Functions.
 */
-void HC12Bdlc_Init(void);
+void    HC12Bdlc_Init(void);
 boolean HC12Bdlc_Busy(void);
 boolean HC12Bdlc_Rxd(void);
-uint8 HC12Bdlc_Transmit(uint8 const * buf,uint8 len);
-
+uint8   HC12Bdlc_Transmit(uint8 const * buf, uint8 len);
 
 #if defined(__cplusplus)
 }

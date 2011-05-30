@@ -24,12 +24,55 @@
  * s. FLOSS-EXCEPTION.txt
  */
 
-#include "HC12_Si.h"
-#include "Hw_Cfg.h"
+#include "HC12_Int.h"
 
-void HC12Si_Init(void)
+/*
+** Global Variables.
+*/
+HC12Int_ConfigType const * INT;
+
+
+/*
+** Global Functions.
+*/
+void HC12Int_Init(HC12Int_ConfigType const * const ConfigPtr)
 {
-    HC12SI_REG8(PORTS) = SI.PortS;
-    HC12SI_REG8(DDRS)  = SI.Ddrs;
+    INT = ConfigPtr;
+    HC12INT_REG8(INTCR)    = ConfigPtr->IntCr;
+    HC12INT_REG8(HPRIO)    = ConfigPtr->HPrio;	
 }
+
+
+void HC12Int_SetHighestPriorityInterrupt(uint8 value)
+{
+    HC12INT_REG8(HPRIO)    = value;	
+}
+
+
+/*
+** ISR-Handlers.
+*/
+#if defined(HC12_FEATURE_XIRQ)
+ISR1(HC12Int_XIRQHandler)
+{
+#if !defined(HC12INT_XIRQ_CALLBACK)
+#error Symbol HC12INT_XIRQ_CALLBACK must be defined.
+#else
+    HC12INT_XIRQ_CALLBACK();
+#endif  /* HC12INT_XIRQ_CALLBACK */
+}
+#endif /* HC12_FEATURE_XIRQ */
+
+
+#if defined(HC12_FEATURE_IRQ)
+ISR1(HC12Int_IRQHandler)
+{
+#if !defined(HC12INT_IRQ_CALLBACK)
+#error Symbol HC12INT_IRQ_CALLBACK must be defined.
+#else
+    HC12INT_IRQ_CALLBACK();
+#endif  /* HC12INT_IRQ_CALLBACK */
+}
+#endif /* HC12_FEATURE_IRQ */
+
 

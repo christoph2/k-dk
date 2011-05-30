@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -30,20 +30,19 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-
 #include "S12_Iic.h"
 
-#define HC12Iic_ConfigType  S12Iic_ConfigType
+#define HC12Iic_ConfigType      S12Iic_ConfigType
 
-#define HC12Iic_Init        S12Iic_Init
-#define HC12Iic_Start       S12Iic_Start
-#define HC12Iic_Restart     S12Iic_Restart
-#define HC12Iic_Stop        S12Iic_Stop
-#define HC12Iic_Write       S12Iic_Write
-#define HC12Iic_Read        S12Iic_Read
+#define HC12Iic_Init            S12Iic_Init
+#define HC12Iic_Start           S12Iic_Start
+#define HC12Iic_Restart         S12Iic_Restart
+#define HC12Iic_Stop            S12Iic_Stop
+#define HC12Iic_Write           S12Iic_Write
+#define HC12Iic_Read            S12Iic_Read
 
-#define HC12Iic_ReadMode    S12Iic_ReadMode
-#define HC12Iic_WriteMode   S12Iic_WriteMode
+#define HC12Iic_ReadMode        S12Iic_ReadMode
+#define HC12Iic_WriteMode       S12Iic_WriteMode
 #define HC12Iic_PresenceCheck   S12Iic_PresenceCheck
 
 #if defined(__cplusplus)
@@ -51,3 +50,4 @@ extern "C"
 #endif  /* __cplusplus */
 
 #endif  /* __HC12IIC_H */
+

@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -26,37 +26,33 @@
 #include "HC12_Eep.h"
 #include "Hw_Cfg.h"
 
-
 void HC12Ect_DelayUS(uint16 uS);
 
-void HC12Eep_Init(void)
+void HC12Eep_Init(HC12EepA_ConfigType const * const ConfigPtr)
 {
-    HC12EEP_REG8(EEMCR)|=EESWAI;
-    HC12EEP_REG8(EEPROG)|=(BULKP);  /* if Busclock < fPROG, EERC is needed... */
-    HC12EEP_REG8(EEPROG)&=~EEPGM;
+    HC12EEP_REG8(EEMCR)   |= EESWAI;
+    HC12EEP_REG8(EEPROG)  |= (BULKP); /* if Busclock < fPROG, EERC is needed... */
+    HC12EEP_REG8(EEPROG)  &= ~EEPGM;
 }
-
 
 void HC12Eep_Protect(boolean on)
 {
     if (on) {
-        HC12EEP_REG8(EEPROT)|=(uint8)0x1f;
-        HC12EEP_REG8(EEPROG)|=BULKP;
+        HC12EEP_REG8(EEPROT)  |= (uint8)0x1f;
+        HC12EEP_REG8(EEPROG)  |= BULKP;
 
     } else {
-        HC12EEP_REG8(EEPROT)&=~((uint8)0x1f);
-        HC12EEP_REG8(EEPROG)&=~BULKP;
+        HC12EEP_REG8(EEPROT)  &= ~((uint8)0x1f);
+        HC12EEP_REG8(EEPROG)  &= ~BULKP;
     }
 }
 
-
 void HC12Eep_LockProtectionState(void)
 {
-    HC12EEP_REG8(EEMCR)|=PROTLCK;   /* Block-protection bits are now locked. */
+    HC12EEP_REG8(EEMCR) |= PROTLCK;   /* Block-protection bits are now locked. */
 }
 
-
-HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd,boolean b8,uint16 addr,uint16 data)
+HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 data)
 {
     /*
     **
@@ -64,61 +60,65 @@ HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd,boolean b8,uint16 addr,uint16 data)
     **  tERASE: min: 10.0 ms.
     **
     */
-    if ((addr<HC12EEP_START) || (addr>=(HC12EEP_START+HC12EEP_LEN))) {
+    if ((addr < HC12EEP_START) || (addr >= (HC12EEP_START + HC12EEP_LEN))) {
         return HC12EEP_ADDR;
     }
 
-    if (!((cmd & ERASE)==ERASE)) {
+    if (!((cmd & ERASE) == ERASE)) {
         if (!b8) {
-            if ((addr & (uint16)0x0001U)==(uint16)0x0001U) {
+            if ((addr & (uint16)0x0001U) == (uint16)0x0001U) {
                 return HC12EEP_ALIGN;
             }
+
 #if 0
-            if (*(uint16*)addr!=(uint16)0xffffU) {
+
+            if (*(uint16 *)addr != (uint16)0xffffU) {
                 return HC12EEP_NOT_ERASED;
             }
+
 #endif
         } else {
 #if 0
-            if (*(uint8*)addr!=(uint8)0xff) {
+
+            if (*(uint8 *)addr != (uint8)0xff) {
                 return HC12EEP_NOT_ERASED;
             }
+
 #endif
         }
     } else {
-        if ( ((cmd & (BYTE|ROW))==(uint8)0x00) && ((HC12EEP_REG8(EEPROG) & BULKP)==BULKP)) {
+        if ( ((cmd & (BYTE | ROW)) == (uint8)0x00) && ((HC12EEP_REG8(EEPROG) & BULKP) == BULKP)) {
             return HC12EEP_PVIOL;
         }
     }
 
-    if ((HC12EEP_REG8(EEPROT) & ((uint8)0x3f))!=(uint8)0x00) {
+    if ((HC12EEP_REG8(EEPROT) & ((uint8)0x3f)) != (uint8)0x00) {
         return HC12EEP_PVIOL;
     }
 
-    HC12EEP_REG8(EEPROG)&=~EEPGM;
+    HC12EEP_REG8(EEPROG) &= ~EEPGM;
 
     /* 1. Write BYTE|ROW|ERASE to desired value, write EELAT=1. */
     /* todo: Delay!!! */
-    HC12EEP_REG8(EEPROG)=(cmd & (uint8)0x1c) | EELAT;
+    HC12EEP_REG8(EEPROG) = (cmd & (uint8)0x1c) | EELAT;
 
     /* 2. *Write a byte or aligned word to an EEPROM-Address. */
     if (b8) {
-        *(uint8*)addr=LOBYTE(data);
+        *(uint8 *)addr = LOBYTE(data);
     } else {
-        *(uint16*)addr=data;
+        *(uint16 *)addr = data;
     }
 
     /* 3. Write EEPGM=1 */
-    HC12EEP_REG8(EEPROG)|=EEPGM;
+    HC12EEP_REG8(EEPROG) |= EEPGM;
 
-    WAIT_FOR(!((HC12EEP_REG8(EEPROG) & EEPGM)==EEPGM));
+    WAIT_FOR(!((HC12EEP_REG8(EEPROG) & EEPGM) == EEPGM));
 
 /* 6. Write EELAT=0 */
-    HC12EEP_REG8(EEPROG)&=~EELAT;
+    HC12EEP_REG8(EEPROG) &= ~EELAT;
 
     return HC12EEP_OK;
 }
-
 
 /*
 **
@@ -126,41 +126,40 @@ HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd,boolean b8,uint16 addr,uint16 data)
 **  selective write more zeros is also supported.
 **
 */
-HC12Eep_StatusType HC12Eep_WriteByte(uint16 addr,uint8 data)
+HC12Eep_StatusType HC12Eep_WriteByte(uint16 addr, uint8 data)
 {
     HC12Eep_StatusType status;
 
-    if ((data | (*(uint8*)addr))!=(uint8)0xff) {
-        status=HC12Eep_EraseByte(addr);
+    if ((data | (*(uint8 *)addr)) != (uint8)0xff) {
+        status = HC12Eep_EraseByte(addr);
 
-        if (status!=HC12EEP_OK) {
+        if (status != HC12EEP_OK) {
             return status;
         }
     }
 
-    return HC12Eep_ProgramByte(addr,data);
+    return HC12Eep_ProgramByte(addr, data);
 }
 
-
-HC12Eep_StatusType HC12Eep_WriteWord(uint16 addr,uint16 data)
+HC12Eep_StatusType HC12Eep_WriteWord(uint16 addr, uint16 data)
 {
     HC12Eep_StatusType status;
 
-    if ((data | (*(uint16*)addr))!=(uint16)0xffffU) {
-        status=HC12Eep_EraseWord(addr);
+    if ((data | (*(uint16 *)addr)) != (uint16)0xffffU) {
+        status = HC12Eep_EraseWord(addr);
 
-        if (status!=HC12EEP_OK) {
+        if (status != HC12EEP_OK) {
             return status;
         }
     }
 
-    return HC12Eep_ProgramWord(addr,data);
+    return HC12Eep_ProgramWord(addr, data);
 }
-
 
 void HC12Ect_DelayUS(uint16 uS)
 {
-    uint16 then=HC12Ect_TimerCount()+uS;
+    uint16 then = HC12Ect_TimerCount() + uS;
 
-    WAIT_FOR(HC12Ect_TimerCount()>=then);
+    WAIT_FOR(HC12Ect_TimerCount() >= then);
 }
+
