@@ -64,9 +64,28 @@ extern "C"
     #define PSEL2   ((uint8)0x04)
     #define PSEL1   ((uint8)0x02)
 
+
+/*
+** Global Types.
+*/
 typedef struct tagS12Int_ConfigType {
     uint16 BaseAddr;
+
+    uint8 ItCr;
+    uint8 HPrio;
 } S12Int_ConfigType;
+
+
+/*
+** Global Variables.
+*/
+extern S12Int_ConfigType const * INT;
+
+/*
+** Global Functions.
+*/
+void S12Int_Init(S12Int_ConfigType const * const ConfigPtr);
+void S12Int_SetHighestPriorityInterrupt(uint8 value);
 
 #if defined(__cplusplus)
 }

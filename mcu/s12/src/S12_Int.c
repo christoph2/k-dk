@@ -25,3 +25,52 @@
  */
 #include "mcu/s12/inc/S12_Int.h"
 #include "Hw_Cfg.h"
+
+/*
+** Global Variables.
+*/
+S12Int_ConfigType const * INT;
+
+
+/*
+** Global Functions.
+*/
+void S12Int_Init(S12Int_ConfigType const * const ConfigPtr)
+{
+    INT = ConfigPtr;
+    S12INT_REG8(ITCR)    = ConfigPtr->ItCr;
+    S12INT_REG8(HPRIO)    = ConfigPtr->HPrio;	
+}
+
+
+void S12Int_SetHighestPriorityInterrupt(uint8 value)
+{
+    S12INT_REG8(HPRIO)    = value;	
+}
+
+
+/*
+** ISR-Handlers.
+*/
+#if defined(HC12_FEATURE_XIRQ)
+ISR1(HC12Int_XIRQHandler)
+{
+#if !defined(HC12INT_XIRQ_CALLBACK)
+#error Symbol HC12INT_XIRQ_CALLBACK must be defined.
+#else
+    HC12INT_XIRQ_CALLBACK();
+#endif  /* HC12INT_XIRQ_CALLBACK */
+}
+#endif /* HC12_FEATURE_XIRQ */
+
+
+#if defined(HC12_FEATURE_IRQ)
+ISR1(HC12Int_IRQHandler)
+{
+#if !defined(HC12INT_IRQ_CALLBACK)
+#error Symbol HC12INT_IRQ_CALLBACK must be defined.
+#else
+    HC12INT_IRQ_CALLBACK();
+#endif  /* HC12INT_IRQ_CALLBACK */
+}
+#endif /* HC12_FEATURE_IRQ */
