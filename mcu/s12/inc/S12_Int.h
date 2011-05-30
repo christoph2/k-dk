@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -35,35 +35,34 @@ extern "C"
 /*
 **  Register-Offsets.
 */
-#define	ITCR        ((uin8t)0x15)
-    /*  ITCR-Bits.  */
-    #define WRINT   ((uin8t)0x10)
-    #define ADR3    ((uin8t)0x08)
-    #define ADR2    ((uin8t)0x04)
-    #define ADR1    ((uin8t)0x02)
-    #define ADR0    ((uin8t)0x01)
+#define ITCR        ((uint8)0x15)
+/*  ITCR-Bits.  */
+    #define WRINT   ((uint8)0x10)
+    #define ADR3    ((uint8)0x08)
+    #define ADR2    ((uint8)0x04)
+    #define ADR1    ((uint8)0x02)
+    #define ADR0    ((uint8)0x01)
 
-#define ITEST       ((uin8t)0x16)
-    /*  ITEST-Bits. */
-    #define INTE    ((uin8t)0x80)
-    #define INTC    ((uin8t)0x40)
-    #define INTA    ((uin8t)0x20)
-    #define INT8    ((uin8t)0x10)
-    #define INT6    ((uin8t)0x08)
-    #define INT4    ((uin8t)0x04)
-    #define INT2    ((uin8t)0x02)
-    #define INT0    ((uin8t)0x01)
+#define ITEST       ((uint8)0x16)
+/*  ITEST-Bits. */
+    #define INTE    ((uint8)0x80)
+    #define INTC    ((uint8)0x40)
+    #define INTA    ((uint8)0x20)
+    #define INT8    ((uint8)0x10)
+    #define INT6    ((uint8)0x08)
+    #define INT4    ((uint8)0x04)
+    #define INT2    ((uint8)0x02)
+    #define INT0    ((uint8)0x01)
 
-#define HPRIO       ((uin8t)0x1F)
-	/*  HPRIO-Bits. */
-    #define PSEL7   ((uin8t)0x80)
-    #define PSEL6   ((uin8t)0x40)
-    #define PSEL5   ((uin8t)0x20)
-    #define PSEL4   ((uin8t)0x10)
-    #define PSEL3   ((uin8t)0x08)
-    #define PSEL2   ((uin8t)0x04)
-    #define PSEL1   ((uin8t)0x02)
-
+#define HPRIO       ((uint8)0x1F)
+/*  HPRIO-Bits. */
+    #define PSEL7   ((uint8)0x80)
+    #define PSEL6   ((uint8)0x40)
+    #define PSEL5   ((uint8)0x20)
+    #define PSEL4   ((uint8)0x10)
+    #define PSEL3   ((uint8)0x08)
+    #define PSEL2   ((uint8)0x04)
+    #define PSEL1   ((uint8)0x02)
 
 typedef struct tagS12Int_ConfigType {
     uint16 BaseAddr;
@@ -73,4 +72,4 @@ typedef struct tagS12Int_ConfigType {
 }
 #endif  /* __cplusplus */
 
-#endif /* __S12_INT_H */
+#endif  /* __S12_INT_H */
