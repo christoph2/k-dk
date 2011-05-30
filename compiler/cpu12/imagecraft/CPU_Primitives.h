@@ -33,7 +33,7 @@
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_POWERDOWN_MODE()            asm("wai")
+#define CPU_ENTER_POWERDOWN_MODE()      asm("wai")
 
 
 /*
@@ -99,5 +99,19 @@ boolean CPU_INTERRUPTS_DISABLED(void);
 	    CPU_DISABLE_ALL_INTERRUPTS();       \
 	}                                       \
     _END_BLOCK	
+
+
+/*
+**  Platform specific Macros.
+*/
+#define CPU12_ENABLE_STOP_MODE()	 asm("andcc #$7f")
+
+#define CPU12_DISABLE_STOP_MODE()	 asm("orcc  #$80")
+
+#define CPU12_ENTER_STOP_MODE()		 asm("stop")
+
+#define CPU12_ENABLE_XIRQ()		 asm("andcc #$bf")
+
+
 
 #endif /* __CPU_PRIMITIVES_MCU_H */

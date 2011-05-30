@@ -35,7 +35,7 @@
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_POWERDOWN_MODE()            __wait_for_interrupt()
+#define CPU_ENTER_POWERDOWN_MODE()      __wait_for_interrupt()
 
 /* __stop_CPU() */
 
@@ -103,5 +103,18 @@
         __set_interrupt_state((__istate_t)state);   \
         __no_operation();                           \
     _END_BLOCK	
+
+
+/*
+**  Platform specific Macros.
+*/
+#define CPU12_ENABLE_STOP_MODE()	 asm("andcc #$7f")
+
+#define CPU12_DISABLE_STOP_MODE()	 asm("orcc  #$80")
+
+#define CPU12_ENTER_STOP_MODE()		 asm("stop")
+
+#define CPU12_ENABLE_XIRQ()		 asm("andcc #$bf")
+
 
 #endif /* __CPU_PRIMITIVES_MCU_H */
