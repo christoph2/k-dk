@@ -24,38 +24,13 @@
  */
 #include "HC12_Pwm.h"
 
-/*
-**
-** todo:    Functions for 8- and 16-Bit PWM.
-**          Channel enable-/disable-Functions.
-**          if disabled: as input or output (which level?)).
-*/
 
 HC12Pwm_ConfigType const * PWM;
 
-/*
-**
-**	   AUTOSAR:
-**	   ========
-**	   16-Bit duty-cycle resolution.
-**
-**	   0x0000 ==> 0%
-**	   0x8000 ==> 100%
-**
-**	   AbsoluteDutyCycle = ((uint32)AbsolutePeriodTime * RelativeDutyCycle) >> 15;
-**	                                                   / (uint16)32768U
-**
-*/
-
 #define HC12_PWM_DEINIT_API /* todo: CFG!!! */
-
-#define HC12_PWM_SCALE_DUTY_CYCLE1(ap, rd)  ((uint16)((uint32)(ap) * (rd)) / (uint16)32768U)
-#define HC12_PWM_SCALE_DUTY_CYCLE2(ap, rd)  ((uint16)(HIWORD(((uint32)(ap) * (rd)))) >> 1)
-
-static uint16   scale0(uint16 ap, uint16 rd);
-static uint16   scale1(uint16 ap, uint16 rd);
-
-/* todo: IdleState durch PortP ersetzen!!! */
+/*
+** Global Functions.
+*/
 
 void HC12Pwm_Init(HC12Pwm_ConfigType const * const ConfigPtr)
 {
@@ -93,6 +68,7 @@ void HC12Pwm_Init(HC12Pwm_ConfigType const * const ConfigPtr)
     HC12PWM_REG8(PWEN) = ConfigPtr->PwEn;
 }
 
+
 #if defined(HC12_PWM_DEINIT_API)
 void HC12Pwm_DeInit(void)
 {
@@ -102,75 +78,160 @@ void HC12Pwm_DeInit(void)
     HC12PWM_REG8(PORTP)    = PWM->IdleState;
     HC12PWM_REG8(DDRP)     = PWM->DdrP;
 }
-
 #endif /* HC12_PWM_DEINIT_API */
 
-void HC12Pwm_ResetCounter(uint8 ChannelNumber)
+
+void HC12Pwm_ResetCounter(HC12Pwm_ChannelType ChannelNumber)
 {
-    HC12PWM_REG8(PWCNT0 + ChannelNumber) = (uint8)0x00;
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        HC12PWM_REG8(PWCNT0 +  (ChannelNumber & (uint8)0x02)) = (uint16)0x0000u;
+    } else {
+        HC12PWM_REG8(PWCNT0 + ChannelNumber) = (uint8)0x00;
+    }
 }
 
-uint8 HC12Pwm_GetCounter8(uint8 ChannelNumber)
+
+uint16 HC12Pwm_GetCounter(HC12Pwm_ChannelType ChannelNumber)
 {
-    return HC12PWM_REG8(PWCNT0 + ChannelNumber);
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        return HC12PWM_REG16(PWCNT0 + (ChannelNumber & (uint8)0x02));
+    } else {
+        return (uint16)HC12PWM_REG8(PWCNT0 + ChannelNumber);
+    }
 }
 
-uint16 HC12Pwm_GetCounter16(uint8 ChannelNumber)
+
+uint16 HC12Pwm_GetPeriod(HC12Pwm_ChannelType ChannelNumber)
 {
-    return HC12PWM_REG16(PWCNT0 + (ChannelNumber << 1));
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        return HC12PWM_REG16(PWPER0 + (ChannelNumber & (uint8)0x02));
+    } else {
+        return (uint16)HC12PWM_REG8(PWPER0 + ChannelNumber);
+    }
 }
+
+
+uint16 HC12Pwm_GetDutyCycle(HC12Pwm_ChannelType ChannelNumber)
+{
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        return HC12PWM_REG16(PWDTY0 + (ChannelNumber & (uint8)0x02));
+    } else {
+        return (uint16)HC12PWM_REG8(PWDTY0 + ChannelNumber);
+    }
+}
+
+
+uint8 HC12Pwm_GetPolarity(HC12Pwm_ChannelType ChannelNumber)
+{
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        ChannelNumber &= (uint8)0x02;
+    }
+
+    return ((HC12PWM_REG8(PWPOL) & (uint8)0x0f) & ((uint8)0x01 << ChannelNumber)) >> ChannelNumber;
+}
+
 
 void HC12Pwm_SetTimebase(void)
 {
 
 }
 
-void HC12Pwm_SetDutyCycle(uint8 ChannelNumber, uint16 DutyCycle)
-{
 
+uint8 HC12Pwm_GetOutputState(HC12Pwm_ChannelType ChannelNumber)
+{
+    return (HC12Pwm_GetCounter(ChannelNumber) > HC12Pwm_GetDutyCycle(ChannelNumber)) ^ HC12Pwm_GetPolarity(ChannelNumber);
 }
 
-void HC12Pwm_SetPeriodAndDuty(uint8 ChannelNumber, uint16 Period, uint16 DutyCycle)
-{
 
+void HC12Pwm_SetDutyCycle(HC12Pwm_ChannelType ChannelNumber, uint16 DutyCycle)
+{
+    if (!HC12Pwm_ChannelActivated(ChannelNumber)) {
+       HC12Pwm_ActivateChannel(ChannelNumber);
+    }
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        HC12PWM_REG16(PWDTY0 + (ChannelNumber & (uint8)0x02)) = DutyCycle;
+    } else {
+        HC12PWM_REG8(PWDTY0 + ChannelNumber) = (uint8)DutyCycle;
+    } 
 }
 
-#if 0
-S12PIM_REG8(S12PIM_PORT_BASE(group->port) + S12PIM_PT) =
-    (S12PIM_REG8(S12PIM_PORT_BASE(group->port) + S12PIM_PT) & ~group->mask) |
-    (group->mask & (level << group->offset)       /* todo: Table!!! */
-    );
-#endif
 
-void HC12Pwm_SetOutputToIdle(uint8 ChannelNumber)
+void HC12Pwm_SetPeriodAndDuty(HC12Pwm_ChannelType ChannelNumber, uint16 Period, uint16 DutyCycle)
+{
+    if (!HC12Pwm_ChannelActivated(ChannelNumber)) {
+       HC12Pwm_ActivateChannel(ChannelNumber);
+    }
+    if (HC12Pwm_Is16BitChannel(ChannelNumber)) {
+        HC12PWM_REG16(PWPER0 + (ChannelNumber & (uint8)0x02)) = Period;
+    } else {
+        HC12PWM_REG8(PWPER0 + ChannelNumber) = (uint8)Period;
+    }
+    HC12Pwm_SetDutyCycle(ChannelNumber, DutyCycle);
+}
+
+
+void HC12Pwm_ActivateChannel(HC12Pwm_ChannelType ChannelNumber)
+{
+     HC12Pwm_ResetCounter(ChannelNumber);
+     HC12PWM_REG8(PWEN) |= (1 << ChannelNumber);
+}
+
+
+void HC12Pwm_DeactivateChannel(HC12Pwm_ChannelType ChannelNumber)
+{
+     HC12PWM_REG8(PWEN) &= ~(1 << ChannelNumber);
+}
+
+
+boolean HC12Pwm_ChannelActivated(HC12Pwm_ChannelType ChannelNumber)
 {
     uint8 channel;
+ 
+    channel=(1 << ChannelNumber);
+    return (HC12PWM_REG8(PWEN) & channel)==channel;
+}
 
-    channel = PWM->IdleState & (1 << ChannelNumber);
 
-    HC12PWM_REG8(PORTP)    = PWM->IdleState & channel;
+void HC12Pwm_SetOutputToIdle(HC12Pwm_ChannelType ChannelNumber)
+{
+    uint8 channel;
+    uint8 mask;
+
+    channel = 1 << ChannelNumber;
+    mask = PWM->IdleState & channel;
+
+    HC12PWM_REG8(PORTP)    = (HC12PWM_REG8(PORTP) & ~mask) | mask;
     HC12PWM_REG8(DDRP)    |= channel;
-    HC12PWM_REG8(PWEN)    &= ~channel;
+    HC12Pwm_DeactivateChannel(ChannelNumber);
 }
 
-void HC12Pwm_SetOutputToActive(uint8 ChannelNumber)
+
+boolean HC12Pwm_Is16BitChannel(HC12Pwm_ChannelType ChannelNumber)
 {
-    uint8 channel;
+    boolean result = FALSE;
 
-    channel = PWM->IdleState & (1 << ChannelNumber);
+    switch (ChannelNumber) {
+        case 0:
+        case 1:
+            if ((HC12PWM_REG8(PWCLK) & CON01) == CON01) {
+                result = TRUE;
+            }
+            break;
+        case 2:
+        case 3:
+            if ((HC12PWM_REG8(PWCLK) & CON23) == CON23) {
+                result = TRUE;
+            }
+            break;
+        default:
+            ASSERT(FALSE);   /* todo: ErrorHandling!!! */
+    }
 
-    HC12PWM_REG8(DDRP)    &= ~channel;
-    HC12PWM_REG8(PWEN)    |= channel;
+    return result;
 }
 
-uint8 HC12Pwm_GetOutputState(uint8 ChannelNumber)
-{
 
-}
-
-/* Scale duty-cycle to [0x0000 .. 0x8000] */
-uint16 Pwm_CalculateAbsoluteDutyCycle(uint16 AbsolutePeriodTime, uint16 RelativeDutyCycle)
-{
-    return (uint16)(HIWORD(((uint32)(AbsolutePeriodTime) * (RelativeDutyCycle)))) << 1;
-}
+/*
+** Local Functions.
+*/
 

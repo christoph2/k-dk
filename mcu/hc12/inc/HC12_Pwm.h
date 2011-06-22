@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -166,25 +166,41 @@ typedef struct tagHC12Pwm_ConfigType {
 } HC12Pwm_ConfigType;
 
 /*
+**	Global Variables.
+*/
+extern HC12Pwm_ConfigType const * PWM;
+
+/*
 **		Global Functions.
 */
 void    HC12Pwm_Init(HC12Pwm_ConfigType const * const ConfigPtr);
 void    HC12Pwm_DeInit(void);
+
 void    HC12Pwm_SetTimebase(void);
-void    HC12Pwm_SetDutyCycle(uint8 ChannelNumber, uint16 DutyCycle);
-void    HC12Pwm_SetPeriodAndDuty(uint8 ChannelNumber, uint16 Period, uint16 DutyCycle);
-void    HC12Pwm_SetOutputToIdle(uint8 ChannelNumber);
-void    HC12Pwm_SetOutputToActive(uint8 ChannelNumber);
-uint8   HC12Pwm_GetOutputState(uint8 ChannelNumber);
+void    HC12Pwm_SetDutyCycle(HC12Pwm_ChannelType ChannelNumber, uint16 DutyCycle);
+void    HC12Pwm_SetPeriodAndDuty(HC12Pwm_ChannelType ChannelNumber, uint16 Period, uint16 DutyCycle);
 
-uint8   HC12Pwm_GetCounter8(uint8 ChannelNumber);
-uint16  HC12Pwm_GetCounter16(uint8 ChannelNumber);
-void    HC12Pwm_ResetCounter(uint8 ChannelNumber);
+void    HC12Pwm_SetOutputToIdle(HC12Pwm_ChannelType ChannelNumber);
+uint8   HC12Pwm_GetOutputState(HC12Pwm_ChannelType ChannelNumber);
 
-extern HC12Pwm_ConfigType const * PWM;
+boolean HC12Pwm_Is16BitChannel(HC12Pwm_ChannelType ChannelNumber);
+
+uint16  HC12Pwm_GetCounter(HC12Pwm_ChannelType ChannelNumber);
+uint16  HC12Pwm_GetPeriod(HC12Pwm_ChannelType ChannelNumber);
+uint16  HC12Pwm_GetDutyCycle(HC12Pwm_ChannelType ChannelNumber);
+
+uint8 HC12Pwm_GetPolarity(HC12Pwm_ChannelType ChannelNumber);
+
+void HC12Pwm_ActivateChannel(HC12Pwm_ChannelType ChannelNumber);
+void HC12Pwm_DeactivateChannel(HC12Pwm_ChannelType ChannelNumber);
+boolean HC12Pwm_ChannelActivated(HC12Pwm_ChannelType ChannelNumber);
+
+void HC12Pwm_ResetCounter(HC12Pwm_ChannelType ChannelNumber);
+
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
 #endif  /* __HC12_PWM_H */
+
