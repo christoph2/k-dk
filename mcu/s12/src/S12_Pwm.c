@@ -81,18 +81,19 @@ void S12Pwm_Init(S12Pwm_ConfigType const * const ConfigPtr)
 }
 
 
-//#if defined(S12_PWM_DEINIT_API)
+/* #if defined(S12_PWM_DEINIT_API) */
 void S12Pwm_DeInit(void)
 {
     /* Shutdown all PWM-Channels. */
     S12PWM_REG8(PWME) = (uint8)0x00;
 
     /* Reinitialize PortP. */
-    S12PIM_REG8(PTP)       = PWM->IdleState;
-    S12PIM_REG8(DDRP)      = (uint8)0xff;
+    S12PIM_REG8(PTP)   = PWM->IdleState;
+    S12PIM_REG8(DDRP)  = (uint8)0xff;
 }
-//#endif /* HC12_PWM_DEINIT_API */
 
+
+/* #endif / * HC12_PWM_DEINIT_API * / */
 
 void S12Pwm_SetTimebase(void)
 {
@@ -103,8 +104,9 @@ void S12Pwm_SetTimebase(void)
 void S12Pwm_SetDutyCycle(S12Pwm_ChannelType ChannelNumber, uint16 DutyCycle)
 {
     if (!S12Pwm_ChannelActivated(ChannelNumber)) {
-       S12Pwm_ActivateChannel(ChannelNumber);
+        S12Pwm_ActivateChannel(ChannelNumber);
     }
+
     if (S12Pwm_Is16BitChannel(ChannelNumber)) {
         S12PWM_REG16(PWMDTY0 + (ChannelNumber & (uint8)0x06)) = DutyCycle;
     } else {

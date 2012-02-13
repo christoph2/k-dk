@@ -209,12 +209,10 @@ typedef struct tagS12Pwm_ConfigType {
     uint8 IdleState;
 } S12Pwm_ConfigType;
 
-
 /*
 **  Global Variables.
 */
 extern S12Pwm_ConfigType const * PWM;
-
 
 /*
 **  Global Functions.

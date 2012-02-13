@@ -35,116 +35,115 @@ extern "C"
 /*
 **  Register-Offsets.
 */
-#define	PORTA       ((uint8)0x00)
+#define PORTA               ((uint8)0x00)
 
-#define	PORTB       ((uint8)0x01)
+#define PORTB               ((uint8)0x01)
 
-#define	DDRA        ((uint8)0x02)
+#define DDRA                ((uint8)0x02)
 
-#define	DDRB        ((uint8)0x03)
+#define DDRB                ((uint8)0x03)
 
 /*
-0x04-0x07 Reserved
-*/
+   0x04-0x07 Reserved
+ */
 
-#define	PORTE       ((uint8)0x08)
+#define PORTE               ((uint8)0x08)
 
-#define	DDRE        ((uint8)0x09)
+#define DDRE                ((uint8)0x09)
 
-#define	PEAR        ((uint8)0x0A)
-    /*  PEAR-Bits.  */
-    #define NOACCE  ((uint8)0x80)
-    #define PIPOE   ((uint8)0x20)
-    #define NECLK   ((uint8)0x10)
-    #define LSTRE   ((uint8)0x08)
-    #define RDWE    ((uint8)0x04)
+#define PEAR                ((uint8)0x0A)
+/*  PEAR-Bits.  */
+    #define NOACCE          ((uint8)0x80)
+    #define PIPOE           ((uint8)0x20)
+    #define NECLK           ((uint8)0x10)
+    #define LSTRE           ((uint8)0x08)
+    #define RDWE            ((uint8)0x04)
 
-#define	MODE        ((uint8)0x0B)
-    /*  MODE-Bits.  */
-    #define MODC    ((uint8)0x80)
-    #define MODB    ((uint8)0x40)
-    #define MODA    ((uint8)0x20)
-    #define IVIS    ((uint8)0x08)
-    #define EMK     ((uint8)0x02)
-    #define EME     ((uint8)0x01)
+#define MODE                ((uint8)0x0B)
+/*  MODE-Bits.  */
+    #define MODC            ((uint8)0x80)
+    #define MODB            ((uint8)0x40)
+    #define MODA            ((uint8)0x20)
+    #define IVIS            ((uint8)0x08)
+    #define EMK             ((uint8)0x02)
+    #define EME             ((uint8)0x01)
 
-#define	PUCR        ((uint8)0x0C)
-    /*  PUCR-Bits.  */
-    #define PUPKE   ((uint8)0x80)
-    #define PUPEE   ((uint8)0x10)
-    #define PUPBE   ((uint8)0x02)
-    #define PUPAE   ((uint8)0x01)
+#define PUCR                ((uint8)0x0C)
+/*  PUCR-Bits.  */
+    #define PUPKE           ((uint8)0x80)
+    #define PUPEE           ((uint8)0x10)
+    #define PUPBE           ((uint8)0x02)
+    #define PUPAE           ((uint8)0x01)
 
-#define	RDRIV       ((uint8)0x0D)
-    /*  RDRIV-Bits. */
-    #define RDPK    ((uint8)0x80)
-    #define RDPE    ((uint8)0x10)
-    #define RDPB    ((uint8)0x02)
-    #define RDPA    ((uint8)0x01)
+#define RDRIV               ((uint8)0x0D)
+/*  RDRIV-Bits. */
+    #define RDPK            ((uint8)0x80)
+    #define RDPE            ((uint8)0x10)
+    #define RDPB            ((uint8)0x02)
+    #define RDPA            ((uint8)0x01)
 
-#define	EBICTL      ((uint8)0x0E)
-    /*  EBICTL-Bits.  */
-    #define ESTR    ((uint8)0x01)
+#define EBICTL              ((uint8)0x0E)
+/*  EBICTL-Bits.  */
+    #define ESTR            ((uint8)0x01)
 
 /*
 **  0x0f - Reserved.
 */
 
-#define IRQCR       ((uint8)0x1E)
-    /*  INTCR-Bits. */
-    #define IRQE    ((uint8)0x80)
-    #define IRQEN   ((uint8)0x40)
+#define IRQCR               ((uint8)0x1E)
+/*  INTCR-Bits. */
+    #define IRQE            ((uint8)0x80)
+    #define IRQEN           ((uint8)0x40)
 
-#define PORTK       ((uint8)0x32)
+#define PORTK               ((uint8)0x32)
 
-#define DDRK        ((uint8)0x33)
+#define DDRK                ((uint8)0x33)
 
 /*
-**  Defines for AUTOSAR and other use-cases.
+** Symbolic Names for Port-Pins.
 */
-#define S12MEBI_CHANNEL_A_0             ((Kdk_ChannelType)0x00)
-#define S12MEBI_CHANNEL_A_1             ((Kdk_ChannelType)0x01)
-#define S12MEBI_CHANNEL_A_2             ((Kdk_ChannelType)0x02)
-#define S12MEBI_CHANNEL_A_3             ((Kdk_ChannelType)0x03)
-#define S12MEBI_CHANNEL_A_4             ((Kdk_ChannelType)0x04)
-#define S12MEBI_CHANNEL_A_5             ((Kdk_ChannelType)0x05)
-#define S12MEBI_CHANNEL_A_6             ((Kdk_ChannelType)0x06)
-#define S12MEBI_CHANNEL_A_7             ((Kdk_ChannelType)0x07)
+#define S12MEBI_CHANNEL_A_0 ((Kdk_ChannelType)0x00)
+#define S12MEBI_CHANNEL_A_1 ((Kdk_ChannelType)0x01)
+#define S12MEBI_CHANNEL_A_2 ((Kdk_ChannelType)0x02)
+#define S12MEBI_CHANNEL_A_3 ((Kdk_ChannelType)0x03)
+#define S12MEBI_CHANNEL_A_4 ((Kdk_ChannelType)0x04)
+#define S12MEBI_CHANNEL_A_5 ((Kdk_ChannelType)0x05)
+#define S12MEBI_CHANNEL_A_6 ((Kdk_ChannelType)0x06)
+#define S12MEBI_CHANNEL_A_7 ((Kdk_ChannelType)0x07)
 
-#define S12MEBI_CHANNEL_B_0             ((Kdk_ChannelType)0x08)
-#define S12MEBI_CHANNEL_B_1             ((Kdk_ChannelType)0x09)
-#define S12MEBI_CHANNEL_B_2             ((Kdk_ChannelType)0x0a)
-#define S12MEBI_CHANNEL_B_3             ((Kdk_ChannelType)0x0b)
-#define S12MEBI_CHANNEL_B_4             ((Kdk_ChannelType)0x0c)
-#define S12MEBI_CHANNEL_B_5             ((Kdk_ChannelType)0x0d)
-#define S12MEBI_CHANNEL_B_6             ((Kdk_ChannelType)0x0e)
-#define S12MEBI_CHANNEL_B_7             ((Kdk_ChannelType)0x0f)
+#define S12MEBI_CHANNEL_B_0 ((Kdk_ChannelType)0x08)
+#define S12MEBI_CHANNEL_B_1 ((Kdk_ChannelType)0x09)
+#define S12MEBI_CHANNEL_B_2 ((Kdk_ChannelType)0x0a)
+#define S12MEBI_CHANNEL_B_3 ((Kdk_ChannelType)0x0b)
+#define S12MEBI_CHANNEL_B_4 ((Kdk_ChannelType)0x0c)
+#define S12MEBI_CHANNEL_B_5 ((Kdk_ChannelType)0x0d)
+#define S12MEBI_CHANNEL_B_6 ((Kdk_ChannelType)0x0e)
+#define S12MEBI_CHANNEL_B_7 ((Kdk_ChannelType)0x0f)
 
-#define S12MEBI_CHANNEL_E_0             ((Kdk_ChannelType)0x10)
-#define S12MEBI_CHANNEL_E_1             ((Kdk_ChannelType)0x11)
-#define S12MEBI_CHANNEL_E_2             ((Kdk_ChannelType)0x12)
-#define S12MEBI_CHANNEL_E_3             ((Kdk_ChannelType)0x13)
-#define S12MEBI_CHANNEL_E_4             ((Kdk_ChannelType)0x14)
-#define S12MEBI_CHANNEL_E_5             ((Kdk_ChannelType)0x15)
-#define S12MEBI_CHANNEL_E_6             ((Kdk_ChannelType)0x16)
-#define S12MEBI_CHANNEL_E_7             ((Kdk_ChannelType)0x17)
+#define S12MEBI_CHANNEL_E_0 ((Kdk_ChannelType)0x10)
+#define S12MEBI_CHANNEL_E_1 ((Kdk_ChannelType)0x11)
+#define S12MEBI_CHANNEL_E_2 ((Kdk_ChannelType)0x12)
+#define S12MEBI_CHANNEL_E_3 ((Kdk_ChannelType)0x13)
+#define S12MEBI_CHANNEL_E_4 ((Kdk_ChannelType)0x14)
+#define S12MEBI_CHANNEL_E_5 ((Kdk_ChannelType)0x15)
+#define S12MEBI_CHANNEL_E_6 ((Kdk_ChannelType)0x16)
+#define S12MEBI_CHANNEL_E_7 ((Kdk_ChannelType)0x17)
 
-#define S12MEBI_CHANNEL_K_0             ((Kdk_ChannelType)0x18)
-#define S12MEBI_CHANNEL_K_1             ((Kdk_ChannelType)0x19)
-#define S12MEBI_CHANNEL_K_2             ((Kdk_ChannelType)0x1a)
-#define S12MEBI_CHANNEL_K_3             ((Kdk_ChannelType)0x1b)
-#define S12MEBI_CHANNEL_K_4             ((Kdk_ChannelType)0x1c)
-#define S12MEBI_CHANNEL_K_5             ((Kdk_ChannelType)0x1d)
-#define S12MEBI_CHANNEL_K_6             ((Kdk_ChannelType)0x1e)
-#define S12MEBI_CHANNEL_K_7             ((Kdk_ChannelType)0x1f)
-#define S12MEBI_CHANNEL_MAX             S12MEBI_CHANNEL_K_7
+#define S12MEBI_CHANNEL_K_0 ((Kdk_ChannelType)0x18)
+#define S12MEBI_CHANNEL_K_1 ((Kdk_ChannelType)0x19)
+#define S12MEBI_CHANNEL_K_2 ((Kdk_ChannelType)0x1a)
+#define S12MEBI_CHANNEL_K_3 ((Kdk_ChannelType)0x1b)
+#define S12MEBI_CHANNEL_K_4 ((Kdk_ChannelType)0x1c)
+#define S12MEBI_CHANNEL_K_5 ((Kdk_ChannelType)0x1d)
+#define S12MEBI_CHANNEL_K_6 ((Kdk_ChannelType)0x1e)
+#define S12MEBI_CHANNEL_K_7 ((Kdk_ChannelType)0x1f)
+#define S12MEBI_CHANNEL_MAX S12MEBI_CHANNEL_K_7
 
-#define S12MEBI_PORT_A                  ((Kdk_PortType)0x00)
-#define S12MEBI_PORT_B                  ((Kdk_PortType)0x01)
-#define S12MEBI_PORT_E                  ((Kdk_PortType)0x02)
-#define S12MEBI_PORT_K                  ((Kdk_PortType)0x03)
-#define S12MEBI_PORT_MAX                S12MEBI_PORT_K
-
+#define S12MEBI_PORT_A      ((Kdk_PortType)0x00)
+#define S12MEBI_PORT_B      ((Kdk_PortType)0x01)
+#define S12MEBI_PORT_E      ((Kdk_PortType)0x02)
+#define S12MEBI_PORT_K      ((Kdk_PortType)0x03)
+#define S12MEBI_PORT_MAX    S12MEBI_PORT_K
 
 /*
 **  Global Types.

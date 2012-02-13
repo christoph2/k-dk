@@ -28,26 +28,25 @@
 
 #include "Kdk_Error.h"
 
-#if S12MEBI_DEV_ERROR_DETECT==STD_ON
+#if S12MEBI_DEV_ERROR_DETECT == STD_ON
 #define S12MEBI_ASSERT_VALID_PORT(port) \
     _BEGIN_BLOCK                        \
-        if (port>S12MEBI_PORT_MAX) {    \
+    if (port > S12MEBI_PORT_MAX) {      \
 /*            ErrorHandler(...); */     \
-            return;                     \
-        }                               \
+        return;                         \
+    }                                   \
     _END_BLOCK
 #else
 #define S12MEBI_ASSERT_VALID_PORT(port)
 #endif /* S12MEBI_DEV_ERROR_DETECT */
 
-
-#if S12MEBI_DEV_ERROR_DETECT==STD_ON
-#define S12MEBI_ASSERT_VALID_CHANNEL(channel)   \
-    _BEGIN_BLOCK                                \
-        if (channel>S12MEBI_CHANNEL_MAX) {      \
-/*            ErrorHandler(...); */             \
-            return;                             \
-        }                                       \
+#if S12MEBI_DEV_ERROR_DETECT == STD_ON
+#define S12MEBI_ASSERT_VALID_CHANNEL(channel) \
+    _BEGIN_BLOCK                              \
+    if (channel > S12MEBI_CHANNEL_MAX) {      \
+/*            ErrorHandler(...); */           \
+        return;                               \
+    }                                         \
     _END_BLOCK
 #else
 #define S12MEBI_ASSERT_VALID_CHANNEL(channel)
@@ -56,14 +55,14 @@
 /*
 **  • Port A, B, E, and K related to the core logic and multiplexed bus interface
 */
-static const uint8 S12Mebi_Ports[]={
+static const uint8 S12Mebi_Ports[] = {
     PORTA,
     PORTB,
     PORTE,
     PORTK
 };
 
-static const uint8 S12Mebi_PortDDRs[]={
+static const uint8 S12Mebi_PortDDRs[] = {
     DDRA,
     DDRB,
     DDRE,
@@ -72,17 +71,17 @@ static const uint8 S12Mebi_PortDDRs[]={
 
 void S12Mebi_Init(S12Mebi_ConfigType const * ConfigPtr)
 {
-    S12MEBI_REG8(PUCR)=ConfigPtr->Pucr;
-    S12MEBI_REG8(RDRIV)=ConfigPtr->Rdriv;
-    S12MEBI_REG8(IRQCR)=ConfigPtr->IrqCr;
-    S12MEBI_REG8(PORTA)=ConfigPtr->PortA;
-    S12MEBI_REG8(DDRA)=ConfigPtr->DdrA;
-    S12MEBI_REG8(PORTB)=ConfigPtr->PortB;
-    S12MEBI_REG8(DDRB)=ConfigPtr->DdrB;
-    S12MEBI_REG8(PORTE)=ConfigPtr->PortE;
-    S12MEBI_REG8(DDRE)=ConfigPtr->DdrE;
-    S12MEBI_REG8(PORTK)=ConfigPtr->PortK;
-    S12MEBI_REG8(DDRK)=ConfigPtr->DdrK;
+    S12MEBI_REG8(PUCR)     = ConfigPtr->Pucr;
+    S12MEBI_REG8(RDRIV)    = ConfigPtr->Rdriv;
+    S12MEBI_REG8(IRQCR)    = ConfigPtr->IrqCr;
+    S12MEBI_REG8(PORTA)    = ConfigPtr->PortA;
+    S12MEBI_REG8(DDRA)     = ConfigPtr->DdrA;
+    S12MEBI_REG8(PORTB)    = ConfigPtr->PortB;
+    S12MEBI_REG8(DDRB)     = ConfigPtr->DdrB;
+    S12MEBI_REG8(PORTE)    = ConfigPtr->PortE;
+    S12MEBI_REG8(DDRE)     = ConfigPtr->DdrE;
+    S12MEBI_REG8(PORTK)    = ConfigPtr->PortK;
+    S12MEBI_REG8(DDRK)     = ConfigPtr->DdrK;
 }
 
 

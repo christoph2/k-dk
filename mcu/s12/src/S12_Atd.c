@@ -41,59 +41,80 @@
 **
 */
 
-static const uint8 S12Atd_Ports[]={
-    PORTAD0
+/*
+static const uint8 S12Atd_Ports[] = {
+    PORTAD0,
+    PORTAD1
 };
+*/
+
+/*
+** Local Constants.
+*/
+static uint16 S12Atd_ControllerMapping[] = {   /* depends on derivate!!! */
+    BASE_ADDR_ATD0,
+    BASE_ADDR_ATD1,
+};
+
 
 static uint8 S12Atd_CalculatePrescaler(void);
 
-static void S12Atd_Handler(const S12Atd_ConfigType *Cfg);
+static void S12Atd_Handler(uint8 Controller);
 
-void S12Atd_Init(S12Atd_ConfigType const * const Cfg)
+
+void S12Atd_Init(uint8 Controller)
 {
+    uint16                          Base       = S12Atd_ControllerMapping[Controller];
+    S12Atd_ConfigType const * const ConfigPtr  = &S12Atd_Configuration[Controller];
+
     uint8 ctl;
 
-    S12_REG8(Cfg,ATDCTL3)=((uint8)S8C|FRZ1);
-    S12_REG8(Cfg,ATDCTL4)=(((uint8)Cfg->ConversionTime)<<5)|S12Atd_CalculatePrescaler();
-    if (Cfg->TenBit==FALSE) {
-        S12_REG8(Cfg,ATDCTL4)|=SRES8;
+    S12ATD_REG8(Base, ATDCTL3) = ((uint8)S8C | FRZ1);
+    S12ATD_REG8(Base, ATDCTL4) = (((uint8)ConfigPtr->ConversionTime) << 5) | S12Atd_CalculatePrescaler();
+
+    if (ConfigPtr->TenBit == FALSE) {
+        S12ATD_REG8(Base, ATDCTL4) |= SRES8;
     }
 
-    S12_REG8(Cfg,ATDCTL5)=((uint8)DJM|MULT);
-    if (Cfg->ContinuousConversion==TRUE) {
-        S12_REG8(Cfg,ATDCTL5)|=SCAN;
+    S12ATD_REG8(Base, ATDCTL5) = ((uint8)DJM | MULT);
+
+    if (ConfigPtr->ContinuousConversion == TRUE) {
+        S12ATD_REG8(Base, ATDCTL5) |= SCAN;
     }
 
-    S12_REG8(Cfg,ATDDIEN)=((uint8)0x00);
+    S12ATD_REG8(Base, ATDDIEN) = ((uint8)0x00);
 
-    ctl=((uint8)ADPU|AFFC|AWAI);
+    ctl = ((uint8)ADPU | AFFC | AWAI);
 
-    if (Cfg->ExternalTrigger!=S12ATD_EXT_TRIG_DISABLED) {
-        ctl|=((uint8)Cfg->ExternalTrigger << 3) | ETRIGE;
+    if (ConfigPtr->ExternalTrigger != S12ATD_EXT_TRIG_DISABLED) {
+        ctl |= ((uint8)ConfigPtr->ExternalTrigger << 3) | ETRIGE;
     }
 
-    if (Cfg->EnableCompletionInterrupt==TRUE) {
-        ctl|=ASCIE;
+    if (ConfigPtr->EnableCompletionInterrupt == TRUE) {
+        ctl |= ASCIE;
     }
-    S12_REG8(Cfg,ATDCTL2)=ctl;
+
+    S12ATD_REG8(Base, ATDCTL2) = ctl;
 
 }
 
 
-uint16 S12Atd_GetChannel(S12Atd_ConfigType const * const Cfg,uint8 chn)
+uint16 S12Atd_GetChannel(uint8 Controller, uint8 chn)
 {
-    chn&=((uint8)0x07);	
-    WAIT_FOR((S12_REG8(Cfg,ATDSTAT0) & SCF) == SCF);
-    return *(uint16*)(S12_REG16(Cfg,ATDDR0+(chn<<1)));	/* Right justified data (else divide by 0x40). */
+    uint16                          Base       = S12Atd_ControllerMapping[Controller];
+
+    chn &= ((uint8)0x07);
+    WAIT_FOR((S12ATD_REG8(Base, ATDSTAT0) & SCF) == SCF);
+    return *(uint16 *)(S12ATD_REG16(Base, ATDDR0 + (chn << 1)));  /* Right justified data (else divide by 0x40). */
 }
 
 
 uint8 S12Atd_CalculatePrescaler(void)
 {
-    uint8 bus_freq,res;
+    uint8 bus_freq, res;
 
-    bus_freq=S12Crg_GetBusFreq();
-    res=bus_freq>>2;
+    bus_freq   = S12Crg_GetBusFreq();
+    res        = bus_freq >> 2;
 
     if (!(bus_freq & (uint8)0x03)) {
         res--;
@@ -102,22 +123,24 @@ uint8 S12Atd_CalculatePrescaler(void)
     return res;
 }
 
-static uint32 conversion_counter=0UL;
+
+static uint32 conversion_counter = 0UL;
 
 static uint16 result[8];
 
-void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
+void S12Atd_Handler(uint8 Controller)
 {
-    uint8 idx;
-    uint8 cc;
-    uint8 ccf;
+    uint8   idx;
+    uint8   cc;
+    uint8   ccf;
+    uint16                          Base       = S12Atd_ControllerMapping[Controller];
 
-    S12_REG8(Cfg,ATDSTAT0)=SCF;
-    cc=S12_REG8(Cfg,ATDSTAT0) & (uint8)0x07;
-    ccf=S12_REG8(Cfg,ATDSTAT1);
+    S12ATD_REG8(Base, ATDSTAT0)    = SCF;
+    cc                         = S12ATD_REG8(Base, ATDSTAT0) & (uint8)0x07;
+    ccf                        = S12ATD_REG8(Base, ATDSTAT1);
 
-    for (idx=0;idx<8;++idx) {
-        result[idx]=S12_REG8(Cfg,ATDDR0+(idx<<1));
+    for (idx = 0; idx < 8; ++idx) {
+        result[idx] = S12ATD_REG8(Base, ATDDR0 + (idx << 1));
     }
 
     conversion_counter++;
@@ -128,17 +151,17 @@ void S12Atd_Handler(const S12Atd_ConfigType *Cfg)
 **  Implementation of common functions.
 */
 #if 0
-IMPLEMENT_IO_READ_PORT(S12ATD,S12Atd)
+IMPLEMENT_IO_READ_PORT(S12ATD, S12Atd)
 
-IMPLEMENT_IO_READ_CHANNEL(S12ATD,S12Atd)
+IMPLEMENT_IO_READ_CHANNEL(S12ATD, S12Atd)
 
-IMPLEMENT_IO_READ_CHANNEL_GROUP(S12ATD,S12Atd)
+IMPLEMENT_IO_READ_CHANNEL_GROUP(S12ATD, S12Atd)
 #endif
 
 #if 0
 ISR1(ATD0_Vector)
 {
-    S12Atd_Handler(ATD0);
+    S12Atd_Handler(0);
 
 }
 #endif

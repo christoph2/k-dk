@@ -25,7 +25,8 @@
 #if !defined(__S12_ECT_H)
 #define __S12_ECT_H
 
-#include "S12_Hw.h"
+/* #include "S12_Hw.h" */
+#include "Std_Types.h"
 
 #if defined(__cplusplus)
 extern "C"
@@ -36,7 +37,7 @@ extern "C"
 **  Register-Offsets.
 */
 #define TIOS        ((uint8)0x00)
-    /*  TIOS-Bits.  */
+/*  TIOS-Bits.  */
     #define IOS7    ((uint8)0x80)
     #define IOS6    ((uint8)0x40)
     #define IOS5    ((uint8)0x20)
@@ -47,7 +48,7 @@ extern "C"
     #define IOS0    ((uint8)0x01)
 
 #define TCFORC      ((uint8)0x01)
-    /*  TCFORC-Bits.  */
+/*  TCFORC-Bits.  */
     #define FOC7    ((uint8)0x80)
     #define FOC6    ((uint8)0x40)
     #define FOC5    ((uint8)0x20)
@@ -58,7 +59,7 @@ extern "C"
     #define FOC0    ((uint8)0x01)
 
 #define TOC7M       ((uint8)0x02)
-    /*  TOC7M-Bits. */
+/*  TOC7M-Bits. */
     #define OC7M7   ((uint8)0x80)
     #define OC7M6   ((uint8)0x40)
     #define OC7M5   ((uint8)0x20)
@@ -69,7 +70,7 @@ extern "C"
     #define OC7M0   ((uint8)0x01)
 
 #define TOC7D       ((uint8)0x03)
-    /*  TOC7D-Bits. */
+/*  TOC7D-Bits. */
     #define OC7D7   ((uint8)0x80)
     #define OC7D6   ((uint8)0x40)
     #define OC7D5   ((uint8)0x20)
