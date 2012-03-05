@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -60,11 +60,13 @@ HC12Pll_StatusType HC12Pll_Init(void)
     return HC12PLL_OK;
 }
 
+
 void HC12Pll_Uninit(void)
 {
     HC12Pll_UnselectPll();
     HC12Pll_DisablePll();
 }
+
 
 HC12Pll_StatusType HC12Pll_EnablePll(void)
 {
@@ -79,6 +81,7 @@ HC12Pll_StatusType HC12Pll_EnablePll(void)
     return HC12PLL_OK;
 }
 
+
 HC12Pll_StatusType HC12Pll_DisablePll(void)
 {
 #if defined(KDK_CONTROLLER_HAS_PLL)
@@ -92,6 +95,7 @@ HC12Pll_StatusType HC12Pll_DisablePll(void)
     return HC12PLL_OK;
 }
 
+
 boolean HC12Pll_PllEnabled(void)
 {
 #if defined(KDK_CONTROLLER_HAS_PLL)
@@ -100,6 +104,7 @@ boolean HC12Pll_PllEnabled(void)
     return FALSE;
 #endif  /* KDK_CONTROLLER_HAS_PLL */
 }
+
 
 /*
 **  PLL_CLOCK = 2 * OSC_CLOCK * ((SYNR+1)/(REFDV+1))
@@ -128,6 +133,7 @@ HC12Pll_StatusType HC12Pll_SetPllFreq(uint8 freq)
 #endif /* KDK_CONTROLLER_HAS_PLL */
 }
 
+
 HC12Pll_StatusType HC12Pll_SetPllParams(uint8 refdv, uint8 synr)
 {
 #if defined(KDK_CONTROLLER_HAS_PLL)
@@ -141,10 +147,12 @@ HC12Pll_StatusType HC12Pll_SetPllParams(uint8 refdv, uint8 synr)
     HC12PLL_REG8(SYNR)     = synr;
 
     return HC12PLL_OK;
+
 #else
 #error Controller-derivate has no PLL.
 #endif
 }
+
 
 boolean HC12Pll_PllLocked(void)
 {
@@ -161,6 +169,7 @@ boolean HC12Pll_PllLocked(void)
 #endif  /* KDK_CONTROLLER_HAS_PLL */
 }
 
+
 void HC12Pll_SelectPll(void)
 {
 #if defined(KDK_CONTROLLER_HAS_PLL)
@@ -169,6 +178,7 @@ void HC12Pll_SelectPll(void)
 #error Controller-derivate has no PLL.
 #endif  /* KDK_CONTROLLER_HAS_PLL */
 }
+
 
 void HC12Pll_UnselectPll(void)
 {
@@ -179,6 +189,7 @@ void HC12Pll_UnselectPll(void)
 #endif  /* KDK_CONTROLLER_HAS_PLL */
 }
 
+
 boolean HC12Pll_PllSelected(void)
 {
 #if defined(KDK_CONTROLLER_HAS_PLL)
@@ -187,6 +198,7 @@ boolean HC12Pll_PllSelected(void)
 #error Controller-derivate has no PLL.
 #endif  /* KDK_CONTROLLER_HAS_PLL */
 }
+
 
 uint8 HC12Pll_GetBusFreq(void)
 {
@@ -202,10 +214,12 @@ uint8 HC12Pll_GetBusFreq(void)
     return bus_freq;
 }
 
+
 uint8 HC12Pll_GetOscFreq(void)
 {
     return (uint8)(XTAL_FREQUENCY / 1000u);
 }
+
 
 #if defined(HC12PLL_USE_LOCK_INTERRUPT) && defined(KDK_CONTROLLER_HAS_PLL)
 ISR1(Pll_LockInterrupt)

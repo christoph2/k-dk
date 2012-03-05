@@ -43,6 +43,7 @@ void HC12EepA_Init(HC12EepA_ConfigType const * const ConfigPtr)
     HC12EEP_REG8(EEPROG)  &= ~EEPGM;
 }
 
+
 void HC12EepA_Protect(boolean on)
 {
     /* todo: D60A !? */
@@ -56,10 +57,12 @@ void HC12EepA_Protect(boolean on)
     }
 }
 
+
 void HC12EepA_LockProtectionState(void)
 {
     HC12EEP_REG8(EEMCR) |= PROTLCK;   /* Block-protection bits are now locked. */
 }
+
 
 HC12EepA_StatusType HC12EepA_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 data)
 {
@@ -126,6 +129,7 @@ HC12EepA_StatusType HC12EepA_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 da
     return HC12EEP_OK;
 }
 
+
 /*
 **
 **  'WriteByte()'/'WriteWord()' are erasing only if necessary,
@@ -147,6 +151,7 @@ HC12EepA_StatusType HC12EepA_WriteByte(uint16 addr, uint8 data)
     return HC12EepA_ProgramByte(addr, data);
 }
 
+
 HC12EepA_StatusType HC12EepA_WriteWord(uint16 addr, uint16 data)
 {
     HC12EepA_StatusType status;
@@ -161,4 +166,5 @@ HC12EepA_StatusType HC12EepA_WriteWord(uint16 addr, uint16 data)
 
     return HC12EepA_ProgramWord(addr, data);
 }
+
 

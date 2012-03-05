@@ -28,12 +28,14 @@
 
 void HC12Ect_DelayUS(uint16 uS);
 
+
 void HC12Eep_Init(HC12EepA_ConfigType const * const ConfigPtr)
 {
     HC12EEP_REG8(EEMCR)   |= EESWAI;
     HC12EEP_REG8(EEPROG)  |= (BULKP); /* if Busclock < fPROG, EERC is needed... */
     HC12EEP_REG8(EEPROG)  &= ~EEPGM;
 }
+
 
 void HC12Eep_Protect(boolean on)
 {
@@ -47,10 +49,12 @@ void HC12Eep_Protect(boolean on)
     }
 }
 
+
 void HC12Eep_LockProtectionState(void)
 {
     HC12EEP_REG8(EEMCR) |= PROTLCK;   /* Block-protection bits are now locked. */
 }
+
 
 HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 data)
 {
@@ -120,6 +124,7 @@ HC12Eep_StatusType HC12Eep_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 data
     return HC12EEP_OK;
 }
 
+
 /*
 **
 **  'WriteByte()'/'WriteWord()' are erasing only if necessary,
@@ -141,6 +146,7 @@ HC12Eep_StatusType HC12Eep_WriteByte(uint16 addr, uint8 data)
     return HC12Eep_ProgramByte(addr, data);
 }
 
+
 HC12Eep_StatusType HC12Eep_WriteWord(uint16 addr, uint16 data)
 {
     HC12Eep_StatusType status;
@@ -156,10 +162,12 @@ HC12Eep_StatusType HC12Eep_WriteWord(uint16 addr, uint16 data)
     return HC12Eep_ProgramWord(addr, data);
 }
 
+
 void HC12Ect_DelayUS(uint16 uS)
 {
     uint16 then = HC12Ect_TimerCount() + uS;
 
     WAIT_FOR(HC12Ect_TimerCount() >= then);
 }
+
 

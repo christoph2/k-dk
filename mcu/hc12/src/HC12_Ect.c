@@ -23,24 +23,19 @@
  *
  */
 
-/* todo: rename to ECT (Enhanced Capture Timer)!!! */
-
 #include "HC12_Ect.h"
+#include "Hw_Cfg.h"
 #include "Utl.h"
-
-/* Event-B and Rodin */
 
 /* */
 /* todo: Enable/Disable-PulseAccu-A/B */
 /*       SetDelayCount */
 /* */
 
-
 /*
 ** Global Variables.
 */
 HC12Ect_ConfigType const * ECT;
-
 
 /*
 **	Global Functions.
@@ -81,44 +76,62 @@ void HC12Ect_Init(HC12Ect_ConfigType const * const ConfigPtr)
     **  cycle=ns_per_mhz/bus_clock
     **  presc=log2(timer_cycle/cycle) (if timer_cycle>cycle)
     */
-    HC12ECT_REG8(TFLG1)    = (uint8)0xFF; /*  Clear pending interrupts. */
+    HC12ECT_REG8(TFLG1)    = (uint8)0xFF; /* Clear pending interrupts. */
     HC12ECT_REG8(TFLG2)    = (uint8)0x80;
 
     HC12ECT_REG8(TSCR) = ConfigPtr->TScr;
 }
 
-void HC12Ect_ForceOutputCompare(HC12Ect_ChannelType channel)
+
+void HC12Ect_ForceOutputCompare(HC12Ect_ChannelType Channel)
 {
-    HC12ECT_REG8(CFORC) = (uint8)(1 << channel);
+    HC12ECT_REG8(CFORC) = Utl_SetBitTab8[Channel];
 }
 
-void HC12Ect_SetMode(HC12Ect_ChannelType channel, HC12Ect_ModeType mode)
-{
 
+void HC12Ect_SetChannelMode(HC12Ect_ChannelType Channel, HC12Ect_ChannelModeType Mode)
+{
+    if (Mode == HC12ECT_OUTPUT_COMPARE) {
+        UTL_BIT_SET8(HC12ECT_REG8(TIOS), Channel);
+    } else if (Mode == HC12ECT_INPUT_CAPTURE) {
+        UTL_BIT_RESET8(HC12ECT_REG8(TIOS), Channel);
+    } else {
+        /* todo: Error-Handling! */
+    }
 }
 
-// todo: HC12Ect_ResetCounter(void)
+
+void HC12Ect_SetChannelCaptureMode(HC12Ect_ChannelType Channel, HC12Ect_ChannelCaptureEdgeType CaptureEdge)
+{
+    uint8 edge = ((uint8)CaptureEdge) & (uint8)0x03;
+
+    /* todo: Wir benötigen eine 'SetBitPattern' oder so Funktion!!! */
+    HC12ECT_REG16(TCTL3) = 0x0000;
+}
+
+
+/* unc.bat:						 uncrustify --nobackup -c my.cfg -f myFile */
 
 void HC12Ect_EnableInterrupt(HC12Ect_InterruptSourceType Source)
 {
     if ((Source >= HC12ECT_INTERRUPT_SOURCE_TC0) && (Source <= HC12ECT_INTERRUPT_SOURCE_TC7)) {
-        UTL_BIT_SET8(HC12ECT_REG8(TMSK1), Source);  /* check: ist 'TMSK1' korrekt??? */
+        UTL_BIT_SET8(HC12ECT_REG8(TMSK1), Source);
     } else {
         switch (Source) {
             case HC12ECT_INTERRUPT_SOURCE_TOF:
-                UTL_BIT_SET8(HC12ECT_REG8(TMSK2), TOI);    /* check: ist 'TMSK2' und 'TOI' korrekt??? */
+                UTL_BIT_SET8(HC12ECT_REG8(TMSK2), TOI);
                 break;
             case HC12ECT_INTERRUPT_SOURCE_MDCU:
-                UTL_BIT_SET8(HC12ECT_REG8(MCCTL), MCZI);   /* todo: Überprüfen!!! */
+                UTL_BIT_SET8(HC12ECT_REG8(MCCTL), MCZI);
                 break;
             case HC12ECT_INTERRUPT_SOURCE_PAOVR:
-                UTL_BIT_SET8(HC12ECT_REG8(PACTL), PAOVI);   /* todo: Überprüfen!!! */
+                UTL_BIT_SET8(HC12ECT_REG8(PACTL), PAOVI);
                 break;
             case HC12ECT_INTERRUPT_SOURCE_PA:
-                UTL_BIT_SET8(HC12ECT_REG8(PACTL), PAI);   /* todo: Überprüfen!!! */
+                UTL_BIT_SET8(HC12ECT_REG8(PACTL), PAI);
                 break;
             case HC12ECT_INTERRUPT_SOURCE_PBOVR:
-                UTL_BIT_SET8(HC12ECT_REG8(PBCTL), PBOVI);   /* todo: Überprüfen!!! */
+                UTL_BIT_SET8(HC12ECT_REG8(PBCTL), PBOVI);
                 break;
             default:
                 ASSERT(FALSE);                    /* todo: DevErrorHandler. */
@@ -126,9 +139,32 @@ void HC12Ect_EnableInterrupt(HC12Ect_InterruptSourceType Source)
     }
 }
 
+
 void HC12Ect_DisableInterrupt(HC12Ect_InterruptSourceType Source)
 {
-
+    if ((Source >= HC12ECT_INTERRUPT_SOURCE_TC0) && (Source <= HC12ECT_INTERRUPT_SOURCE_TC7)) {
+        UTL_BIT_RESET8(HC12ECT_REG8(TMSK1), Source);
+    } else {
+        switch (Source) {
+            case HC12ECT_INTERRUPT_SOURCE_TOF:
+                UTL_BIT_RESET8(HC12ECT_REG8(TMSK2), TOI);
+                break;
+            case HC12ECT_INTERRUPT_SOURCE_MDCU:
+                UTL_BIT_RESET8(HC12ECT_REG8(MCCTL), MCZI);
+                break;
+            case HC12ECT_INTERRUPT_SOURCE_PAOVR:
+                UTL_BIT_RESET8(HC12ECT_REG8(PACTL), PAOVI);
+                break;
+            case HC12ECT_INTERRUPT_SOURCE_PA:
+                UTL_BIT_RESET8(HC12ECT_REG8(PACTL), PAI);
+                break;
+            case HC12ECT_INTERRUPT_SOURCE_PBOVR:
+                UTL_BIT_RESET8(HC12ECT_REG8(PBCTL), PBOVI);
+                break;
+            default:
+                ASSERT(FALSE);                    /* todo: DevErrorHandler. */
+        }
+    }
 }
 
 

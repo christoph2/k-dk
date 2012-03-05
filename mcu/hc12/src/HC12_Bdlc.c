@@ -35,6 +35,7 @@ static void HC12Bdlc_CRCERR(void);
 static void HC12Bdlc_SYMINV(void);
 static void HC12Bdlc_WUP(void);
 
+
 /*
 **  Function-Pointers for Interrupts.
 */
@@ -91,15 +92,18 @@ void HC12Bdlc_Init(void)
 
 }
 
+
 boolean HC12Bdlc_Busy(void)
 {
 
 }
 
+
 boolean HC12Bdlc_Rxd(void)
 {
 
 }
+
 
 uint8 HC12Bdlc_Transmit(uint8 const * buf, uint8 len)
 {
@@ -116,6 +120,7 @@ uint8 HC12Bdlc_Transmit(uint8 const * buf, uint8 len)
 
     return E_OK;
 }
+
 
 ISR1(BDLC_Vector)
 {
@@ -135,6 +140,7 @@ static void HC12Bdlc_NOIP(void)
  */
 }
 
+
 static void HC12Bdlc_RXEOF(void)
 {
     /* OK, kompletter Frame wurde empfangen - weiterreichen falls kein Fehler auftrat. */
@@ -153,6 +159,7 @@ static void HC12Bdlc_RXEOF(void)
  */
 }
 
+
 static void HC12Bdlc_RXIFR(void)
 {
     /* not used!? */
@@ -162,6 +169,7 @@ static void HC12Bdlc_RXIFR(void)
  *       should not happen.
  */
 }
+
 
 static void HC12Bdlc_RDRF(void)
 {
@@ -176,6 +184,7 @@ static void HC12Bdlc_RDRF(void)
     Bdlc_RxBuffer[Bdlc_RxPos++] = HC12BDLC_REG8(BDR);
     /* todo: Callback aufrufen, Receiver deaktivieren, falls dieser 'FALSE' zurück gibt. */
 }
+
 
 static void HC12Bdlc_TDRE(void)
 {
@@ -193,6 +202,7 @@ static void HC12Bdlc_TDRE(void)
     }
 }
 
+
 static void HC12Bdlc_LOARB(void)
 {
 /*
@@ -202,6 +212,7 @@ static void HC12Bdlc_LOARB(void)
  *       and transmitted again.
  */
 }
+
 
 static void HC12Bdlc_CRCERR(void)
 {
@@ -215,6 +226,7 @@ static void HC12Bdlc_CRCERR(void)
  *       are cleared.
  */
 }
+
 
 static void HC12Bdlc_SYMINV(void)
 {
@@ -246,6 +258,7 @@ static void HC12Bdlc_SYMINV(void)
  */
 }
 
+
 static void HC12Bdlc_WUP(void)
 {
 /*
@@ -253,4 +266,5 @@ static void HC12Bdlc_WUP(void)
  *       so this interrupt should never occur.
  */
 }
+
 

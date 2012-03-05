@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,13 +25,12 @@
  */
 
 #include "HC12_KwIo.h"
-
+#include "Hw_Cfg.h"
 
 /*
 ** Global Variables.
 */
 HC12KwIo_ConfigType const * KWIO;
-
 
 /*
 ** Local Constants.
@@ -46,33 +45,33 @@ static const uint8 HC12KwIo_PortDDRs[] = {
     DDRH,
 };
 
-
 /*
 **	Global Functions.
 */
 void HC12KwIo_Init(HC12KwIo_ConfigType const * const ConfigPtr)
 {
- 	 KWIO=ConfigPtr;
-	 
-	 /* Setup Ports. */
-	 HC12KWIO_REG8(PORTJ) = ConfigPtr->PortJ;
-	 HC12KWIO_REG8(DDRJ) = ConfigPtr->DdrJ;	 
-	 HC12KWIO_REG8(KWPJ) = ConfigPtr->KwpJ;
-	 HC12KWIO_REG8(PORTH) = ConfigPtr->PortH;	 
-	 HC12KWIO_REG8(DDRH) = ConfigPtr->DdrH;
-	 HC12KWIO_REG8(KWPH) = ConfigPtr->KwpH;
-	 
-	 /* Clear Pending Interrupts. */
-	 HC12KWIO_REG8(KWIFJ) = (uint8)0xff;
-	 HC12KWIO_REG8(KWIFH) = (uint8)0xff;	 
-	 
-	 /* Enable Interrupts. */
-	 HC12KWIO_REG8(KWIEJ) = ConfigPtr->KwieJ;	 
-	 HC12KWIO_REG8(KWIEH) = ConfigPtr->KwieH;		  	 
+    KWIO = ConfigPtr;
+
+    /* Setup Ports. */
+    HC12KWIO_REG8(PORTJ)   = ConfigPtr->PortJ;
+    HC12KWIO_REG8(DDRJ)    = ConfigPtr->DdrJ;
+    HC12KWIO_REG8(KWPJ)    = ConfigPtr->KwpJ;
+    HC12KWIO_REG8(PORTH)   = ConfigPtr->PortH;
+    HC12KWIO_REG8(DDRH)    = ConfigPtr->DdrH;
+    HC12KWIO_REG8(KWPH)    = ConfigPtr->KwpH;
+
+    /* Clear Pending Interrupts. */
+    HC12KWIO_REG8(KWIFJ)   = (uint8)0xff;
+    HC12KWIO_REG8(KWIFH)   = (uint8)0xff;
+
+    /* Enable Interrupts. */
+    HC12KWIO_REG8(KWIEJ)   = ConfigPtr->KwieJ;
+    HC12KWIO_REG8(KWIEH)   = ConfigPtr->KwieH;
 }
 
-//HC12KWIO_FEATURE_KW_INTR
-// HC12KWIO_KW_CALLBACK
+
+/* HC12KWIO_FEATURE_KW_INTR */
+/* HC12KWIO_KW_CALLBACK */
 
 #if defined(HC12KWIO_FEATURE_KW_INTR)
 ISR1(HC12KwIo_KwuHandler)
@@ -81,7 +80,7 @@ ISR1(HC12KwIo_KwuHandler)
 #error Symbol HC12KWIO_KW_CALLBACK must be defined.
 #else
     HC12KWIO_KW_CALLBACK();
-//    HC12KWIO_ACKNOWLEDGE_KW_INTR();
+/*    HC12KWIO_ACKNOWLEDGE_KW_INTR(); */
 #endif  /* HC12KWIO_KW_CALLBACK */
 }
 #endif  /* HC12KWIO_FEATURE_KW_INTR */

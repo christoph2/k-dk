@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -24,16 +24,36 @@
  * s. FLOSS-EXCEPTION.txt
  */
 
- 
 #include "HC12_BcIo.h"
 #include "Hw_Cfg.h"
 
+#if HC12BCIO_DEV_ERROR_DETECT == STD_ON
+#define HC12BCIO_ASSERT_VALID_PORT(port) \
+_BEGIN_BLOCK \
+if (port > HC12BCIO_PORT_MAX) { \
+/*            ErrorHandler(...); */ \
+    return; \
+} \
+_END_BLOCK
+#else
+#define HC12BCIO_ASSERT_VALID_PORT(port)
+#endif /* HC12BCIO_DEV_ERROR_DETECT */
+
+#if HC12BCIO_DEV_ERROR_DETECT == STD_ON
+#define HC12BCIO_ASSERT_VALID_CHANNEL(channel) \
+_BEGIN_BLOCK \
+if (channel > HC12BCIO_CHANNEL_MAX) { \
+    /*            ErrorHandler(...); */ \
+    return; \
+} \
+_END_BLOCK
+#else
+#define HC12BCIO_ASSERT_VALID_CHANNEL(channel)
+#endif  /* HC12BCIO_DEV_ERROR_DETECT */
 
 /*
 ** Global Variables.
 */
-
-
 
 /*
 ** Local Constants.
@@ -49,7 +69,6 @@ static const uint8 HC12BcIo_PortDDRs[] = {
     DDRB,
     DDRE
 };
-
 
 /*
 **	Global Functions.
@@ -69,10 +88,12 @@ void HC12BcIo_Init(void)
     HC12BCIO_REG8(RDRIV)   = BCIO.Rdriv;
 }
 
+
 HC12BcIo_ModeType HC12BcIo_GetMode(void)
 {
     return (HC12BcIo_ModeType)((HC12BCIO_REG8(MODE) & (uint8)0xe0) >> 5);
 }
+
 
 boolean HC12BcIo_SpecialMode(void)
 {
@@ -81,10 +102,11 @@ boolean HC12BcIo_SpecialMode(void)
     return !(((mode & ((uint8)0x04)) == ((uint8)0x04)) && !((mode & ((uint8)0x06)) == ((uint8)0x06)));
 }
 
+
 /*
 **  Implementation of common functions.
 */
-#if 0
+
 IMPLEMENT_IO_WRITE_PORT(HC12BCIO, HC12BcIo)
 IMPLEMENT_IO_READ_PORT(HC12BCIO, HC12BcIo)
 
@@ -95,5 +117,4 @@ IMPLEMENT_IO_WRITE_CHANNEL_GROUP(HC12BCIO, HC12BcIo)
 IMPLEMENT_IO_READ_CHANNEL_GROUP(HC12BCIO, HC12BcIo)
 
 IMPLEMENT_IO_SET_PIN_DIRECTION(HC12BCIO, HC12BcIo)
-#endif
 

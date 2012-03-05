@@ -43,6 +43,7 @@ void HC12Clk_Init(void)
     }
 }
 
+
 HC12Clk_StatusType HC12Clk_EnableRTI(void)  /* todo: Rate. */
 {
     if (HC12Clk_RTIEnabled()) {
@@ -54,6 +55,7 @@ HC12Clk_StatusType HC12Clk_EnableRTI(void)  /* todo: Rate. */
 
     return HC12CLK_OK;
 }
+
 
 HC12Clk_StatusType HC12Clk_DisableRTI(void)
 {
@@ -67,6 +69,7 @@ HC12Clk_StatusType HC12Clk_DisableRTI(void)
     return HC12CLK_OK;
 }
 
+
 HC12Clk_StatusType HC12Clk_SetRTIRate(uint8 rate)
 {
     if (HC12Clk_RTIEnabled()) {
@@ -78,21 +81,25 @@ HC12Clk_StatusType HC12Clk_SetRTIRate(uint8 rate)
     return HC12CLK_OK;
 }
 
+
 boolean HC12Clk_RTIEnabled(void)
 {
     return (HC12CLK_REG8(RTICTL) & RTIE) == RTIE;
 }
+
 
 void HC12Clk_EnableWatchdog(void)
 {
     HC12CLK_REG8(COPCTL) = (CME | FCME | (CLK.WatchdogPrescaler & (uint8)0x07));
 }
 
+
 void HC12Clk_TriggerWatchdog(void)
 {
     HC12CLK_REG8(COPRST)   = (uint8)0x55;
     HC12CLK_REG8(COPRST)   = (uint8)0xaa;
 }
+
 
 void HC12Clk_ResetMCU(void)
 {
@@ -102,6 +109,7 @@ void HC12Clk_ResetMCU(void)
 
     HC12CLK_REG8(COPRST) = (uint8)0xcc;       /* Write garbage to 'ARMCOP' ==> instant RESET. */
 }
+
 
 #if defined(HC12CLK_USE_REALTIME_INTERRUPT)
 ISR1(RTI_Vector)

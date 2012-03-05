@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,27 +25,27 @@
  */
 
 #include "HC12_Int.h"
+#include "Hw_Cfg.h"
 
 /*
 ** Global Variables.
 */
 HC12Int_ConfigType const * INT;
 
-
 /*
 ** Global Functions.
 */
 void HC12Int_Init(HC12Int_ConfigType const * const ConfigPtr)
 {
-    INT = ConfigPtr;
+    INT                    = ConfigPtr;
     HC12INT_REG8(INTCR)    = ConfigPtr->IntCr;
-    HC12INT_REG8(HPRIO)    = ConfigPtr->HPrio;	
+    HC12INT_REG8(HPRIO)    = ConfigPtr->HPrio;
 }
 
 
 void HC12Int_SetHighestPriorityInterrupt(uint8 value)
 {
-    HC12INT_REG8(HPRIO)    = value;	
+    HC12INT_REG8(HPRIO) = value;
 }
 
 
@@ -61,8 +61,7 @@ ISR1(HC12Int_XIRQHandler)
     HC12INT_XIRQ_CALLBACK();
 #endif  /* HC12INT_XIRQ_CALLBACK */
 }
-#endif /* HC12_FEATURE_XIRQ */
-
+#endif  /* HC12_FEATURE_XIRQ */
 
 #if defined(HC12_FEATURE_IRQ)
 ISR1(HC12Int_IRQHandler)
@@ -73,6 +72,5 @@ ISR1(HC12Int_IRQHandler)
     HC12INT_IRQ_CALLBACK();
 #endif  /* HC12INT_IRQ_CALLBACK */
 }
-#endif /* HC12_FEATURE_IRQ */
-
+#endif  /* HC12_FEATURE_IRQ */
 
