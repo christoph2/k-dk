@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
-  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,14 +25,16 @@
 #define __ISR_ICC_H
 
 void _start(void);
-#define IISR_ENTRY_POINT  _start
+
+
+#define IISR_ENTRY_POINT    _start
 
 #if defined(_AVR)
-    #define II_INC_TARGET_H    "./avr/ISR_ICC_AVR.h"
+    #define II_INC_PATH_H   "./avr/ISR_ICC_AVR.h"
 #elif defined(_HC12)
-    #define II_INC_TARGET_H    "s12/ISR_ICC_HCS12.h"
+    #define II_INC_PATH_H   "imagecraft/s12/ISR_ICC_HCS12.h"
 #elif defined(_MSP430)
-    #define II_INC_TARGET_H    "./msp430/ISR_ICC_MSP430.h"
+    #define II_INC_PATH_H   "./msp430/ISR_ICC_MSP430.h"
 #else
     #error Unspupported Target for Imagecraft ICC.
 #endif

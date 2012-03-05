@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
-  * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -22,13 +22,28 @@
  *
  */
 #if defined(_AVR)
-    #define II_INC_TARGET_C   "./avr/ISR_ICC_AVR.c"
+    #define II_INC_TARGET_C         "./avr/ISR_ICC_AVR.c"
 #elif defined(_HC12)
-    #define II_INC_TARGET_C   "./s12/ISR_ICC_HCS12.c"
+    #if CPU_FAMILY == CPU12_HC12
+
+        #if CPU_DERIVATE == CPU12_HC12B32 || CPU_DERIVATE == CPU12_HC12BC32
+            #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12B.c"
+        #elif CPU_DERIVATE == CPU12_HC12DG128A || CPU_DERIVATE == CPU12_HC12DT128A
+            #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12Dx128.c"
+        #elif CPU_DERIVATE == CPU12_HC12A4
+            #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12A4.c"
+        #endif
+
+    #elif CPU_FAMILY == CPU12_S12
+        #define II_INC_TARGET_C     "imagecraft/s12/ISR_ICC_HCS12.c"
+    #else
+
+    #endif
 #elif defined(_MSP430)
-    #define II_INC_TARGET_C   "./msp430/ISR_ICC_MSP430.c"
+    #define II_INC_TARGET_C         "./msp430/ISR_ICC_MSP430.c"
 #else
     #error Unsupported Target for Imagecraft-Compiler.
 #endif
 
 #include II_INC_TARGET_C
+
