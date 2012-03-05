@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2009 by Christoph Schueler <chris@konnex-tools.de,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -31,177 +31,174 @@
 
 DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 
-#if     !defined(RESET_VECTOR)
-#define RESET_VECTOR    IISR_ENTRY_POINT
+#if !defined(RESET_VECTOR)
+#define RESET_VECTOR        IISR_ENTRY_POINT
 #endif  /*  RESET_VECTOR */
 
-#if     !defined(CMF_VECTOR)
-#define CMF_VECTOR      IISR_ENTRY_POINT
+#if !defined(CMF_VECTOR)
+#define CMF_VECTOR          IISR_ENTRY_POINT
 #endif  /*  CMF_VECTOR  */
 
-#if     !defined(COP_VECTOR)
-#define COP_VECTOR      IISR_ENTRY_POINT
+#if !defined(COP_VECTOR)
+#define COP_VECTOR          IISR_ENTRY_POINT
 #endif  /*  COP_VECTOR  */
 
-#if     !defined(TRAP_VECTOR)
-#define TRAP_VECTOR DUMMY_VECTOR
+#if !defined(TRAP_VECTOR)
+#define TRAP_VECTOR         DUMMY_VECTOR
 #endif  /*  TRAP_VECTOR */
 
-#if     !defined(SWI_VECTOR)
-#define SWI_VECTOR DUMMY_VECTOR
+#if !defined(SWI_VECTOR)
+#define SWI_VECTOR          DUMMY_VECTOR
 #endif  /*  SWI_VECTOR  */
 
-#if     !defined(XIRQ_VECTOR)
-#define XIRQ_VECTOR DUMMY_VECTOR
+#if !defined(XIRQ_VECTOR)
+#define XIRQ_VECTOR         DUMMY_VECTOR
 #endif  /*  XIRQ_VECTOR */
 
-#if     !defined(IRQ_VECTOR)
-#define IRQ_VECTOR DUMMY_VECTOR
+#if !defined(IRQ_VECTOR)
+#define IRQ_VECTOR          DUMMY_VECTOR
 #endif  /*  IRQ_VECTOR  */
 
-#if     !defined(RTI_VECTOR)
-#define RTI_VECTOR DUMMY_VECTOR
+#if !defined(RTI_VECTOR)
+#define RTI_VECTOR          DUMMY_VECTOR
 #endif  /*  RTI_VECTOR  */
 
-#if     !defined(TC0_VECTOR)
-#define TC0_VECTOR DUMMY_VECTOR
+#if !defined(TC0_VECTOR)
+#define TC0_VECTOR          DUMMY_VECTOR
 #endif  /*  TC0_VECTOR  */
 
-#if     !defined(TC1_VECTOR)
-#define TC1_VECTOR DUMMY_VECTOR
+#if !defined(TC1_VECTOR)
+#define TC1_VECTOR          DUMMY_VECTOR
 #endif  /*  TC1_VECTOR  */
 
-#if     !defined(TC2_VECTOR)
-#define TC2_VECTOR DUMMY_VECTOR
+#if !defined(TC2_VECTOR)
+#define TC2_VECTOR          DUMMY_VECTOR
 #endif  /*  TC2_VECTOR  */
 
-#if     !defined(TC3_VECTOR)
-#define TC3_VECTOR DUMMY_VECTOR
+#if !defined(TC3_VECTOR)
+#define TC3_VECTOR          DUMMY_VECTOR
 #endif  /*  TC3_VECTOR  */
 
-#if     !defined(TC4_VECTOR)
-#define TC4_VECTOR DUMMY_VECTOR
+#if !defined(TC4_VECTOR)
+#define TC4_VECTOR          DUMMY_VECTOR
 #endif  /*  TC4_VECTOR  */
 
-#if     !defined(TC5_VECTOR)
-#define TC5_VECTOR DUMMY_VECTOR
+#if !defined(TC5_VECTOR)
+#define TC5_VECTOR          DUMMY_VECTOR
 #endif  /*  TC5_VECTOR  */
 
-#if     !defined(TC6_VECTOR)
-#define TC6_VECTOR DUMMY_VECTOR
+#if !defined(TC6_VECTOR)
+#define TC6_VECTOR          DUMMY_VECTOR
 #endif  /*  TC6_VECTOR  */
 
-#if     !defined(TC7_VECTOR)
-#define TC7_VECTOR DUMMY_VECTOR
+#if !defined(TC7_VECTOR)
+#define TC7_VECTOR          DUMMY_VECTOR
 #endif  /*  TC7_VECTOR  */
 
-#if     !defined(TOF_VECTOR)
-#define TOF_VECTOR DUMMY_VECTOR
+#if !defined(TOF_VECTOR)
+#define TOF_VECTOR          DUMMY_VECTOR
 #endif  /*  TOF_VECTOR  */
 
-#if     !defined(PAOF_VECTOR)
-#define PAOF_VECTOR DUMMY_VECTOR
+#if !defined(PAOF_VECTOR)
+#define PAOF_VECTOR         DUMMY_VECTOR
 #endif  /*  PAOF_VECTOR */
 
-#if     !defined(PAIE_VECTOR)
-#define PAIE_VECTOR DUMMY_VECTOR
+#if !defined(PAIE_VECTOR)
+#define PAIE_VECTOR         DUMMY_VECTOR
 #endif  /*  PAIE_VECTOR */
 
-#if     !defined(SPI_VECTOR)
-#define SPI_VECTOR DUMMY_VECTOR
+#if !defined(SPI_VECTOR)
+#define SPI_VECTOR          DUMMY_VECTOR
 #endif  /*  SPI_VECTOR */
 
-#if     !defined(SCI0_VECTOR)
-#define SCI0_VECTOR DUMMY_VECTOR
+#if !defined(SCI0_VECTOR)
+#define SCI0_VECTOR         DUMMY_VECTOR
 #endif  /*  SCI0_VECTOR */
 
-#if     !defined(SCI1_VECTOR)
-#define SCI1_VECTOR DUMMY_VECTOR
+#if !defined(SCI1_VECTOR)
+#define SCI1_VECTOR         DUMMY_VECTOR
 #endif  /*  SCI1_VECTOR */
 
-#if     !defined(ATD_VECTOR)
-#define ATD_VECTOR DUMMY_VECTOR
+#if !defined(ATD_VECTOR)
+#define ATD_VECTOR          DUMMY_VECTOR
 #endif  /*  ATD_VECTOR */
-        
-#if     !defined(CAN0W_VECTOR)
-#define CAN0W_VECTOR DUMMY_VECTOR
+
+#if !defined(CAN0W_VECTOR)
+#define CAN0W_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN0W_VECTOR  */
 
-#if     !defined(CAN0E_VECTOR)
-#define CAN0E_VECTOR DUMMY_VECTOR
+#if !defined(CAN0E_VECTOR)
+#define CAN0E_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN0E_VECTOR  */
 
-#if     !defined(CAN0R_VECTOR)
-#define CAN0R_VECTOR DUMMY_VECTOR
+#if !defined(CAN0R_VECTOR)
+#define CAN0R_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN0R_VECTOR  */
 
-#if     !defined(CAN0T_VECTOR)
-#define CAN0T_VECTOR DUMMY_VECTOR
+#if !defined(CAN0T_VECTOR)
+#define CAN0T_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN0T_VECTOR  */
 
-#if     !defined(MDCU_VECTOR)
-#define MDCU_VECTOR     DUMMY_VECTOR
+#if !defined(MDCU_VECTOR)
+#define MDCU_VECTOR         DUMMY_VECTOR
 #endif  /*  MDCU_VECTOR */
 
-#if     !defined(PBOF_VECTOR)
-#define PBOF_VECTOR DUMMY_VECTOR
+#if !defined(PBOF_VECTOR)
+#define PBOF_VECTOR         DUMMY_VECTOR
 #endif  /*  PBOF_VECTOR */
 
-#if     !defined(KWU_VECTOR)
-#define KWU_VECTOR DUMMY_VECTOR
+#if !defined(KWU_VECTOR)
+#define KWU_VECTOR          DUMMY_VECTOR
 #endif  /*  KWU_VECTOR */
 
-#if     !defined(CGM_VECTOR)
-#define CGM_VECTOR DUMMY_VECTOR
+#if !defined(CGM_VECTOR)
+#define CGM_VECTOR          DUMMY_VECTOR
 #endif  /*  CGM_VECTOR */
 
-#if     !defined(IIC_VECTOR)
-#define IIC_VECTOR DUMMY_VECTOR
+#if !defined(IIC_VECTOR)
+#define IIC_VECTOR          DUMMY_VECTOR
 #endif  /*  IIC_VECTOR */
 
-#if     !defined(CAN1W_VECTOR)
-#define CAN1W_VECTOR DUMMY_VECTOR
+#if !defined(CAN1W_VECTOR)
+#define CAN1W_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN1W_VECTOR  */
 
-#if     !defined(CAN1E_VECTOR)
-#define CAN1E_VECTOR DUMMY_VECTOR
+#if !defined(CAN1E_VECTOR)
+#define CAN1E_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN1E_VECTOR  */
 
-#if     !defined(CAN1R_VECTOR)
-#define CAN1R_VECTOR DUMMY_VECTOR
+#if !defined(CAN1R_VECTOR)
+#define CAN1R_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN1R_VECTOR  */
 
-#if     !defined(CAN1T_VECTOR)
-#define CAN1T_VECTOR DUMMY_VECTOR
+#if !defined(CAN1T_VECTOR)
+#define CAN1T_VECTOR        DUMMY_VECTOR
 #endif  /*  CAN1T_VECTOR  */
 
-#if CPU_DERIVATE==CPU12_HC12DT128A
+#if CPU_DERIVATE == CPU12_HC12DT128A
     #if !defined(CAN2W_VECTOR)
-    #define CAN2W_VECTOR DUMMY_VECTOR
-    #endif      /*  CAN2W_VECTOR  */
+    #define CAN2W_VECTOR    DUMMY_VECTOR
+    #endif  /*  CAN2W_VECTOR  */
 
     #if !defined(CAN2E_VECTOR)
-    #define     CAN2E_VECTOR DUMMY_VECTOR
-    #endif      /*  CAN2E_VECTOR  */
+    #define CAN2E_VECTOR    DUMMY_VECTOR
+    #endif  /*  CAN2E_VECTOR  */
 
     #if !defined(CAN2R_VECTOR)
-    #define     CAN2R_VECTOR DUMMY_VECTOR
-    #endif      /*  CAN2R_VECTOR  */
+    #define CAN2R_VECTOR    DUMMY_VECTOR
+    #endif  /*  CAN2R_VECTOR  */
 
     #if !defined(CAN2T_VECTOR)
-    #define     CAN2T_VECTOR DUMMY_VECTOR
-    #endif      /*  CAN2T_VECTOR  */
-#endif /* CPU12_HC12DT128A */
-
+    #define CAN2T_VECTOR    DUMMY_VECTOR
+    #endif  /*  CAN2T_VECTOR  */
+#endif      /* CPU12_HC12DT128A */
 
 ISR1(DUMMY_VECTOR)
-{       
+{
 }
 
-
 #pragma CONST_SEG VECTORS
-void (*const interrupt_vectors[])(void) = 
-{
+void(*const interrupt_vectors[]) (void) = {
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF82                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF84                   */
@@ -226,7 +223,7 @@ void (*const interrupt_vectors[])(void) =
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAA                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAC                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAE                   */
-#if CPU_DERIVATE==CPU12_HC12DT128A
+#if CPU_DERIVATE == CPU12_HC12DT128A
     (IISR_IVF)CAN2T_VECTOR,     /* MSCAN2  Transmit                 */
     (IISR_IVF)CAN2R_VECTOR,     /* MSCAN2  Receive                  */
     (IISR_IVF)CAN2E_VECTOR,     /* MSCAN2  Error                    */
