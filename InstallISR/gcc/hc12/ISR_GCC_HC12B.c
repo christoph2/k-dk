@@ -225,12 +225,7 @@ void(*const interrupt_vectors[]) (void) __attribute__((section(".vectors"))) = {
     (IISR_IVF)TC1_VECTOR,       /* Timer Channel 1                  */
     (IISR_IVF)TC0_VECTOR,       /* Timer Channel 0                  */
     (IISR_IVF)RTI_VECTOR,       /* Real Time Interrupt              */
-    (IISR_IVF)IRQ_VECTOR,       /* IRQ                              */
-    (IISR_IVF)XIRQ_VECTOR,      /* XIRQ                             */
-    (IISR_IVF)SWI_VECTOR,       /* SWI                              */
-    (IISR_IVF)TRAP_VECTOR,      /* Unimplement Intruction Trap      */
-    (IISR_IVF)COP_VECTOR,       /* COP failure reset                */
-    (IISR_IVF)CMF_VECTOR,       /* Clock monitor fail reset         */
-    (IISR_IVF)RESET_VECTOR,     /* Reset                            */
+
+    #include "HC12_Common_Vectors.h"
 };
 
