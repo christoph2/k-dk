@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -42,11 +42,22 @@
 #define CPU12_HC12BC32      2
 #define CPU12_HC12DG128A    3
 #define CPU12_HC12DT128A    4
+#define CPU12_HC12A4        5
+#define CPU12_HC12BD32      6
+#define CPU12_HC12D60       7
+#define CPU12_HC12D60A      8
 
 /*
 **  S12-Family-Members.
 */
 #define CPU12_S12DP256B     1
+#define CPU12_S12DT256B     2
+#define CPU12_S12DJ256B     3
+#define CPU12_S12DG256B     4
+#define CPU12_S12A256B      5
+#define CPU12_S12DP256C     6
+#define CPU12_S12DT256C     7
+#define CPU12_S12DJ256C     8
+#define CPU12_S12DG256C     9
 
 #endif /* __KDK_CPUS_H */
-
