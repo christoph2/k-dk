@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,7 +25,6 @@
 #include "24x256.h"
 #include "Hw_Cfg.h"
 
-
 void M24x256_Init(void)
 {
 
@@ -34,27 +33,29 @@ void M24x256_Init(void)
 
 boolean M24x256_Busy(uint8 slave_addr)
 {
-    boolean ack=S12Iic_ReadMode(&IIC0,slave_addr);
+    boolean ack = S12Iic_ReadMode(&IIC0, slave_addr);
 
     S12Iic_Stop(&IIC0);
     return ack;
 }
 
-boolean M24x256_WriteByte(uint8 slave_addr,uint16 mem_addr,uint8 data)
+
+boolean M24x256_WriteByte(uint8 slave_addr, uint16 mem_addr, uint8 data)
 {
-    if (!S12Iic_WriteMode(&IIC0,slave_addr)) {
-         S12Iic_Stop(&IIC0);
+    if (!S12Iic_WriteMode(&IIC0, slave_addr)) {
+        S12Iic_Stop(&IIC0);
         return FALSE;
     }
 
-    (void)S12Iic_Write(&IIC0,HIBYTE(mem_addr));
-    (void)S12Iic_Write(&IIC0,LOBYTE(mem_addr));
-    (void)S12Iic_Write(&IIC0,data);
+    (void)S12Iic_Write(&IIC0, HIBYTE(mem_addr));
+    (void)S12Iic_Write(&IIC0, LOBYTE(mem_addr));
+    (void)S12Iic_Write(&IIC0, data);
 
     S12Iic_Stop(&IIC0);
 
     return TRUE;
 }
+
 
 #if 0
 M24x256_WritePage
@@ -63,6 +64,7 @@ M24x256_ReadCurrent
 
 M24x256_ReadRandom
 
-M24x256_ReadSequential
+    M24x256_ReadSequential
 
 #endif
+

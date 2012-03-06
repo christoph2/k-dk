@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -60,16 +60,16 @@ extern "C"
 #define MAX548_DACB         ((uint8)0x02)
 #define MAX548_DACA         ((uint8)0x01)
 
-
 /*
 **  Global Functions.
 */
-void MAX548_Init(void);
-void MAX548_Write(uint8 control,uint8 data);
+void    MAX548_Init(void);
+void    MAX548_Write(uint8 control, uint8 data);
 
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __MAX548_H */
+#endif  /* __MAX548_H */
+

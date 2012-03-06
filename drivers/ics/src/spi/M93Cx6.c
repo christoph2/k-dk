@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -81,7 +81,7 @@
 /*
 **  Local Functions.
 */
-static void M93Cx6_WriteAddr(uint8 opcode,uint16 addr);
+static void M93Cx6_WriteAddr(uint8 opcode, uint16 addr);
 static void M93Cx6_WriteOpcodeOnly(uint8 opcode);
 
 
@@ -114,17 +114,17 @@ boolean M93Cx6_EraseWriteDisable(void)
 
 uint16 M93Cx6_Read(uint16 addr)
 {
-    M93Cx6_WriteAddr(M93Cx6_OP_READ,addr);
+    M93Cx6_WriteAddr(M93Cx6_OP_READ, addr);
 }
 
 
-boolean M93Cx6_Write(uint16 addr,uint16 data)
+boolean M93Cx6_Write(uint16 addr, uint16 data)
 {
     uint8 foo;
 
-    M93Cx6_WriteAddr(M93Cx6_OP_WRITE,addr);
-    foo=HC12Spi_IOByte(&SPI0,HIBYTE(data));
-    foo=HC12Spi_IOByte(&SPI0,LOBYTE(data));
+    M93Cx6_WriteAddr(M93Cx6_OP_WRITE, addr);
+    foo    = HC12Spi_IOByte(&SPI0, HIBYTE(data));
+    foo    = HC12Spi_IOByte(&SPI0, LOBYTE(data));
 }
 
 
@@ -133,16 +133,17 @@ boolean M93Cx6_WriteAll(uint16 data)
     M93Cx6_WriteOpcodeOnly(M93Cx6_OP_WRAL);
 }
 
+
 /*
 **  Local Functions.
 */
-void M93Cx6_WriteAddr(uint8 opcode,uint16 addr)
+void M93Cx6_WriteAddr(uint8 opcode, uint16 addr)
 {
     uint8 data;
 
-    data=HC12Spi_IOByte(&SPI0,opcode<<5);
+    data = HC12Spi_IOByte(&SPI0, opcode << 5);
 
-    data=HC12Spi_IOByte(&SPI0,addr);
+    data = HC12Spi_IOByte(&SPI0, addr);
 }
 
 
@@ -150,6 +151,7 @@ void M93Cx6_WriteOpcodeOnly(uint8 opcode)
 {
     uint8 data;
 
-    data=HC12Spi_IOByte(&SPI0,opcode<<3);
-    data=HC12Spi_IOByte(&SPI0,0x00);
+    data   = HC12Spi_IOByte(&SPI0, opcode << 3);
+    data   = HC12Spi_IOByte(&SPI0, 0x00);
 }
+

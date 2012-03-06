@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -32,25 +32,25 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-
 /*
 **  Global Types.
 */
 typedef struct tagDS1904_ClockType {
-    uint8 UserFlags;    /* Four non-volatile general-purpose user-flags. */
+    uint8   UserFlags;  /* Four non-volatile general-purpose user-flags. */
     boolean OscEnable;
-    uint32 RefPoint;
+    uint32  RefPoint;
 } DS1904_ClockType;
-
 
 /*
 **  Global Functions.
 */
-void DS1904_ClockRead(OW_ConfigType const * const ConfigPtr,DS1904_ClockType * Clock);
-void DS1904_ClockWrite(OW_ConfigType const * const ConfigPtr,DS1904_ClockType const * Clock);
+void    DS1904_ClockRead(OW_ConfigType const * const ConfigPtr, DS1904_ClockType * Clock);
+void    DS1904_ClockWrite(OW_ConfigType const * const ConfigPtr, DS1904_ClockType const * Clock);
+
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __DS1904_H */
+#endif  /* __DS1904_H */
+

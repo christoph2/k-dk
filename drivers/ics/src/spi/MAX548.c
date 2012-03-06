@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -40,13 +40,13 @@
 **  TESTED: YES (28.11.2009).
 */
 
-
 void MAX548_Init(void)
 {
-    S12PIM_REG8(PTH)|=PTH1;
-    S12PIM_REG8(DDRH)|=DDRH1;
+    S12PIM_REG8(PTH)  |= PTH1;
+    S12PIM_REG8(DDRH) |= DDRH1;
     /* todo: Set SPI-Format. */
 }
+
 
 /*
 **
@@ -69,10 +69,12 @@ void MAX548_Init(void)
 **  (?) - Makes sense when the /LDAC-Pins of multiple ICs are
 **        tied together (==> synchronous DAC outputs).
 */
-void MAX548_Write(uint8 control,uint8 data)
+void MAX548_Write(uint8 control, uint8 data)
 {
-    S12PIM_REG8(PTH)&=~PTH1;    /* Chip Select. */
-    (void)S12Spi_IOByte(SPI0,control);
-    (void)S12Spi_IOByte(SPI0,data);
-    S12PIM_REG8(PTH)|=PTH1;     /* Instruction executed on rising edge. */
+    S12PIM_REG8(PTH) &= ~PTH1;    /* Chip Select. */
+    (void)S12Spi_IOByte(SPI0, control);
+    (void)S12Spi_IOByte(SPI0, data);
+    S12PIM_REG8(PTH) |= PTH1;     /* Instruction executed on rising edge. */
 }
+
+

@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -33,9 +33,9 @@ boolean M93Cx6_Erase(uint16 addr);
 boolean M93Cx6_EraseAll(void);
 boolean M93Cx6_EraseWriteEnable(void);
 boolean M93Cx6_EraseWriteDisable(void);
-uint16 M93Cx6_Read(uint16 addr);
-boolean M93Cx6_Write(uint16 addr,uint16 data);
+uint16  M93Cx6_Read(uint16 addr);
+boolean M93Cx6_Write(uint16 addr, uint16 data);
 boolean M93Cx6_WriteAll(uint16 data);   /* Fill - for convenience.  */
 
-
 #endif /* __M93CX6_H */
+

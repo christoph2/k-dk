@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -38,12 +38,14 @@ extern "C"
 
 void M24x256_Init(void);
 
-boolean M24x256_WriteByte(uint8 slave_addr,uint16 mem_addr,uint8 data);
+boolean M24x256_WriteByte(uint8 slave_addr, uint16 mem_addr, uint8 data);
 
 boolean M24x256_Busy(uint8 slave_addr);
+
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __24X256_H */
+#endif  /* __24X256_H */
+
