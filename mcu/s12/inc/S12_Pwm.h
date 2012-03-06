@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -172,7 +172,6 @@ extern "C"
 
 #define S12PWM8B8C_NUM_CHANNELS ((uint8)8)
 
-
 /*
 **  Global Types.
 */
@@ -186,8 +185,6 @@ typedef enum tagS12Pwm_StatusType {
 } S12Pwm_StatusType;
 
 typedef struct tagS12Pwm_ConfigType {
-    uint16 BaseAddr;
-
     uint8   PwmE;
     uint8   PwmCtl;
     uint8   PwmPol;
@@ -232,10 +229,10 @@ boolean S12Pwm_Is16BitChannel(S12Pwm_ChannelType ChannelNumber);
 uint16  S12Pwm_GetCounter(S12Pwm_ChannelType ChannelNumber);
 uint16  S12Pwm_GetPeriod(S12Pwm_ChannelType ChannelNumber);
 uint16  S12Pwm_GetDutyCycle(S12Pwm_ChannelType ChannelNumber);
-uint8 S12Pwm_GetPolarity(S12Pwm_ChannelType ChannelNumber);
+uint8   S12Pwm_GetPolarity(S12Pwm_ChannelType ChannelNumber);
 
-void S12Pwm_ActivateChannel(S12Pwm_ChannelType ChannelNumber);
-void S12Pwm_DeactivateChannel(S12Pwm_ChannelType ChannelNumber);
+void    S12Pwm_ActivateChannel(S12Pwm_ChannelType ChannelNumber);
+void    S12Pwm_DeactivateChannel(S12Pwm_ChannelType ChannelNumber);
 boolean S12Pwm_ChannelActivated(S12Pwm_ChannelType ChannelNumber);
 
 void S12Pwm_ResetCounter(S12Pwm_ChannelType ChannelNumber);

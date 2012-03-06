@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  * All Rights Reserved
  *
@@ -161,69 +161,77 @@ typedef enum tagS12Mebi_ModeType {
     S12MODE_NORMAL_EXPANDED_WIDE
 } S12Mebi_ModeType;
 
-
 typedef struct tagS12Mebi_ConfigType {
-    uint16 BaseAddr;
-
-    uint8 Pucr;
-    uint8 Rdriv;
-    uint8 IrqCr;
+    uint8   Pucr;
+    uint8   Rdriv;
+    uint8   IrqCr;
 
     /* PortA */
-    uint8 DdrA;
-    uint8 PortA;
+    uint8   DdrA;
+    uint8   PortA;
 
     /* PortB */
-    uint8 DdrB;
-    uint8 PortB;
+    uint8   DdrB;
+    uint8   PortB;
 
     /* PortE */
-    uint8 DdrE;
-    uint8 PortE;
+    uint8   DdrE;
+    uint8   PortE;
 
     /* PortK */
-    uint8 DdrK;
-    uint8 PortK;
+    uint8   DdrK;
+    uint8   PortK;
 #if defined(__K_AUTOSAR)
     const uint8 DirectionChangeable[4];
     const uint8 ModeChangeable[4];
 #endif /* __K_AUTOSAR */
 } S12Mebi_ConfigType;
 
-
 /*
 **  Global Functions.
 */
-void S12Mebi_Init(S12Mebi_ConfigType const * ConfigPtr);
-S12Mebi_ModeType S12Mebi_GetMode(void);
-boolean S12Mebi_SpecialMode(void);
+void                S12Mebi_Init(S12Mebi_ConfigType const * ConfigPtr);
+S12Mebi_ModeType    S12Mebi_GetMode(void);
+boolean             S12Mebi_SpecialMode(void);
 
-void S12Mebi_WritePort(Kdk_PortType port,Kdk_PortLevelType value);
-Kdk_PortLevelType S12Mebi_ReadPort(Kdk_PortType port);
+void                S12Mebi_WritePort(Kdk_PortType port, Kdk_PortLevelType value);
+Kdk_PortLevelType   S12Mebi_ReadPort(Kdk_PortType port);
+
 
 #if defined(__K_AUTOSAR)
-void S12Mebi_WriteChannel(Kdk_PortType port,Kdk_ChannelType bit,Kdk_LevelType level);
-Kdk_LevelType S12Mebi_ReadChannel(Kdk_PortType port,Kdk_ChannelType bit);
+void            S12Mebi_WriteChannel(Kdk_PortType port, Kdk_ChannelType bit, Kdk_LevelType level);
+Kdk_LevelType   S12Mebi_ReadChannel(Kdk_PortType port, Kdk_ChannelType bit);
+
+
 #else
-void S12Mebi_WriteChannel(Kdk_ChannelType channel,Kdk_LevelType level);
-Kdk_LevelType S12Mebi_ReadChannel(Kdk_ChannelType channel);
+void            S12Mebi_WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level);
+Kdk_LevelType   S12Mebi_ReadChannel(Kdk_ChannelType channel);
+
+
 #endif /* __K_AUTOSAR */
 
-void S12Mebi_WriteChannelGroup(Kdk_ChannelGroupType const * group,Kdk_PortLevelType level);
-Kdk_PortLevelType S12Mebi_ReadChannelGroup(Kdk_ChannelGroupType const * group);
+void                S12Mebi_WriteChannelGroup(Kdk_ChannelGroupType const * group, Kdk_PortLevelType level);
+Kdk_PortLevelType   S12Mebi_ReadChannelGroup(Kdk_ChannelGroupType const * group);
+
 
 #if defined(__K_AUTOSAR)
 void S12Mebi_RefreshPortDirection(S12Mebi_ConfigType const * ConfigPtr);
+
+
 #endif /* __K_AUTOSAR */
 
 #if defined(__K_AUTOSAR)
-void S12Mebi_SetPinDirection(Kdk_PortType port,Kdk_ChannelType bit,Kdk_PinDirectionType Direction);
+void S12Mebi_SetPinDirection(Kdk_PortType port, Kdk_ChannelType bit, Kdk_PinDirectionType Direction);
+
+
 #else
-void S12Mebi_SetPinDirection(Kdk_PinType Pin,Kdk_PinDirectionType Direction);
+void S12Mebi_SetPinDirection(Kdk_PinType Pin, Kdk_PinDirectionType Direction);
+
+
 #endif /* __K_AUTOSAR */
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __S12_MEBI_H */
+#endif  /* __S12_MEBI_H */

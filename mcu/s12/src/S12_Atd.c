@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -42,11 +42,11 @@
 */
 
 /*
-static const uint8 S12Atd_Ports[] = {
+   static const uint8 S12Atd_Ports[] = {
     PORTAD0,
     PORTAD1
-};
-*/
+   };
+ */
 
 /*
 ** Local Constants.
@@ -55,7 +55,6 @@ static uint16 S12Atd_ControllerMapping[] = {   /* depends on derivate!!! */
     BASE_ADDR_ATD0,
     BASE_ADDR_ATD1,
 };
-
 
 static uint8 S12Atd_CalculatePrescaler(void);
 
@@ -101,7 +100,7 @@ void S12Atd_Init(uint8 Controller)
 
 uint16 S12Atd_GetChannel(uint8 Controller, uint8 chn)
 {
-    uint16                          Base       = S12Atd_ControllerMapping[Controller];
+    uint16 Base = S12Atd_ControllerMapping[Controller];
 
     chn &= ((uint8)0x07);
     WAIT_FOR((S12ATD_REG8(Base, ATDSTAT0) & SCF) == SCF);
@@ -133,11 +132,11 @@ void S12Atd_Handler(uint8 Controller)
     uint8   idx;
     uint8   cc;
     uint8   ccf;
-    uint16                          Base       = S12Atd_ControllerMapping[Controller];
+    uint16  Base = S12Atd_ControllerMapping[Controller];
 
     S12ATD_REG8(Base, ATDSTAT0)    = SCF;
-    cc                         = S12ATD_REG8(Base, ATDSTAT0) & (uint8)0x07;
-    ccf                        = S12ATD_REG8(Base, ATDSTAT1);
+    cc                             = S12ATD_REG8(Base, ATDSTAT0) & (uint8)0x07;
+    ccf                            = S12ATD_REG8(Base, ATDSTAT1);
 
     for (idx = 0; idx < 8; ++idx) {
         result[idx] = S12ATD_REG8(Base, ATDDR0 + (idx << 1));

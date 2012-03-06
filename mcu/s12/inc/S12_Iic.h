@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,15 +25,14 @@
 #if !defined(__S12IIC_H)
 #define __S12IIC_H
 
-#if CPU_FAMILY==CPU12_S12
+#if CPU_FAMILY == CPU12_S12
     #include "S12_Hw.h"
-#elif CPU_FAMILY==CPU12_HC12
+#elif CPU_FAMILY == CPU12_HC12
     #include "HC12_Hw.h"
 /*    #define S12_REG8    HC12_REG8 */
 #else
     #error Wrong CPU Family.
 #endif
-
 
 #if defined(__cplusplus)
 extern "C"
@@ -44,10 +43,10 @@ extern "C"
 ** Register-Offsets
 */
 #define IBAD            ((uint8)0x00)
-        /*  IBAD-Bits.  */
+/*  IBAD-Bits.  */
 
 #define IBFD            ((uint8)0x01)
-        /*  IBFD-Bits.  */
+/*  IBFD-Bits.  */
         #define IBC7    ((uint8)0x80)
         #define IBC6    ((uint8)0x40)
         #define IBC5    ((uint8)0x20)
@@ -58,7 +57,7 @@ extern "C"
         #define IBC0    ((uint8)0x01)
 
 #define IBCR            ((uint8)0x02)
-        /*  IBCR-Bits.  */
+/*  IBCR-Bits.  */
         #define IBEN    ((uint8)0x80)
         #define IBIE    ((uint8)0x40)
         #define MS_SL   ((uint8)0x20)
@@ -68,7 +67,7 @@ extern "C"
         #define IBSWAI  ((uint8)0x01)
 
 #define IBSR            ((uint8)0x03)
-        /*  IBSR-Bits.  */
+/*  IBSR-Bits.  */
         #define TCF     ((uint8)0x80)
         #define IAAS    ((uint8)0x40)
         #define IBB     ((uint8)0x20)
@@ -85,15 +84,12 @@ extern "C"
 
 #define IIC_ADDR_ANY    ((uint8)0)
 
-
 /*
 **  global Types.
 */
 typedef struct tagS12Iic_ConfigType {
-    uint16 BaseAddr;
-    uint8 Prescaler;
+    uint8   Prescaler;
 } S12Iic_ConfigType;
-
 
 typedef enum taS12Iic_StatusType {
     S12IIC_OK,
@@ -105,25 +101,27 @@ typedef enum taS12Iic_StatusType {
 
 typedef void (*IIC_PresenceCallback)(uint8 addr);
 
-
 /*
 **  Function-Prototypes.
 */
 
 /* Basic-Functions.     */
-void S12Iic_Init(S12Iic_ConfigType const * const Cfg);
-void S12Iic_Start(S12Iic_ConfigType const * const Cfg);
-void S12Iic_Restart(S12Iic_ConfigType const * const Cfg);
-void S12Iic_Stop(S12Iic_ConfigType const * const Cfg);
-boolean S12Iic_Write(S12Iic_ConfigType const * const Cfg,uint8 b);
-void S12Iic_Read(S12Iic_ConfigType const * const Cfg,/*@out@*/uint8 *b,boolean ack);
+void    S12Iic_Init(S12Iic_ConfigType const * const Cfg);
+void    S12Iic_Start(S12Iic_ConfigType const * const Cfg);
+void    S12Iic_Restart(S12Iic_ConfigType const * const Cfg);
+void    S12Iic_Stop(S12Iic_ConfigType const * const Cfg);
+boolean S12Iic_Write(S12Iic_ConfigType const * const Cfg, uint8 b);
+void    S12Iic_Read(S12Iic_ConfigType const * const Cfg, /*@out@*/ uint8 * b, boolean ack);
+
 
 /* Highlevel-Functions. */
-boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg,uint8 slave_base_addr,uint8 nbits,IIC_PresenceCallback callback);
+boolean S12Iic_PresenceCheck(S12Iic_ConfigType const * const Cfg, uint8 slave_base_addr, uint8 nbits, IIC_PresenceCallback callback);
 
-boolean S12Iic_ModeReq(S12Iic_ConfigType const * const Cfg,uint8 slave_addr,boolean write);
-#define S12Iic_ReadMode(cfg,addr)   S12Iic_ModeReq((cfg),(addr),FALSE)
-#define S12Iic_WriteMode(cfg,addr)  S12Iic_ModeReq((cfg),(addr),TRUE)
+boolean S12Iic_ModeReq(S12Iic_ConfigType const * const Cfg, uint8 slave_addr, boolean write);
+
+
+#define S12Iic_ReadMode(cfg, addr)  S12Iic_ModeReq((cfg), (addr), FALSE)
+#define S12Iic_WriteMode(cfg, addr) S12Iic_ModeReq((cfg), (addr), TRUE)
 
 #if defined(__cplusplus)
 }

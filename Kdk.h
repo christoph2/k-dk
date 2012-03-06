@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -37,22 +37,26 @@ extern "C"
 /*
 **  Templates.
 */
-#define IMPLEMENT_IO_READ_PORT(nameUpper, nameLower)                 \
-    Kdk_PortLevelType GLUE2(nameLower, _ReadPort(Kdk_PortType port)) \
-    {                                                                \
-        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                 \
-                                                                     \
-        return nameUpper ## _REG8( ## nameLower ## _Ports[port]);    \
+
+#define IMPL_PORT_MAP(nameLower)    GLUE2( nameLower , _Ports[port])
+#define IMPL_REGISTER(nameUpper)    GLUE2( nameUpper , _REG8)
+
+
+#define IMPLEMENT_IO_READ_PORT(nameUpper, nameLower)                                \
+    Kdk_PortLevelType GLUE2(nameLower, _ReadPort(Kdk_PortType port))                \
+    {                                                                               \
+        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                                \
+                                                                                    \
+        return IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) );               \
     }
 
-#define IMPLEMENT_IO_WRITE_PORT(nameUpper, nameLower)                             \
-    void GLUE2(nameLower, _WritePort(Kdk_PortType port, Kdk_PortLevelType value)) \
-    {                                                                             \
-        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                              \
-                                                                                  \
-        nameUpper ## _REG8( ## nameLower ## _Ports[port]) = value;                \
+#define IMPLEMENT_IO_WRITE_PORT(nameUpper, nameLower)                               \
+    void GLUE2(nameLower, _WritePort(Kdk_PortType port, Kdk_PortLevelType value))   \
+    {                                                                               \
+        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                                \
+                                                                                    \
+        IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ) = value;              \
     }
-
 
 #if defined(__K_AUTOSAR)
 #define IMPLEMENT_IO_WRITE_CHANNEL(nameUpper, nameLower)                                              \
@@ -64,56 +68,56 @@ extern "C"
                                                                                                       \
         CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                                       \
         if (level == KDK_HIGH) {                                                                      \
-            UTL_BIT_SET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);                  \
+            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);                \
         } else {                                                                                      \
-            UTL_BIT_RESET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);                \
+            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);              \
         }                                                                                             \
         CPU_RESTORE_INTERRUPTS(state);                                                                \
     }
 #else
-#define IMPLEMENT_IO_WRITE_CHANNEL(nameUpper, nameLower)                                 \
-    void GLUE2(nameLower, _WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level))   \
-    {                                                                                    \
-        uint8               port;                                                        \
-        uint8               bit;                                                         \
-        InterruptStateType  state;                                                       \
-                                                                                         \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                               \
-                                                                                         \
-        port   = channel / (uint8)8;                                                     \
-        bit    = channel % (uint8)8;                                                     \
-                                                                                         \
-        CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                          \
-        if (level == KDK_HIGH) {                                                         \
-            UTL_BIT_SET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);     \
-        } else {                                                                         \
-            UTL_BIT_RESET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);   \
-        }                                                                                \
-        CPU_RESTORE_INTERRUPTS(state);                                                   \
+#define IMPLEMENT_IO_WRITE_CHANNEL(nameUpper, nameLower)                                    \
+    void GLUE2(nameLower, _WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level))      \
+    {                                                                                       \
+        uint8               port;                                                           \
+        uint8               bit;                                                            \
+        InterruptStateType  state;                                                          \
+                                                                                            \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                  \
+                                                                                            \
+        port   = channel / (uint8)8;                                                        \
+        bit    = channel % (uint8)8;                                                        \
+                                                                                            \
+        CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                             \
+        if (level == KDK_HIGH) {                                                            \
+            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);      \
+        } else {                                                                            \
+            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);    \
+        }                                                                                   \
+        CPU_RESTORE_INTERRUPTS(state);                                                      \
     }
 #endif /* __K_AUTOSAR */
 
 #if defined(__K_AUTOSAR)
-#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                         \
-    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_PortType port, Kdk_ChannelType bit))                        \
-    {                                                                                                           \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                      \
-                                                                                                                \
-        return (UTL_BIT_GET8( ## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit)) ? KDK_HIGH : KDK_LOW; \
+#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                             \
+    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_PortType port, Kdk_ChannelType bit))                            \
+    {                                                                                                               \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                          \
+                                                                                                                    \
+        return (UTL_BIT_GET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW;    \
     }
 #else
-#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                         \
-    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_ChannelType channel))                                       \
-    {                                                                                                           \
-        uint8   port;                                                                                           \
-        uint8   bit;                                                                                            \
-                                                                                                                \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                      \
-                                                                                                                \
-        port   = channel / (uint8)8;                                                                            \
-        bit    = channel % (uint8)8;                                                                            \
-                                                                                                                \
-        return (UTL_BIT_GET8( ## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit)) ? KDK_HIGH : KDK_LOW; \
+#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                             \
+    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_ChannelType channel))                                           \
+    {                                                                                                               \
+        uint8   port;                                                                                               \
+        uint8   bit;                                                                                                \
+                                                                                                                    \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                          \
+                                                                                                                    \
+        port   = channel / (uint8)8;                                                                                \
+        bit    = channel % (uint8)8;                                                                                \
+                                                                                                                    \
+        return (UTL_BIT_GET8(  IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW;   \
     }
 #endif
 
@@ -123,9 +127,9 @@ extern "C"
         InterruptStateType state;                                                                          \
                                                                                                            \
         CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                                            \
-        nameUpper ## _REG8(S12Mebi_Ports[group->port]) =                                                   \
+        nameUpper ## _REG8( ## nameLower ## _Ports[group->port]) =                                         \
             ( ## nameUpper ## _REG8( ## nameLower ## _Ports[group->port]) & ~group->mask) |                \
-            (group->mask & (level << group->offset) /* todo: Table!!! */                                   \
+            (group->mask & (level << group->offset) /* TODO: Table!!! */                                   \
             );                                                                                             \
         CPU_RESTORE_INTERRUPTS(state);                                                                     \
     }
@@ -152,13 +156,14 @@ extern "C"
                                                                                                                     \
         CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                                                     \
         if (Direction == PORT_PIN_OUT) {                                                                            \
-            UTL_BIT_SET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);                                \
+            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);                              \
         } else {                                                                                                    \
-            UTL_BIT_RESET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);                              \
+            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);                            \
         }                                                                                                           \
         CPU_RESTORE_INTERRUPTS(state);                                                                              \
     }
 #else
+
 #define IMPLEMENT_IO_SET_PIN_DIRECTION(nameUpper, nameLower)                                 \
     void GLUE2(nameLower, _SetPinDirection(Kdk_PinType Pin, Kdk_PinDirectionType Direction)) \
     {                                                                                        \
@@ -171,14 +176,17 @@ extern "C"
                                                                                              \
         CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                              \
         if (Direction == PORT_PIN_OUT) {                                                     \
-            UTL_BIT_SET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);         \
+            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);       \
         } else {                                                                             \
-            UTL_BIT_RESET8(## nameUpper ## _REG8( ## nameLower ## _Ports[port]), bit);       \
+            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);     \
         }                                                                                    \
         CPU_RESTORE_INTERRUPTS(state);                                                       \
     }
 #endif /* __K_AUTOSAR */
 /* /////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
+#define KDK_BASE_ADDRESS(mod)           GLUE2(BASE_ADDR_ , mod)
+#define KDK_BASE_ADDRESS_MULT(mod, num) GLUE3(BASE_ADDR_ , mod, num)
 
 /*
 **  Global Types.
@@ -205,28 +213,29 @@ typedef enum tagKdk_PinDirectionType {
 
 typedef uint8 Kdk_PortLevelType;
 
-typedef void (*Kdk_WritePort_Func)(Kdk_PortType port,Kdk_PortLevelType value);
+typedef void (*Kdk_WritePort_Func)(Kdk_PortType port, Kdk_PortLevelType value);
 typedef Kdk_PortLevelType (*Kdk_ReadPort_Func)(Kdk_PortType port);
 
-typedef void (*Kdk_WriteChannel_Func)(Kdk_PortType port,Kdk_ChannelType bit,Kdk_LevelType level);
-typedef Kdk_LevelType (*Kdk_ReadChannel_Func)(Kdk_PortType port,Kdk_ChannelType bit);
+typedef void (*Kdk_WriteChannel_Func)(Kdk_PortType port, Kdk_ChannelType bit, Kdk_LevelType level);
+typedef Kdk_LevelType (*Kdk_ReadChannel_Func)(Kdk_PortType port, Kdk_ChannelType bit);
 
-typedef void (*Kdk_WriteChannelGroup_Func)(Kdk_ChannelGroupType const * group,Kdk_PortLevelType level);
+typedef void (*Kdk_WriteChannelGroup_Func)(Kdk_ChannelGroupType const * group, Kdk_PortLevelType level);
 typedef Kdk_PortLevelType (*Kdk_ReadChannelGroup_Func)(Kdk_ChannelGroupType const * group);
 
-typedef void (*Kdk_SetPinDirection_Func)(Kdk_PortType port,Kdk_ChannelType bit,Kdk_PinDirectionType Direction);
+typedef void (*Kdk_SetPinDirection_Func)(Kdk_PortType port, Kdk_ChannelType bit, Kdk_PinDirectionType Direction);
 
 /*
 **  Global Functions.
 */
 #if defined(__K_AUTOSAR)
 /* Helper Function for 'Port_RefreshPortDirection'. */
-uint8 Kdk_CalculatePinDirection(uint8 changeable,uint8 initialValue,uint8 ActualValue);
+uint8 Kdk_CalculatePinDirection(uint8 changeable, uint8 initialValue, uint8 ActualValue);
+
+
 #endif /* __K_AUTOSAR */
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-
-#endif /* __K_DK_H */
+#endif  /* __K_DK_H */

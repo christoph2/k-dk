@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -87,14 +87,14 @@ extern "C"
 #define TCNTL       ((uint8)0x05)
 
 #define TSCR1       ((uint8)0x06)
-    /*  TSCR1-Bits. */
+/*  TSCR1-Bits. */
     #define TEN     ((uint8)0x80)
     #define TSWAI   ((uint8)0x40)
     #define TSFRZ   ((uint8)0x20)
     #define TFFCA   ((uint8)0x10)
 
 #define TTOV        ((uint8)0x07)
-    /*  TTOV-Bits */
+/*  TTOV-Bits */
     #define TOV7    ((uint8)0x80)
     #define TOV6    ((uint8)0x40)
     #define TOV5    ((uint8)0x20)
@@ -105,7 +105,7 @@ extern "C"
     #define TOV0    ((uint8)0x01)
 
 #define TCTL1       ((uint8)0x08)
-    /*  TCTL1-Bits. */
+/*  TCTL1-Bits. */
     #define OM7     ((uint8)0x80)
     #define OL7     ((uint8)0x40)
     #define OM6     ((uint8)0x20)
@@ -116,7 +116,7 @@ extern "C"
     #define OL4     ((uint8)0x01)
 
 #define TCTL2       ((uint8)0x09)
-    /*  TCTL2-Bits. */
+/*  TCTL2-Bits. */
     #define OM3     ((uint8)0x80)
     #define OL3     ((uint8)0x40)
     #define OM2     ((uint8)0x20)
@@ -132,7 +132,7 @@ extern "C"
 */
 
 #define TCTL3       ((uint8)0x0A)
-    /*  TCTL3-Bits. */
+/*  TCTL3-Bits. */
     #define EDG7B   ((uint8)0x80)
     #define EDG7A   ((uint8)0x40)
     #define EDG6B   ((uint8)0x20)
@@ -143,7 +143,7 @@ extern "C"
     #define EDG4A   ((uint8)0x01)
 
 #define TCTL4       ((uint8)0x0B)
-    /*  TCTL4-Bits. */
+/*  TCTL4-Bits. */
     #define EDG3B   ((uint8)0x80)
     #define EDG3A   ((uint8)0x40)
     #define EDG2B   ((uint8)0x20)
@@ -154,7 +154,7 @@ extern "C"
     #define EDG0A   ((uint8)0x01)
 
 #define TIE         ((uint8)0x0C)
-    /*  TIE-Bits. */
+/*  TIE-Bits. */
     #define C7I     ((uint8)0x80)
     #define C6I     ((uint8)0x40)
     #define C5I     ((uint8)0x20)
@@ -165,7 +165,7 @@ extern "C"
     #define C0I     ((uint8)0x01)
 
 #define TSCR2       ((uint8)0x0D)
-    /*  TSCR2-Bits. */
+/*  TSCR2-Bits. */
     #define TOI     ((uint8)0x80)
     #define TCRE    ((uint8)0x08)
     #define PR2     ((uint8)0x04)
@@ -173,7 +173,7 @@ extern "C"
     #define PR0     ((uint8)0x01)
 
 #define TFLG1       ((uint8)0x0E)
-    /*  TFLG1-Bits. */
+/*  TFLG1-Bits. */
     #define C7F     ((uint8)0x80)
     #define C6F     ((uint8)0x40)
     #define C5F     ((uint8)0x20)
@@ -184,7 +184,7 @@ extern "C"
     #define C0F     ((uint8)0x01)
 
 #define TFLG2       ((uint8)0x0F)
-    /*  TFLG2-Bits  */
+/*  TFLG2-Bits  */
     #define TOF     ((uint8)0x80)
 
 #define TC0         ((uint8)0x10)
@@ -204,7 +204,7 @@ extern "C"
 #define TC7         ((uint8)0x1E)
 
 #define PACTL       ((uint8)0x20)
-    /*  PACTL-Bits. */
+/*  PACTL-Bits. */
     #define PAEN    ((uint8)0x40)
     #define PAMOD   ((uint8)0x20)
     #define PEDGE   ((uint8)0x10)
@@ -214,7 +214,7 @@ extern "C"
     #define PAI     ((uint8)0x01)
 
 #define PAFLG       ((uint8)0x21)
-    /*  PAFLG-Bits. */
+/*  PAFLG-Bits. */
     #define PAOVF   ((uint8)0x02)
     #define PAIF    ((uint8)0x01)
 
@@ -224,7 +224,7 @@ extern "C"
 #define PACN0       ((uint8)0x25)
 
 #define MCCTL       ((uint8)0x26)
-    /*  MCCTL-Bits. */
+/*  MCCTL-Bits. */
     #define MCZI    ((uint8)0x80)
     #define MODMC   ((uint8)0x40)
     #define RDMCL   ((uint8)0x20)
@@ -235,7 +235,7 @@ extern "C"
     #define MCPR0   ((uint8)0x01)
 
 #define MCFLG       ((uint8)0x27)
-    /*  MCFLG-Bits. */
+/*  MCFLG-Bits. */
     #define MCZF    ((uint8)0x80)
     #define POLF3   ((uint8)0x08)
     #define POLF2   ((uint8)0x04)
@@ -243,19 +243,19 @@ extern "C"
     #define POLF0   ((uint8)0x01)
 
 #define ICPAR       ((uint8)0x28)
-    /*  ICPAR-Bits. */
+/*  ICPAR-Bits. */
     #define PA3EN   ((uint8)0x08)
     #define PA2EN   ((uint8)0x04)
     #define PA1EN   ((uint8)0x02)
     #define PA0EN   ((uint8)0x01)
 
 #define DLYCT       ((uint8)0x29)
-    /*  DLYCNT-Bits.  */
+/*  DLYCNT-Bits.  */
     #define DLY1    ((uint8)0x02)
     #define DLY0    ((uint8)0x01)
 
 #define ICOVW       ((uint8)0x2A)
-    /*  ICOVW-Bits. */
+/*  ICOVW-Bits. */
     #define NOVW7   ((uint8)0x80)
     #define NOVW6   ((uint8)0x40)
     #define NOVW5   ((uint8)0x20)
@@ -266,7 +266,7 @@ extern "C"
     #define NOVW0   ((uint8)0x01)
 
 #define ICSYS       ((uint8)0x2B)
-    /*  ICSYS-Bits. */
+/*  ICSYS-Bits. */
     #define SH37    ((uint8)0x80)
     #define SH26    ((uint8)0x40)
     #define SH15    ((uint8)0x20)
@@ -279,7 +279,7 @@ extern "C"
 **  0x2C Reserved
 */
 #define TIMTST      ((uint8)0x2D)
-        /*  TIMTST-Bits.  */
+/*  TIMTST-Bits.  */
     #define TCBYP   ((uint8)0x02)
 
 /*
@@ -287,12 +287,12 @@ extern "C"
 */
 
 #define PBCTL       ((uint8)0x30)
-    /*  PBCTL-Bits. */
+/*  PBCTL-Bits. */
     #define PBEN    ((uint8)0x40)
     #define PBOVI   ((uint8)0x02)
 
 #define PBFLG       ((uint8)0x31)
-    /*  PBFLG-Bits. */
+/*  PBFLG-Bits. */
     #define PBOVF   ((uint8)0x02)
 
 #define PA3H        ((uint8)0x32)
@@ -313,7 +313,6 @@ extern "C"
 
 #define TC3H        ((uint8)0x3E)
 
-
 /*
 **  Global Types.
 */
@@ -321,67 +320,92 @@ typedef enum tagS12Ect_StatusType {
     S12ECT_OK
 } S12Ect_StatusType;
 
-
 typedef struct tagS12Ect_ConfigType {
-    uint16 BaseAddr;
-    uint16 cycle;
+    uint16  cycle;
 
-    uint8 TIos;
-    uint8 TScr1;
-    uint8 TScr2;
-    uint8 TCtl1;
-    uint8 TCtl2;
-    uint8 TCtl3;
-    uint8 TCtl4;
-    uint8 TIe;
+    uint8   TIos;
+    uint8   TScr1;
+    uint8   TScr2;
+    uint8   TCtl1;
+    uint8   TCtl2;
+    uint8   TCtl3;
+    uint8   TCtl4;
+    uint8   TIe;
 
-    uint8 PActl;
-    uint8 PBctl;
-    uint8 ICpar;
-    uint8 MCctl;
-    uint16 MCcnt;
-    uint8 DLyct;
-    uint8 ICovw;
-    uint8 ICsys;
+    uint8   PActl;
+    uint8   PBctl;
+    uint8   ICpar;
+    uint8   MCctl;
+    uint16  MCcnt;
+    uint8   DLyct;
+    uint8   ICovw;
+    uint8   ICsys;
 } S12Ect_ConfigType;
 
+typedef uint8 S12Ect_ChannelType;
+
+typedef enum tagS12Ect_ModeType {
+    S12ECT_INPUT_CAPTURE,
+    S12ECT_OUTPUT_COMPARE
+} S12Ect_ModeType;
+
+typedef enum tagS12Ect_InterruptSourceType {
+    S12ECT_INTERRUPT_SOURCE_TOF,
+    S12ECT_INTERRUPT_SOURCE_TC0,
+    S12ECT_INTERRUPT_SOURCE_TC1,
+    S12ECT_INTERRUPT_SOURCE_TC2,
+    S12ECT_INTERRUPT_SOURCE_TC3,
+    S12ECT_INTERRUPT_SOURCE_TC4,
+    S12ECT_INTERRUPT_SOURCE_TC5,
+    S12ECT_INTERRUPT_SOURCE_TC6,
+    S12ECT_INTERRUPT_SOURCE_TC7,
+    S12ECT_INTERRUPT_SOURCE_MDCU,
+    S12ECT_INTERRUPT_SOURCE_PAOVR,
+    S12ECT_INTERRUPT_SOURCE_PA,
+    S12ECT_INTERRUPT_SOURCE_PBOVR
+} S12Ect_InterruptSourceType;
 
 /*
 **  Function-Like-Macros.
 */
-#define S12ECT_ACKNOWLEDGE_TOF_INTR()   (S12ECT_REG8(TFLG2)=TOF)
+#define S12ECT_ACKNOWLEDGE_TOF_INTR()   (S12ECT_REG8(TFLG2) = TOF)
 
-#define S12ECT_ACKNOWLEDGE_TC0_INTR()   (S12ECT_REG8(TFLG1)=C0F)
-#define S12ECT_ACKNOWLEDGE_TC1_INTR()   (S12ECT_REG8(TFLG1)=C1F)
-#define S12ECT_ACKNOWLEDGE_TC2_INTR()   (S12ECT_REG8(TFLG1)=C2F)
-#define S12ECT_ACKNOWLEDGE_TC3_INTR()   (S12ECT_REG8(TFLG1)=C3F)
-#define S12ECT_ACKNOWLEDGE_TC4_INTR()   (S12ECT_REG8(TFLG1)=C4F)
-#define S12ECT_ACKNOWLEDGE_TC5_INTR()   (S12ECT_REG8(TFLG1)=C5F)
-#define S12ECT_ACKNOWLEDGE_TC6_INTR()   (S12ECT_REG8(TFLG1)=C6F)
-#define S12ECT_ACKNOWLEDGE_TC7_INTR()   (S12ECT_REG8(TFLG1)=C7F)
+#define S12ECT_ACKNOWLEDGE_TC0_INTR()   (S12ECT_REG8(TFLG1) = C0F)
+#define S12ECT_ACKNOWLEDGE_TC1_INTR()   (S12ECT_REG8(TFLG1) = C1F)
+#define S12ECT_ACKNOWLEDGE_TC2_INTR()   (S12ECT_REG8(TFLG1) = C2F)
+#define S12ECT_ACKNOWLEDGE_TC3_INTR()   (S12ECT_REG8(TFLG1) = C3F)
+#define S12ECT_ACKNOWLEDGE_TC4_INTR()   (S12ECT_REG8(TFLG1) = C4F)
+#define S12ECT_ACKNOWLEDGE_TC5_INTR()   (S12ECT_REG8(TFLG1) = C5F)
+#define S12ECT_ACKNOWLEDGE_TC6_INTR()   (S12ECT_REG8(TFLG1) = C6F)
+#define S12ECT_ACKNOWLEDGE_TC7_INTR()   (S12ECT_REG8(TFLG1) = C7F)
 
-#define S12ECT_ACKNOWLEDGE_MDCU_INTR()  (S12ECT_REG8(MCFLG)=MCZF)
+#define S12ECT_ACKNOWLEDGE_MDCU_INTR()  (S12ECT_REG8(MCFLG) = MCZF)
 
-#define S12ECT_ACKNOWLEDGE_PAOV_INTR()  (S12ECT_REG8(PAFLG)=PAOVF)
-#define S12ECT_ACKNOWLEDGE_PA_INTR()    (S12ECT_REG8(PAFLG)=PAIF)
+#define S12ECT_ACKNOWLEDGE_PAOV_INTR()  (S12ECT_REG8(PAFLG) = PAOVF)
+#define S12ECT_ACKNOWLEDGE_PA_INTR()    (S12ECT_REG8(PAFLG) = PAIF)
 
-#define S12ECT_ACKNOWLEDGE_PBOV_INTR()  (S12ECT_REG8(PBFLG)=PBOVF)
+#define S12ECT_ACKNOWLEDGE_PBOV_INTR()  (S12ECT_REG8(PBFLG) = PBOVF)
 
+#define S12Ect_TimerCount()             S12ECT_REG16(TCNT)
+#define S12Ect_CapcomReg(no)            S12ECT_REG16(TC0 + ((no) << 1))
+
+/*
+** Global Variables.
+*/
+extern S12Ect_ConfigType const * ECT;
 
 /*
 ** Global Functions.
 */
-void S12Ect_Init(void);
-
-#define S12Ect_TimerCount()     S12ECT_REG16(TCNT)
-#define S12Ect_CapcomReg(no)    S12ECT_REG16(TC0+((no)<<1))
-
-uint16 S12Ect_GetOverflowCount(void);
-uint32 S12Ect_GetTickCount(void);
+void    S12Ect_Init(S12Ect_ConfigType const * const ConfigPtr);
+void    S12Ect_ForceOutputCompare(S12Ect_ChannelType channel);
+void    S12Ect_SetMode(S12Ect_ChannelType channel, S12Ect_ModeType mode);
+void    S12Ect_EnableInterrupt(S12Ect_InterruptSourceType Source);
+void    S12Ect_DisableInterrupt(S12Ect_InterruptSourceType Source);
 
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __S12_ECT_H */
+#endif  /* __S12_ECT_H */

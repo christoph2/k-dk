@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -36,7 +36,7 @@ extern "C"
 **  Register-Offsets.
 */
 #define INITRM      ((uint8)0x10)
-    /*  INITRM-Bits.  */
+/*  INITRM-Bits.  */
     #define RAM15   ((uint8)0x80)
     #define RAM14   ((uint8)0x40)
     #define RAM13   ((uint8)0x20)
@@ -45,14 +45,14 @@ extern "C"
     #define RAMHAL  ((uint8)0x01)
 
 #define INITRG      ((uint8)0x11)
-    /*  INITRG-Bits.  */
+/*  INITRG-Bits.  */
     #define REG14   ((uint8)0x40)
     #define REG13   ((uint8)0x20)
     #define REG12   ((uint8)0x10)
     #define REG11   ((uint8)0x08)
 
 #define INITEE      ((uint8)0x12)
-    /*  INITEE-Bits.  */
+/*  INITEE-Bits.  */
     #define EE15    ((uint8)0x80)
     #define EE14    ((uint8)0x40)
     #define EE13    ((uint8)0x20)
@@ -60,7 +60,7 @@ extern "C"
     #define EEON    ((uint8)0x01)
 
 #define MISC        ((uint8)0x13)
-    /*  MISC-Bits.  */
+/*  MISC-Bits.  */
     #define EXSTR1  ((uint8)0x08)
     #define EXSTR0  ((uint8)0x04)
     #define ROMHM   ((uint8)0x02)
@@ -71,7 +71,7 @@ extern "C"
 #define MTST1       ((uint8)0x17)
 
 #define MEMSIZ0     ((uint8)0x1C)
-    /*  MEMSIZ0-Bits. */
+/*  MEMSIZ0-Bits. */
     #define REG_SW0 ((uint8)0x80)
     #define EEP_SW1 ((uint8)0x20)
     #define EEP_SW0 ((uint8)0x10)
@@ -80,14 +80,14 @@ extern "C"
     #define RAM_SW0 ((uint8)0x01)
 
 #define MEMSIZ1     ((uint8)0x1D)
-    /*  MEMSIZ1-Bits. */
+/*  MEMSIZ1-Bits. */
     #define ROM_SW1 ((uint8)0x80)
     #define ROM_SW0 ((uint8)0x40)
     #define PAG_SW1 ((uint8)0x02)
     #define PAG_SW0 ((uint8)0x01)
 
 #define PPAGE       ((uint8)0x30)
-    /*  PPAGE-Bits. */
+/*  PPAGE-Bits. */
     #define PIX5    ((uint8)0x20)
     #define PIX4    ((uint8)0x10)
     #define PIX3    ((uint8)0x08)
@@ -100,19 +100,19 @@ extern "C"
 */
 
 typedef struct tagS12Mmc_ConfigType {
-    uint16 BaseAddr;
-    uint8 InitRM;
-    uint8 InitRG;
-    uint8 InitEE;
-    uint8 Misc;
+    uint8   InitRM;
+    uint8   InitRG;
+    uint8   InitEE;
+    uint8   Misc;
 } S12Mmc_ConfigType;
 
-void S12Mmc_Init(void);
-void S12Mmc_SetPPage(uint8 ppage);
-uint8 S12Mmc_GetPPage(void);
+void    S12Mmc_Init(void);
+void    S12Mmc_SetPPage(uint8 ppage);
+uint8   S12Mmc_GetPPage(void);
+
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __S12_MMC_H*/
+#endif  /* __S12_MMC_H*/

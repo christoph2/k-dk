@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -44,7 +44,6 @@ extern "C"
 #define KDK_SERVICE_S12PIM_READ_CHANNEL_GROUP   ((uint8)0x04)
 #define KDK_SERVICE_S12PIM_WRITE_CHANNEL_GROUP  ((uint8)0x05)
 #define KDK_SERVICE_S12PIM_GET_VERSION_INFO     ((uint8)0x12)
-
 
 /*
 **  Module-Errors.
@@ -635,7 +634,6 @@ typedef enum tagS12Pim_StatusType {
 } S12Pim_StatusType;
 
 typedef struct tagS12Pim_ConfigType {
-    const uint16    BaseAddr;
     uint8           Modrr;
 
     /* PortT */
