@@ -1,7 +1,7 @@
 /*
    k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
 
-   (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+   (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
                                         cpu12.gems@googlemail.com>
 
    All Rights Reserved
@@ -20,7 +20,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
    s. FLOSS-EXCEPTION.txt
-*/
+ */
 #if !defined(__CPU_PRIMITIVES_MCU_H)
 #define __CPU_PRIMITIVES_MCU_H
 
@@ -33,48 +33,41 @@
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_ENTER_POWERDOWN_MODE()	__asm wai
-
+#define CPU_ENTER_POWERDOWN_MODE()      __asm wai
 
 /*
 **  Software-Interrupt.
 */
 #define CPU_SOFTWARE_INTERRUPT()        __asm swi
 
-
 /*
 **  Return from Interrupt.
 */
 #define CPU_RETURN_FROM_INTERRUPT()     __asm rti
-
 
 /*
 **  Software-Breakpoint.
 */
 #define CPU_BREAKPOINT()                __asm bgnd
 
-
 /*
 **  No-Operation.
 */
 #define CPU_NO_OPERATION()              __asm nop
-
 
 /*
 **  Disable All Interrupts.
 */
 #define CPU_DISABLE_ALL_INTERRUPTS()    __asm sei
 
-
 /*
 **  Enable All Interrupts.
 */
-#define CPU_ENABLE_ALL_INTERRUPTS()     \
-    _BEGIN_BLOCK                        \
-        __asm cli;                      \
-        __asm nop;                      \
+#define CPU_ENABLE_ALL_INTERRUPTS() \
+    _BEGIN_BLOCK                    \
+    __asm cli;                      \
+    __asm nop;                      \
     _END_BLOCK
-
 
 /*
 **  Check for Interrupts disabled.
@@ -85,36 +78,34 @@ boolean CPU_INTERRUPTS_DISABLED(void);
 /*
 **  Save Interrupt-State before Disabling.
 */
-#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)  \
-    _BEGIN_BLOCK                                \
-	state=CPU_INTERRUPTS_DISABLED();        \
-	CPU_DISABLE_ALL_INTERRUPTS();           \
-    _END_BLOCK	
-
+#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state) \
+    _BEGIN_BLOCK                               \
+    state = CPU_INTERRUPTS_DISABLED();         \
+    CPU_DISABLE_ALL_INTERRUPTS();              \
+    _END_BLOCK
 
 /*
 **  Restore Interrupt-State.
 */
-#define CPU_RESTORE_INTERRUPTS(state)           \
-    _BEGIN_BLOCK                                \
-	if ((state)==TRUE) {                    \
-	    CPU_ENABLE_ALL_INTERRUPTS();        \
-	} else {                                \
-	    CPU_DISABLE_ALL_INTERRUPTS();       \
-	}                                       \
-    _END_BLOCK	
-
+#define CPU_RESTORE_INTERRUPTS(state) \
+    _BEGIN_BLOCK                      \
+    if ((state) == TRUE) {            \
+        CPU_ENABLE_ALL_INTERRUPTS();  \
+    } else {                          \
+        CPU_DISABLE_ALL_INTERRUPTS(); \
+    }                                 \
+    _END_BLOCK
 
 /*
 **  Platform specific Macros.
 */
-#define CPU12_ENABLE_STOP_MODE()	 __asm andcc #$7f
+#define CPU12_ENABLE_STOP_MODE()    __asm andcc # $7f
 
-#define CPU12_DISABLE_STOP_MODE()	 __asm orcc  #$80
+#define CPU12_DISABLE_STOP_MODE()   __asm orcc  # $80
 
-#define CPU12_ENTER_STOP_MODE()		 __asm stop
+#define CPU12_ENTER_STOP_MODE()     __asm stop
 
-#define CPU12_ENABLE_XIRQ()		 __asm andcc #$bf
-
+#define CPU12_ENABLE_XIRQ()         __asm andcc # $bf
 
 #endif /* __CPU_PRIMITIVES_MCU_H */
+
