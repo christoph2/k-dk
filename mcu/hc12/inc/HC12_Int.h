@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -35,11 +35,11 @@ extern "C"
 /*
 **  Register-Offsets.
 */
-#define INTCR        ((uint8)0x00)
+#define INTCR       ((uint8)0x00)
 /*  INTCR-Bits.  */
     #define IRQE    ((uint8)0x80)
     #define IRQEN   ((uint8)0x40)
-    #define DLY		((uint8)0x20)
+    #define DLY     ((uint8)0x20)
 
 #define HPRIO       ((uint8)0x1F)
 /*  HPRIO-Bits. */
@@ -53,14 +53,11 @@ extern "C"
 
 /*
 **	Global Types.
-*/	
+*/
 typedef struct tagHC12Int_ConfigType {
-    uint16 BaseAddr;
-
-	uint8 IntCr;
-	uint8 HPrio;
+    uint8   IntCr;
+    uint8   HPrio;
 } HC12Int_ConfigType;
-
 
 /*
 **	Global Variables.
@@ -71,7 +68,8 @@ extern HC12Int_ConfigType const * INT;
 ** Global Functions.
 */
 void    HC12Int_Init(HC12Int_ConfigType const * const ConfigPtr);
-void HC12Int_SetHighestPriorityInterrupt(uint8 value);
+void    HC12Int_SetHighestPriorityInterrupt(uint8 value);
+
 
 #if defined(__cplusplus)
 }

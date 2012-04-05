@@ -155,3 +155,4 @@ void M93Cx6_WriteOpcodeOnly(uint8 opcode)
     data   = HC12Spi_IOByte(&SPI0, 0x00);
 }
 
+

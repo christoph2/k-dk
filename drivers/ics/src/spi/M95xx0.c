@@ -157,3 +157,4 @@ void M95xx0_SetProtection(M95XX0_ProtectionType Protection)
 #endif
 }
 
+

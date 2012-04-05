@@ -321,7 +321,7 @@ typedef enum tagS12Ect_StatusType {
 } S12Ect_StatusType;
 
 typedef struct tagS12Ect_ConfigType {
-    uint16  cycle;
+    uint16 cycle;
 
     uint8   TIos;
     uint8   TScr1;

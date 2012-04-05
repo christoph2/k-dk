@@ -33,7 +33,7 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-#define HC12_DG128_CLK_BASE ((uint8)0x14)
+#define HC12_DG128_CLK_BASE ((uint16)0x0014)
 
 #define RTICTL              ((uint8)0x00)
 /* RTICTL-Bits. */
@@ -72,7 +72,6 @@ typedef enum tagHC12Clk_StatusType {
 } HC12Clk_StatusType;
 
 typedef struct tagHC12Clk_ConfigType {
-    uint16  BaseAddr;
     boolean EnableWatchdog;
     uint8   WatchdogPrescaler;
     boolean EnableRTI;
@@ -102,6 +101,7 @@ HC12Clk_StatusType  HC12Clk_SetRTIRate(uint8 rate);
 void    HC12Clk_EnableWatchdog(void);
 void    HC12Clk_TriggerWatchdog(void);
 void    HC12Clk_ResetMCU(void);
+
 
 typedef void (*HC12Clk_CB_PllLockChanged)(HC12Clk_PllLockType Lock);
 

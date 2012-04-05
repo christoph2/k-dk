@@ -24,7 +24,6 @@
 
 #include "HC12_Pwm.h"
 
-
 /*
 **
 **  Stepping Lights
@@ -44,6 +43,7 @@
 
 void Pwm_Phase(void);
 
+
 /*
 **
 **  Generate four PWM-Outputs shifted by 90 degrees.
@@ -51,12 +51,14 @@ void Pwm_Phase(void);
 */
 void Pwm_Phase(void)
 {
-    WAIT_FOR(HC12Pwm_GetCounter8((uint8)0)==(uint8)50);
+    WAIT_FOR(HC12Pwm_GetCounter((uint8)0) == (uint8)50);
     HC12Pwm_ResetCounter((uint8)1);
 
-    WAIT_FOR(HC12Pwm_GetCounter8((uint8)1)==(uint8)50);
+    WAIT_FOR(HC12Pwm_GetCounter((uint8)1) == (uint8)50);
     HC12Pwm_ResetCounter((uint8)2);
 
-    WAIT_FOR(HC12Pwm_GetCounter8((uint8)2)==(uint8)50);
+    WAIT_FOR(HC12Pwm_GetCounter((uint8)2) == (uint8)50);
     HC12Pwm_ResetCounter((uint8)3);
 }
+
+

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -43,13 +43,12 @@ static uint16 S12SPI_ControllerMapping[] = {   /* depends on derivate!!! */
     BASE_ADDR_SPI2
 };
 
-static void     S12Spi_Handler(uint8 Controller);
-static boolean  S12Spi_TxReady(uint8 Controller);
+static void S12Spi_Handler(uint8 Controller);
 
 
 void S12Spi_InitController(uint8 Controller)
 {
-    uint8 ch;
+    volatile uint8 dummy;
 
     uint16                          Base       = S12SPI_ControllerMapping[Controller];
     S12Spi_ConfigType const * const ConfigPtr  = &S12Spi_Configuration[Controller];
@@ -57,15 +56,16 @@ void S12Spi_InitController(uint8 Controller)
     S12SPI_REG8(Base, SPICR1)  = SPE | MSTR /*|SSOE*/;
     S12SPI_REG8(Base, SPICR2)  = /*MODFEN|BIDIROE|*/ SPISWAI;
 
-    ch                     = S12SPI_REG8(ConfigPtr, SPIDR);
+    dummy                      = S12SPI_REG8(ConfigPtr, SPISR);
+    dummy                      = S12SPI_REG8(ConfigPtr, SPIDR);
     S12SPI_REG8(Base, SPIBR)   = ConfigPtr->BaudRateDivisor;
 /*    S12_REG8(Cfg,SPICR1)|=SPIE; */
 }
 
 
-void S12Spi_SetSpeed(uint8 Controller, uint8 prescaler)
+void S12Spi_SetPrescaler(uint8 Controller, uint8 prescaler)
 {
-    uint16                          Base       = S12SPI_ControllerMapping[Controller];
+    uint16 Base = S12SPI_ControllerMapping[Controller];
 
     S12SPI_REG8(Base, SPIBR) = (uint8)0x70 | (prescaler & (uint8)0x07);
 }
@@ -78,8 +78,8 @@ void S12Spi_SetSpeed(uint8 Controller, uint8 prescaler)
  */
 void S12Spi_SetFormat(uint8 Controller, boolean cpol, boolean cpha, boolean lsbfe)
 {
-    uint8 mask;
-    uint16                          Base       = S12SPI_ControllerMapping[Controller];
+    uint8   mask;
+    uint16  Base = S12SPI_ControllerMapping[Controller];
 
     /* todo: Fehlercode, falls SPI 'BUSY' !!! */
 
@@ -103,7 +103,7 @@ void S12Spi_SetFormat(uint8 Controller, boolean cpol, boolean cpha, boolean lsbf
 
 boolean S12Spi_TxReady(uint8 Controller)    /* TransmitterEmpty */
 {
-    uint16                          Base       = S12SPI_ControllerMapping[Controller];
+    uint16 Base = S12SPI_ControllerMapping[Controller];
 
     if ((S12SPI_REG8(Base, SPISR) & SPTEF) == SPTEF /*|| (S12_REG8(Cfg,SPICR1) & SPTIE)*/) {
         return TRUE;
@@ -118,9 +118,9 @@ boolean S12Spi_TxReady(uint8 Controller)    /* TransmitterEmpty */
 */
 uint8 S12Spi_IOByte(uint8 Controller, uint8 data)
 {
-    uint16                          Base       = S12SPI_ControllerMapping[Controller];
+    uint16 Base = S12SPI_ControllerMapping[Controller];
 
-    WAIT_FOR(S12SPISpi_TxReady(Controller));
+    WAIT_FOR(S12Spi_TxReady(Controller));
     S12SPI_REG8(Base, SPIDR) = data;
 
     while ((S12SPI_REG8(Base, SPISR) & SPIF) == (uint8)0x00) {
@@ -152,25 +152,27 @@ void S12Spi_IOBuffer(uint8 Controller, uint8 * data, uint8 len, boolean use_inte
 }
 
 
-void S12Spi_Handler(S12Spi_ConfigType const * const Cfg)
+void S12Spi_Handler(uint8 Controller)
 {
-    uint8 ch;
+    volatile uint8                  dummy;
+    uint16                          Base       = S12SPI_ControllerMapping[Controller];
+    S12Spi_ConfigType const * const ConfigPtr  = &S12Spi_Configuration[Controller];
 
-    if ((S12_REG8(Cfg,SPISR) & SPTEF)==SPTEF) {
-        if (Cfg->Vars->IOBufPtr<Cfg->Vars->IOBufLength) {
-            S12_REG8(Cfg,SPIDR)=Cfg->Vars->IOBufAddr[Cfg->Vars->IOBufPtr++];
+    if ((S12SPI_REG8(Base, SPISR) & SPTEF) == SPTEF) {
+        if (ConfigPtr->Vars->IOBufPtr < ConfigPtr->Vars->IOBufLength) {
+            S12SPI_REG8(Base, SPIDR) = ConfigPtr->Vars->IOBufAddr[ConfigPtr->Vars->IOBufPtr++];
         } else {
-            S12_REG8(Cfg,SPICR1)&=~SPTIE;
+            S12SPI_REG8(Base, SPICR1) &= ~SPTIE;
         }
     }
 
-    if ((S12_REG8(Cfg,SPISR) & SPIF)==SPIF) {
-        ch=S12_REG8(Cfg,SPIDR);
+    if ((S12SPI_REG8(Base, SPISR) & SPIF) == SPIF) {
+        dummy = S12SPI_REG8(Base, SPIDR);
     }
 }
 
 
 ISR1(SPI0_Vector)
 {
-    S12Spi_Handler(SPI0);
+    S12Spi_Handler(0);
 }

@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,7 +23,7 @@
  *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__COMPILER_CFG_H)
-#define	__COMPILER_CFG_H
+#define __COMPILER_CFG_H
 
 /*
 **  Empty 'defines' for now, need Configuration Tool.
@@ -687,5 +687,5 @@
 #define CRC_APPL_CONST
 #define CRC_APPL_CODE
 
-#endif	/* __COMPILER_CFG_H */
+#endif  /* __COMPILER_CFG_H */
 

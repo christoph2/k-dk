@@ -1,7 +1,7 @@
 /*
    k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
 
-   (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+   (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
                                         cpu12.gems@googlemail.com>
 
    All Rights Reserved
@@ -34,17 +34,17 @@
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_POWERDOWN_MODE()        do {} while(0)
+#define CPU_ENTER_POWERDOWN_MODE()
 
 /*
 **  Software-Interrupt.
 */
-#define CPU_SOFTWARE_INTERRUPT()    do {} while(0)
+#define CPU_SOFTWARE_INTERRUPT()
 
 /*
 **  Return from Interrupt.
 */
-#define CPU_RETURN_FROM_INTERRUPT() do {} while(0)
+#define CPU_RETURN_FROM_INTERRUPT()
 
 /*
 **  Software-Breakpoint.
@@ -54,41 +54,34 @@
 /*
 **  No-Operation.
 */
-#define CPU_NO_OPERATION()                      do {} while(0)
+#define CPU_NO_OPERATION()
 
 /*
 **  Disable All Interrupts.
 */
 
 /* todo: Zustand speichern!!! */
-#define CPU_DISABLE_ALL_INTERRUPTS()            do {} while(0)
+#define CPU_DISABLE_ALL_INTERRUPTS()
 
 /*
 **  Enable All Interrupts.
 */
-#define CPU_ENABLE_ALL_INTERRUPTS()             do {} while(0)
+#define CPU_ENABLE_ALL_INTERRUPTS()
 
 /*
 **  Check for Interrupts disabled.
 */
-#define CPU_INTERRUPTS_DISABLED(void)           (FALSE)
+#define CPU_INTERRUPTS_DISABLED()		(FALSE)
 
 /*
 **  Save Interrupt-State before Disabling.
 */
-#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)  do {} while(0)
+#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)
 
 /*
 **  Restore Interrupt-State.
 */
-#define CPU_RESTORE_INTERRUPTS(state) \
-    _BEGIN_BLOCK                      \
-    if ((state) == TRUE) {            \
-        CPU_ENABLE_ALL_INTERRUPTS();  \
-    } else {                          \
-        CPU_DISABLE_ALL_INTERRUPTS(); \
-    }                                 \
-    _END_BLOCK
+#define CPU_RESTORE_INTERRUPTS(state)
 
 #endif /* __CPU_PRIMITIVES_MCU_H */
 

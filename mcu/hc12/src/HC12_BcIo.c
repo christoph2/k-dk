@@ -24,29 +24,31 @@
  * s. FLOSS-EXCEPTION.txt
  */
 
+/* TODO: LIM (Light Integration Module) statt BCIO!!??  */
+
 #include "HC12_BcIo.h"
 #include "Hw_Cfg.h"
 
 #if HC12BCIO_DEV_ERROR_DETECT == STD_ON
 #define HC12BCIO_ASSERT_VALID_PORT(port) \
-_BEGIN_BLOCK \
-if (port > HC12BCIO_PORT_MAX) { \
-/*            ErrorHandler(...); */ \
-    return; \
-} \
-_END_BLOCK
+    _BEGIN_BLOCK                         \
+    if (port > HC12BCIO_PORT_MAX) {      \
+/*            ErrorHandler(...); */      \
+        return;                          \
+    }                                    \
+    _END_BLOCK
 #else
 #define HC12BCIO_ASSERT_VALID_PORT(port)
 #endif /* HC12BCIO_DEV_ERROR_DETECT */
 
 #if HC12BCIO_DEV_ERROR_DETECT == STD_ON
 #define HC12BCIO_ASSERT_VALID_CHANNEL(channel) \
-_BEGIN_BLOCK \
-if (channel > HC12BCIO_CHANNEL_MAX) { \
-    /*            ErrorHandler(...); */ \
-    return; \
-} \
-_END_BLOCK
+    _BEGIN_BLOCK                               \
+    if (channel > HC12BCIO_CHANNEL_MAX) {      \
+        /*            ErrorHandler(...); */    \
+        return;                                \
+    }                                          \
+    _END_BLOCK
 #else
 #define HC12BCIO_ASSERT_VALID_CHANNEL(channel)
 #endif  /* HC12BCIO_DEV_ERROR_DETECT */

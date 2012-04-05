@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -116,7 +116,6 @@ typedef enum tagHC12Pll_LimpHomeStatupType {
 } HC12Pll_LimpHomeStatupType;
 
 typedef struct tagHC12Pll_ConfigType {
-    uint16  BaseAddr;
     boolean EnablePll;
     uint8   Frequency;
     uint8   SlowModeDivider;
@@ -144,10 +143,11 @@ boolean HC12Pll_PllSelected(void);
 
 HC12Pll_StatusType  HC12Pll_SetPllFreq(uint8 freq);
 HC12Pll_StatusType  HC12Pll_SetPllParams(uint8 refdv, uint8 synr);
-HC12Pll_StatusType  HC12Pll_PllLocked(void);
+boolean             HC12Pll_PllLocked(void);
 
 uint8   HC12Pll_GetBusFreq(void);
 uint8   HC12Pll_GetOscFreq(void);
+
 
 /*
 **  Configuration Parameter.

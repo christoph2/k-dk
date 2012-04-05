@@ -28,7 +28,7 @@
 
 /*
 **
-**  ATD_10B8C-Module-Driver.
+**  ATD 10B8C-/10B16C Module-Driver.
 **
 **
 */
@@ -37,10 +37,11 @@
 **
 **  REFERENCES
 **  ==========
-**  ATD_10B8C Block User Guide V02.12.
+**  ATD10B8C  Block User Guide V02.12.
+**  ATD10B16C Block User Guide V03.00.
 **
 */
-
+/* HINWEIS: DIE VERFÜGBARKEIT DES 'ETRIG' EINGANG hängt vom derivat ab!!! */
 /*
    static const uint8 S12Atd_Ports[] = {
     PORTAD0,
@@ -56,51 +57,84 @@ static uint16 S12Atd_ControllerMapping[] = {   /* depends on derivate!!! */
     BASE_ADDR_ATD1,
 };
 
-static uint8 S12Atd_CalculatePrescaler(void);
-
 static void S12Atd_Handler(uint8 Controller);
 
 
 void S12Atd_Init(uint8 Controller)
 {
-    uint16                          Base       = S12Atd_ControllerMapping[Controller];
-    S12Atd_ConfigType const * const ConfigPtr  = &S12Atd_Configuration[Controller];
+    VAR(uint16, AUTOMATIC)          Base = S12Atd_ControllerMapping[Controller];
+    S12Adc_ConfigType const * const ConfigPtr = &S12Atd_Configuration[Controller];
+    uint8                           ctl;
 
-    uint8 ctl;
+    if ((ConfigPtr->Flags & S12_ATD_ENABLE_CONTROLLER) == S12_ATD_ENABLE_CONTROLLER) {
 
-    S12ATD_REG8(Base, ATDCTL3) = ((uint8)S8C | FRZ1);
-    S12ATD_REG8(Base, ATDCTL4) = (((uint8)ConfigPtr->ConversionTime) << 5) | S12Atd_CalculatePrescaler();
+        S12ATD_REG8(Base, ATDCTL3) = ((uint8)S8C | FRZ1);
+        S12ATD_REG8(Base, ATDCTL4) = (((uint8)ConfigPtr->ConversionTime) << 5) | ConfigPtr->Prescaler;
 
-    if (ConfigPtr->TenBit == FALSE) {
-        S12ATD_REG8(Base, ATDCTL4) |= SRES8;
+        if ((ConfigPtr->Flags & S12_ATD_EIGHT_BIT) == S12_ATD_EIGHT_BIT) {
+            S12ATD_REG8(Base, ATDCTL4) |= SRES8;
+        }
+
+#if S12ATD_MODULE == S12ATD_VARIANT_10B16
+        S12ATD_REG8(Base, ATDCTL0) = ConfigPtr->MultChannelWrapAround;
+#endif  /* S12ATD_MODULE */
+
+#if S12_ATD_RESULT_ALIGNMENT == S12ATD_RESULT_ALIGN_RIGHT
+        S12ATD_REG8(Base, ATDCTL5) = DJM;
+#else
+        S12ATD_REG8(Base, ATDCTL5) = ((uint8)0x00;
+#endif
+
+        if ((ConfigPtr->Flags & S12_ATD_CONTINIOUS_CONVERSION) == S12_ATD_CONTINIOUS_CONVERSION) {
+            S12ATD_REG8(Base, ATDCTL5) |= SCAN;
+        }
+
+#if S12ATD_MODULE == S12ATD_VARIANT_10B16
+        S12ATD_REG8(Base, ATDDIEN0) = ((uint8)0x00);
+        S12ATD_REG8(Base, ATDDIEN1) = ((uint8)0x00);
+#else
+        S12ATD_REG8(Base, ATDDIEN) = ((uint8)0x00);
+#endif  /* S12ATD_MODULE */
+
+        ctl = ((uint8)ADPU | AFFC);
+
+        if ((ConfigPtr->Flags & S12_ATD_POWERDOWN) == S12_ATD_POWERDOWN) {
+            ctl |= AWAI;
+        }
+
+        if (ConfigPtr->ExternalTrigger != S12ATD_EXT_TRIG_DISABLED) {
+            ctl |= (uint8)ConfigPtr->ExternalTrigger;
+#if S12ATD_MODULE == S12ATD_VARIANT_10B16
+            S12ATD_REG8(Base, ATDCTL1) = ConfigPtr->TriggerSource;
+#endif      /* S12ATD_MODULE */
+        }
+
+        S12ATD_REG8(Base, ATDSTAT0)    = SCF;
+        S12ATD_REG8(Base, ATDCTL2)     = ctl;
+    } else {
+        S12ATD_REG8(Base, ATDCTL2) = (uint8)0x00;
     }
+}
 
-    S12ATD_REG8(Base, ATDCTL5) = ((uint8)DJM | MULT);
 
-    if (ConfigPtr->ContinuousConversion == TRUE) {
-        S12ATD_REG8(Base, ATDCTL5) |= SCAN;
-    }
+void S12Atd_DeInit(uint8 Controller)
+{
+    VAR(uint16, AUTOMATIC) Base = S12Atd_ControllerMapping[Controller];
 
-    S12ATD_REG8(Base, ATDDIEN) = ((uint8)0x00);
-
-    ctl = ((uint8)ADPU | AFFC | AWAI);
-
-    if (ConfigPtr->ExternalTrigger != S12ATD_EXT_TRIG_DISABLED) {
-        ctl |= ((uint8)ConfigPtr->ExternalTrigger << 3) | ETRIGE;
-    }
-
-    if (ConfigPtr->EnableCompletionInterrupt == TRUE) {
-        ctl |= ASCIE;
-    }
-
-    S12ATD_REG8(Base, ATDCTL2) = ctl;
-
+#if S12ATD_MODULE == S12ATD_VARIANT_10B16
+    S12ATD_REG8(Base, ATDCTL0) = (uint8)0x0f;
+    S12ATD_REG8(Base, ATDCTL1) = (uint8)0x0f;
+#endif /* S12ATD_MODULE */
+    S12ATD_REG8(Base, ATDCTL2) = (uint8)0x00;
+    S12ATD_REG8(Base, ATDCTL3) = S4C;
+    S12ATD_REG8(Base, ATDCTL4) = PRS2 | PRS1;
+    S12ATD_REG8(Base, ATDCTL5) = (uint8)0x00;
 }
 
 
 uint16 S12Atd_GetChannel(uint8 Controller, uint8 chn)
 {
-    uint16 Base = S12Atd_ControllerMapping[Controller];
+    VAR(uint16, AUTOMATIC) Base = S12Atd_ControllerMapping[Controller];
 
     chn &= ((uint8)0x07);
     WAIT_FOR((S12ATD_REG8(Base, ATDSTAT0) & SCF) == SCF);
@@ -108,21 +142,23 @@ uint16 S12Atd_GetChannel(uint8 Controller, uint8 chn)
 }
 
 
-uint8 S12Atd_CalculatePrescaler(void)
+void S12Atd_EnableHardwareTrigger(uint8 Controller)
 {
-    uint8 bus_freq, res;
+    VAR(uint16, AUTOMATIC) Base = S12Atd_ControllerMapping[Controller];
 
-    bus_freq   = S12Crg_GetBusFreq();
-    res        = bus_freq >> 2;
-
-    if (!(bus_freq & (uint8)0x03)) {
-        res--;
-    }
-
-    return res;
+    S12ATD_REG8(Base, ATDCTL2) |= ETRIGE;
 }
 
 
+void S12Atd_DisableHardwareTrigger(uint8 Controller)
+{
+    VAR(uint16, AUTOMATIC) Base = S12Atd_ControllerMapping[Controller];
+
+    S12ATD_REG8(Base, ATDCTL2) &= ~ETRIGE;
+}
+
+
+#if 0
 static uint32 conversion_counter = 0UL;
 
 static uint16 result[8];
@@ -132,7 +168,8 @@ void S12Atd_Handler(uint8 Controller)
     uint8   idx;
     uint8   cc;
     uint8   ccf;
-    uint16  Base = S12Atd_ControllerMapping[Controller];
+
+    VAR(uint16, AUTOMATIC)  Base = S12Atd_ControllerMapping[Controller];
 
     S12ATD_REG8(Base, ATDSTAT0)    = SCF;
     cc                             = S12ATD_REG8(Base, ATDSTAT0) & (uint8)0x07;
@@ -145,6 +182,8 @@ void S12Atd_Handler(uint8 Controller)
     conversion_counter++;
 }
 
+
+#endif
 
 /*
 **  Implementation of common functions.

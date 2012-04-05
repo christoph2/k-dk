@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -26,19 +26,21 @@
 
 #include "Kdk_Error.h"
 
-// _DEV_ERROR_DETECT
+/* _DEV_ERROR_DETECT */
 #if 0
-#if AR_DEV_ERROR_DETECT(DIO_4711_MEBI)==STD_ON
+#if AR_DEV_ERROR_DETECT(DIO_4711_MEBI) == STD_ON
 AR_IMPLEMENT_MODULE_STATE_VAR(DIO_4711_MEBI);
 #endif
 
-#if AR_DEV_ERROR_DETECT(PORT)==STD_ON
-    AR_ASSERT_MODULE_INITIALZATION(PORT,AR_SERVICE_PORT_SET_PIN_DIRECTION);
+#if AR_DEV_ERROR_DETECT(PORT) == STD_ON
+AR_ASSERT_MODULE_INITIALZATION(PORT, AR_SERVICE_PORT_SET_PIN_DIRECTION);
 
 #if 0
-    if (!AR_MODULE_IS_INITIALIZED(PORT)) {
-        Det_ReportError(PORT_MODULE_ID,PORT_INSTANCE_ID,AR_SERVICE_PORT_SET_PIN_DIRECTION,PORT_E_UNINIT);
-    }
+
+if (!AR_MODULE_IS_INITIALIZED(PORT)) {
+    Det_ReportError(PORT_MODULE_ID, PORT_INSTANCE_ID, AR_SERVICE_PORT_SET_PIN_DIRECTION, PORT_E_UNINIT);
+}
+
 #endif
 #endif
 #endif
@@ -48,12 +50,16 @@ void KDKError_Init(void)
 
 }
 
-void KDKError_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId)
+
+void KDKError_ReportError(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 ErrorId)
 {
 
 }
+
 
 void KDKError_Start(void)
 {
 
 }
+
+

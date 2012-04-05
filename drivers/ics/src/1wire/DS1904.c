@@ -63,3 +63,4 @@ void DS1904_ClockWrite(OW_ConfigType const * const ConfigPtr, DS1904_ClockType c
     OW_WriteByte(ConfigPtr, HIBYTE(HIWORD(Clock->RefPoint)));
 }
 
+

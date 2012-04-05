@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -29,10 +29,9 @@
 #include "ascii.h"
 #include "S12_Sci.h"
 
-#define VT100_CSI   "\x1b["   /* Control Sequence Introducer */
+#define VT100_CSI           "\x1b["     /* Control Sequence Introducer */
 
-
-#define VT100_BUFFER_LEN    ((uint8)24)     /* Adjust for your needs! */
+#define VT100_BUFFER_LEN    ((uint8)24) /* Adjust for your needs! */
 
 /*
 **  Attributes (Select Graphics Redition
@@ -53,18 +52,18 @@
 ** Cursor-Functions.
 */
 
-void VT100_CUU(uint8 distance,char *buf);           /* Cursor Up */
-void VT100_CUD(uint8 distance,char *buf);           /* Cursor Down */
-void VT100_CUF(uint8 distance,char *buf);           /* Cursor Foreward */
-void VT100_CUB(uint8 distance,char *buf);           /* Cursor Backward */
-void VT100_CUP(uint8 line,uint8 column,char *buf);  /* Cursor Position */
-void VT100_CHOME(char *buf);                        /* Cursor Home */
-void VT100_HVP(uint8 line,uint8 column,char *buf);  /* Cursor Position */
+void    VT100_CUU(uint8 distance, char * buf);              /* Cursor Up */
+void    VT100_CUD(uint8 distance, char * buf);              /* Cursor Down */
+void    VT100_CUF(uint8 distance, char * buf);              /* Cursor Foreward */
+void    VT100_CUB(uint8 distance, char * buf);              /* Cursor Backward */
+void    VT100_CUP(uint8 line, uint8 column, char * buf);    /* Cursor Position */
+void    VT100_CHOME(char * buf);                            /* Cursor Home */
+void    VT100_HVP(uint8 line, uint8 column, char * buf);    /* Cursor Position */
 
+void VT100_SGR(const uint8 * attrs, uint8 len, char * buf); /* Select Graphic Rendition */
 
-void VT100_SGR(const uint8 *attrs,uint8 len,char *buf);               /* Select Graphic Rendition */
+void VT100_Send(const SCI_ConfigType * Cfg, const char * buf);
 
-void VT100_Send(const SCI_ConfigType *Cfg,const char *buf);
 
 /*
 **
@@ -72,14 +71,15 @@ void VT100_Send(const SCI_ConfigType *Cfg,const char *buf);
 **
 */
 
-void VT100_CursorUp(const SCI_ConfigType *Cfg,uint8 distance);
-void VT100_CursorDown(const SCI_ConfigType *Cfg,uint8 distance);
-void VT100_CursorRight(const SCI_ConfigType *Cfg,uint8 distance);
-void VT100_CursorLeft(const SCI_ConfigType *Cfg,uint8 distance);
-void VT100_CursorPosition(const SCI_ConfigType *Cfg,uint8 line,uint8 column);
-void VT100_CursorHome(const SCI_ConfigType *Cfg);
-void VT100_CharAttributes(const SCI_ConfigType *Cfg,const uint8 *attrs,uint8 len);
+void    VT100_CursorUp(const SCI_ConfigType * Cfg, uint8 distance);
+void    VT100_CursorDown(const SCI_ConfigType * Cfg, uint8 distance);
+void    VT100_CursorRight(const SCI_ConfigType * Cfg, uint8 distance);
+void    VT100_CursorLeft(const SCI_ConfigType * Cfg, uint8 distance);
+void    VT100_CursorPosition(const SCI_ConfigType * Cfg, uint8 line, uint8 column);
+void    VT100_CursorHome(const SCI_ConfigType * Cfg);
+void    VT100_CharAttributes(const SCI_ConfigType * Cfg, const uint8 * attrs, uint8 len);
 
 void VT100_RxHandler(char ch);
+
 
 #endif /* __VT100_H */

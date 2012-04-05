@@ -37,5 +37,6 @@ uint16  M93Cx6_Read(uint16 addr);
 boolean M93Cx6_Write(uint16 addr, uint16 data);
 boolean M93Cx6_WriteAll(uint16 data);   /* Fill - for convenience.  */
 
+
 #endif /* __M93CX6_H */
 

@@ -28,16 +28,17 @@
 
 void S12Mmc_Init(void)
 {
-    BYTE_REG(0x00,INITRG)=MMC.InitRG; /* must use default address of 'INITRG' !!! */
+    BYTE_REG(0x00, INITRG) = MMC.InitRG; /* must use default address of 'INITRG' !!! */
 
-    S12MMC_REG8(INITRM)=MMC.InitRM;
-    S12MMC_REG8(INITEE)=MMC.InitEE;
-    S12MMC_REG8(MISC)=MMC.Misc;
+    S12MMC_REG8(INITRM)    = MMC.InitRM;
+    S12MMC_REG8(INITEE)    = MMC.InitEE;
+    S12MMC_REG8(MISC)      = MMC.Misc;
 }
+
 
 void S12Mmc_SetPPage(uint8 ppage)
 {
-    S12MMC_REG8(PPAGE)=ppage;
+    S12MMC_REG8(PPAGE) = ppage;
 }
 
 
@@ -45,3 +46,5 @@ uint8 S12Mmc_GetPPage(void)
 {
     return S12MMC_REG8(PPAGE);
 }
+
+

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -41,7 +41,7 @@ extern "C"
 
 #define DDRS        ((uint8)0x01)
 
-#if CPU_DERIVATE == CPU12_HC12B32 || CPU_DERIVATE == CPU12_HC12BC32 || CPU_DERIVATE == CPU12_HC12BD32
+#if (CPU_DERIVATE == CPU12_HC12B32) || (CPU_DERIVATE == CPU12_HC12BC32) || (CPU_DERIVATE == CPU12_HC12BD32)
 #define PURDS       ((uint8)0x05)
 /* PURDS-Bits.  */
     #define RDPS2   ((uint8)0x40)
@@ -52,7 +52,8 @@ extern "C"
     #define PUPS0   ((uint8)0x01)
 #endif /* CPU12_HC12B32 || CPU12_HC12BC32 || CPU12_HC12BD32 */
 
-#if CPU_DERIVATE == CPU12_HC12D60 || CPU_DERIVATE == CPU12_HC12D60A
+#if (CPU_DERIVATE == CPU12_HC12D60) || (CPU_DERIVATE == CPU12_HC12D60A) || \
+    (CPU_DERIVATE == CPU12_HC12DG128A)  /* CHECK!!! */
 #define PURDS       ((uint8)0x03)
 /* PURDS-Bits.  */
     #define RDPS2   ((uint8)0x40)
@@ -64,15 +65,45 @@ extern "C"
 #endif /* CPU12_HC12D60 || CPU12_HC12D60A */
 
 typedef struct tagHC12Si_ConfigType {
-    uint16 BaseAddr;
-
     uint8   PortS;
-    uint8   Ddrs;
+    uint8   DdrS;
 
+#if (CPU_DERIVATE != CPU12_HC12A4)
     uint8 PurdS;
+#endif
 } HC12Si_ConfigType;
 
-void HC12Si_Init(void);
+void HC12Si_Init(HC12Si_ConfigType const * const ConfigPtr);
+
+void                HC12Si_WritePort(Kdk_PortType port, Kdk_PortLevelType value);
+Kdk_PortLevelType   HC12Si_ReadPort(Kdk_PortType port);
+
+
+#if defined(__K_AUTOSAR)
+void            HC12Si_WriteChannel(Kdk_PortType port, Kdk_ChannelType bit, Kdk_LevelType level);
+Kdk_LevelType   HC12Si_ReadChannel(Kdk_PortType port, Kdk_ChannelType bit);
+
+
+#else
+void            HC12Si_WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level);
+Kdk_LevelType   HC12Si_ReadChannel(Kdk_ChannelType channel);
+
+
+#endif /* __K_AUTOSAR */
+
+void                HC12Si_WriteChannelGroup(Kdk_ChannelGroupType const * group, Kdk_PortLevelType level);
+Kdk_PortLevelType   HC12Si_ReadChannelGroup(Kdk_ChannelGroupType const * group);
+
+
+#if defined(__K_AUTOSAR)
+void HC12Si_SetPinDirection(Kdk_PortType port, Kdk_ChannelType bit, Kdk_PinDirectionType Direction);
+
+
+#else
+void HC12Si_SetPinDirection(Kdk_PinType Pin, Kdk_PinDirectionType Direction);
+
+
+#endif /* __K_AUTOSAR */
 
 #if defined(__cplusplus)
 }

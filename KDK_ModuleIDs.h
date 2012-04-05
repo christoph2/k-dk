@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,14 +25,12 @@
 #if !defined(__KDK_MODULE_IDS_H)
 #define __KDK_MODULE_IDS_H
 
-
 #include "Sys_Cfg.h"
-
 
 #if !defined(CPU_FAMILY)
 #error 'CPU_FAMILY' not defined.
 #else
-#if CPU_FAMILY==CPU12_HC12
+#if CPU_FAMILY == CPU12_HC12
 #define AR_MODULE_ID_HC12_BCIO  0x10
 #define AR_MODULE_ID_HC12_BDLC  0x20
 #define AR_MODULE_ID_HC12_CLK   0x30
@@ -44,7 +42,7 @@
 #define AR_MODULE_ID_HC12_PWM   0x90
 #define AR_MODULE_ID_HC12_SI    0xa0
 #define AR_MODULE_ID_HC12_SPI   0xb0
-#elif CPU_FAMILY==CPU12_S12
+#elif CPU_FAMILY == CPU12_S12
 #define AR_MODULE_ID_S12_ATD    0x10
 #define AR_MODULE_ID_S12_BKP    0x20
 #define AR_MODULE_ID_S12_CAN    0x30
@@ -65,5 +63,4 @@
 #endif  /* CPU_FAMILY */
 #endif  /* !defined(CPU_FAMILY) */
 
-
-#endif /* __KDK_MODULE_IDS_H */
+#endif  /* __KDK_MODULE_IDS_H */

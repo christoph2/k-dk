@@ -355,10 +355,17 @@ typedef struct tagHC12Ect_ConfigType {
 
 typedef uint8 HC12Ect_ChannelType;
 
-typedef enum tagHC12Ect_ModeType {
+typedef enum tagHC12Ect_ChannelModeType {
     HC12ECT_INPUT_CAPTURE,
     HC12ECT_OUTPUT_COMPARE
-} HC12Ect_ModeType;
+} HC12Ect_ChannelModeType;
+
+typedef enum tagHC12Ect_ChannelCaptureEdgeType {
+    HC12ECT_CAPTURE_DISABLED,
+    HC12ECT_CAPTURE_RISING,
+    HC12ECT_CAPTURE_FALLING,
+    HC12ECT_CAPTURE_ANY
+} HC12Ect_ChannelCaptureEdgeType;
 
 typedef enum tagHC12Ect_InterruptSourceType {
     HC12ECT_INTERRUPT_SOURCE_TOF,
@@ -409,10 +416,13 @@ extern HC12Ect_ConfigType const * ECT;
 ** Global Functions.
 */
 void    HC12Ect_Init(HC12Ect_ConfigType const * const ConfigPtr);
-void    HC12Ect_ForceOutputCompare(HC12Ect_ChannelType channel);
-void    HC12Ect_SetMode(HC12Ect_ChannelType channel, HC12Ect_ModeType mode);
+void    HC12Ect_ForceOutputCompare(HC12Ect_ChannelType Channel);
+void    HC12Ect_SetChannelMode(HC12Ect_ChannelType Channel, HC12Ect_ChannelModeType Mode);  /* !!!NAME!!! */
+void    HC12Ect_SetChannelCaptureMode(HC12Ect_ChannelType Channel, HC12Ect_ChannelCaptureEdgeType CaptureEdge);
+
 void    HC12Ect_EnableInterrupt(HC12Ect_InterruptSourceType Source);
 void    HC12Ect_DisableInterrupt(HC12Ect_InterruptSourceType Source);
+
 
 #if defined(__cplusplus)
 }

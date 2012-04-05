@@ -38,24 +38,23 @@ extern "C"
 */
 #define PORTJ                   ((uint8)0x00)
 
-#define PORTH					((uint8)0x01)
+#define PORTH                   ((uint8)0x01)
 
-#define DDRJ					((uint8)0x02)
+#define DDRJ                    ((uint8)0x02)
 
-#define DDRH					((uint8)0x03)
+#define DDRH                    ((uint8)0x03)
 
-#define KWIEJ					((uint8)0x04)
+#define KWIEJ                   ((uint8)0x04)
 
-#define KWIEH					((uint8)0x05)
+#define KWIEH                   ((uint8)0x05)
 
-#define KWIFJ					((uint8)0x06)
+#define KWIFJ                   ((uint8)0x06)
 
-#define KWIFH					((uint8)0x07)
+#define KWIFH                   ((uint8)0x07)
 
-#define KWPJ					((uint8)0x08)
+#define KWPJ                    ((uint8)0x08)
 
-#define KWPH					((uint8)0x09)
-
+#define KWPH                    ((uint8)0x09)
 
 /*
 ** Symbolic Names for Port-Pins.
@@ -82,30 +81,27 @@ extern "C"
 **	Global Types.
 */
 typedef struct tagHC12KwIo_ConfigType {
-		uint16 BaseAddr;
-		
-		uint8 DdrJ;
-		uint8 PortJ;
-		uint8 KwieJ;
-		uint8 KwpJ;
+    uint8   DdrJ;
+    uint8   PortJ;
+    uint8   KwieJ;
+    uint8   KwpJ;
 
-		uint8 DdrH;
-		uint8 PortH;
-		uint8 KwieH;
-		uint8 KwpH;		 						 
+    uint8   DdrH;
+    uint8   PortH;
+    uint8   KwieH;
+    uint8   KwpH;
 } HC12KwIo_ConfigType;
- 
- 
+
 /*
 ** Global Variables.
 */
-extern HC12KwIo_ConfigType const * KWIO; 
+extern HC12KwIo_ConfigType const * KWIO;
 
- 
 /*
 ** Global Functions.
 */
-void HC12KwIo_Init(HC12KwIo_ConfigType const * const ConfigPtr); 
+void HC12KwIo_Init(HC12KwIo_ConfigType const * const ConfigPtr);
+
 
 #if defined(__cplusplus)
 }

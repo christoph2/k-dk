@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -32,7 +32,7 @@
 
 /* todo: spezifische Include-Files!!! */
 #if defined(__CSMC__)               /* Cosmic               */
-    #if (CPU_FAMILY==CPU12_S12) || (CPU_FAMILY==CPU12_HC12)
+    #if (CPU_FAMILY == CPU12_S12) || (CPU_FAMILY == CPU12_HC12)
 /*    #if defined(CPU12_HC12) || defined(CPU12_S12) */
         #define _COSMIC_C_CPU12_
     #else
@@ -47,6 +47,8 @@
         #define _GNU_C_CPU12_
     #elif defined(__MSP430__)
         #define _GNU_C_MSP430_
+    #elif defined( __CYGWIN32__) /* && defined(__I386__) */
+        #define KAR_DUMMY_TARGET
     #else
         #error Unsupported Target for GCC-Compiler.
     #endif
@@ -75,7 +77,7 @@
         #error Unsupported Target for Imagecraft-Compiler.
     #endif
 #elif defined(__18CXX )
-    /* MPlab C18 Compiler for the PIC family. */
+/* MPlab C18 Compiler for the PIC family. */
 
     #define _MPLAB_C18_
 
@@ -91,19 +93,21 @@
 
 #elif defined(__PCH__) || defined(__PCB__) || defined(__PCM__)
 
-   /* CCSC Compiler for the PIC family. */
+/* CCSC Compiler for the PIC family. */
 
    #define _CCSC_C_PIC_
+#elif defined(_MSC_VER)
+/* Microsoft Visual C. */
+    #define KAR_DUMMY_TARGET
 
 #else
     #error Unsupported Compiler.
 #endif
 
-
-#define   AUTOMATIC
+#define AUTOMATIC
 #define TYPEDEF
-#define   STATIC          static
-#define   NULL_PTR   ((void*)0)
+#define STATIC      static
+#define NULL_PTR    ((void *)0)
 /* 'INLINE ' defined in 'Std_Macros.h'. */
 
 /*
@@ -113,31 +117,29 @@
 /*
 **  Macros for Functions.
 */
-#define   FUNC(rettype,memclass)  memclass rettype
+#define   FUNC(rettype, memclass)                   memclass rettype
 
 /*
 **  Macros for Pointers.
 */
-#define P2VAR(ptrtype,memclass,ptrclass)        memclass ptrtype *
-#define P2CONST(ptrtype,memclass,ptrclass)      memclass ptrtype const *
-#define CONSTP2VAR(ptrtype,memclass,ptrclass)   memclass ptrtype * const
-#define CONSTP2CONST(ptrtype,memclass,ptrclass) memclass ptrtype const * const
-#define P2FUNC(rettype,ptrclass,fctname)        rettype (*fctname)
+#define P2VAR(ptrtype, memclass, ptrclass)          memclass ptrtype *
+#define P2CONST(ptrtype, memclass, ptrclass)        memclass ptrtype const *
+#define CONSTP2VAR(ptrtype, memclass, ptrclass)     memclass ptrtype * const
+#define CONSTP2CONST(ptrtype, memclass, ptrclass)   memclass ptrtype const * const
+#define P2FUNC(rettype, ptrclass, fctname)          rettype(*fctname)
 
 /*
 **  Keywords for Constants.
 */
-#define CONST(type,memclass)                    memclass const type
-
+#define CONST(type, memclass)                       memclass const type
 
 /*
 **  Keywords for Variables.
 */
-#define VAR(type,memclass)                      memclass const type
+#define VAR(type, memclass)                         memclass type
 
 #include "Std_Macros.h"
 #include "Compiler_Cfg.h"
-
 
 /*
 **  Other Compilers.

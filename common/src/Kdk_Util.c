@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,7 +25,9 @@
 
 #include "Kdk.h"
 
-uint8 Kdk_CalculatePinDirection(uint8 changeable,uint8 initialValue,uint8 ActualValue)
+uint8 Kdk_CalculatePinDirection(uint8 changeable, uint8 initialValue, uint8 ActualValue)
 {
     return (~changeable & initialValue) | (changeable & ActualValue);
 }
+
+

@@ -36,7 +36,7 @@
         #define II_INC_TARGET_C     "cosmic/s12/ISR_CSMC_HCS12.c"
     #else
 
-    #endif    
+    #endif
 #else
     #error Unsupported Target for Cosmic-Compiler.
 #endif

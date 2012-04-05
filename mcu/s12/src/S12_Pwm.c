@@ -118,27 +118,29 @@ void S12Pwm_SetDutyCycle(S12Pwm_ChannelType ChannelNumber, uint16 DutyCycle)
 void S12Pwm_SetPeriodAndDuty(S12Pwm_ChannelType ChannelNumber, uint16 Period, uint16 DutyCycle)
 {
     if (!S12Pwm_ChannelActivated(ChannelNumber)) {
-       S12Pwm_ActivateChannel(ChannelNumber);
+        S12Pwm_ActivateChannel(ChannelNumber);
     }
+
     if (S12Pwm_Is16BitChannel(ChannelNumber)) {
         S12PWM_REG16(PWMPER0 + (ChannelNumber & (uint8)0x06)) = Period;
     } else {
         S12PWM_REG8(PWMPER0 + ChannelNumber) = (uint8)Period;
     }
+
     S12Pwm_SetDutyCycle(ChannelNumber, DutyCycle);
 }
 
 
 void S12Pwm_SetOutputToIdle(S12Pwm_ChannelType ChannelNumber)
 {
-    uint8 channel;
-    uint8 mask;
+    uint8   channel;
+    uint8   mask;
 
-    channel = 1 << ChannelNumber;
-    mask = PWM->IdleState & channel;
+    channel    = 1 << ChannelNumber;
+    mask       = PWM->IdleState & channel;
 
-    S12PWM_REG8(PTP)    = (S12PWM_REG8(PTP) & ~mask) | mask;
-    S12PWM_REG8(DDRP)    |= channel;
+    S12PWM_REG8(PTP)   = (S12PWM_REG8(PTP) & ~mask) | mask;
+    S12PWM_REG8(DDRP) |= channel;
     S12Pwm_DeactivateChannel(ChannelNumber);
 }
 
@@ -262,6 +264,8 @@ boolean S12Pwm_ChannelActivated(S12Pwm_ChannelType ChannelNumber)
 {
     uint8 channel;
 
-    channel=(1 << ChannelNumber);
-    return (S12PWM_REG8(PWME) & channel)==channel;
+    channel = (1 << ChannelNumber);
+    return (S12PWM_REG8(PWME) & channel) == channel;
 }
+
+

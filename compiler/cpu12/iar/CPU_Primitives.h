@@ -30,7 +30,9 @@
 #if !defined(__CPU_PRIMITIVES_MCU_H)
 #define __CPU_PRIMITIVES_MCU_H
 
+#if !defined(S_SPLINT_S)
 #include <intrinsics.h>
+#endif
 
 /*
 **  Powerdown(Wait)-Mode.

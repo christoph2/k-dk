@@ -634,7 +634,7 @@ typedef enum tagS12Pim_StatusType {
 } S12Pim_StatusType;
 
 typedef struct tagS12Pim_ConfigType {
-    uint8           Modrr;
+    uint8 Modrr;
 
     /* PortT */
     uint8   DdrT;

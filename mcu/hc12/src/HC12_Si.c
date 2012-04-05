@@ -27,31 +27,29 @@
 #include "HC12_Si.h"
 #include "Hw_Cfg.h"
 
-
 #if HC12SI_DEV_ERROR_DETECT == STD_ON
 #define HC12SI_ASSERT_VALID_PORT(port) \
-_BEGIN_BLOCK \
-if (port > HC12SI_PORT_MAX) { \
-/*            ErrorHandler(...); */ \
-    return; \
-} \
-_END_BLOCK
+    _BEGIN_BLOCK                       \
+    if (port > HC12SI_PORT_MAX) {      \
+/*            ErrorHandler(...); */    \
+        return;                        \
+    }                                  \
+    _END_BLOCK
 #else
 #define HC12SI_ASSERT_VALID_PORT(port)
 #endif /* HC12SI_DEV_ERROR_DETECT */
 
 #if HC12SI_DEV_ERROR_DETECT == STD_ON
 #define HC12SI_ASSERT_VALID_CHANNEL(channel) \
-_BEGIN_BLOCK \
-if (channel > HC12SI_CHANNEL_MAX) { \
-    /*            ErrorHandler(...); */ \
-    return; \
-} \
-_END_BLOCK
+    _BEGIN_BLOCK                             \
+    if (channel > HC12SI_CHANNEL_MAX) {      \
+        /*            ErrorHandler(...); */  \
+        return;                              \
+    }                                        \
+    _END_BLOCK
 #else
 #define HC12SI_ASSERT_VALID_CHANNEL(channel)
 #endif  /* HC12SI_DEV_ERROR_DETECT */
-
 
 /*
 ** Local Constants.
@@ -70,14 +68,14 @@ void HC12Si_Init(HC12Si_ConfigType const * const ConfigPtr)
     HC12SI_REG8(DDRS)  = ConfigPtr->DdrS;
 
 #if (CPU_DERIVATE != CPU12_HC12A4)
-    HC12SI_REG8(PURDS)  = ConfigPtr->PurdS;
+    HC12SI_REG8(PURDS) = ConfigPtr->PurdS;
 #endif
 }
+
 
 /*
 **  Implementation of common functions.
 */
-
 IMPLEMENT_IO_WRITE_PORT(HC12SI, HC12Si)
 IMPLEMENT_IO_READ_PORT(HC12SI, HC12Si)
 

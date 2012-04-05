@@ -30,7 +30,6 @@
 #include "Sys_Cfg.h"
 #include "InstallISR/ISR.h"
 
-
 #if CPU_FAMILY == CPU12_HC12
 
     #if CPU_DERIVATE == CPU12_HC12B32

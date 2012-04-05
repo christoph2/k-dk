@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -25,13 +25,21 @@
 #if !defined(__ISR_IAR_HCS12_H)
 #define __ISR_IAR_HCS12_H
 
-#define DECLARE_ISR2_VECTOR(IsrName) __interrupt void IsrName(void)
-#define DECLARE_ISR1_VECTOR(IsrName) __interrupt void IsrName(void)
-#define ISR1(IsrName) __interrupt void IsrName(void)
+#if !defined(S_SPLINT_S)
+#define DECLARE_ISR2_VECTOR(IsrName)    __interrupt void IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName)    __interrupt void IsrName(void)
+#define ISR1(IsrName)                   __interrupt void IsrName(void)
+#else
+#define DECLARE_ISR2_VECTOR(IsrName)    void IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName)    void IsrName(void)
+#define ISR1(IsrName)                   void IsrName(void)
+#endif /* S_SPLINT_S */
 
 #define IISR_ENTRY_POINT __program_start
 void __program_start(void);
-extern void (* const  interrupt_vectors[])(void);
+
+
+extern void(*const interrupt_vectors[]) (void);
 
 #define IISR_DECLARE_VECTOR_TABLE
 #define IISR_BEGIN_VECTOR_TABLE

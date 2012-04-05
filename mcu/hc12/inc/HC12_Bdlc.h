@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -88,8 +88,6 @@ extern "C"
     #define DDDLC0  ((uint8)0x01)
 
 typedef struct tagHC12Bdlc_ConfigType {
-    uint16 BaseAddr;
-
     uint8   Bcr1;
     uint8   Bcr2;
     uint8   Bard;
@@ -111,8 +109,10 @@ boolean HC12Bdlc_Busy(void);
 boolean HC12Bdlc_Rxd(void);
 uint8   HC12Bdlc_Transmit(uint8 const * buf, uint8 len);
 
+
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
 #endif  /* __HC12_BDLC_H */
+

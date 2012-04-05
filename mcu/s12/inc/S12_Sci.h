@@ -164,20 +164,20 @@ typedef struct tagS12Sci_ConfigType {
 
 #define S12SCI_GET_CONFIGURATION() HW_GET_CONFIGURATION(S12Sci_Configuration, Cfg, id, S12SCI_ID)
 
-S12Sci_StatusType   S12Sci_Init(S12Sci_ConfigType const * const Cfg);
-S12Sci_StatusType   S12Sci_EnableInterrupts(S12Sci_ConfigType const * const Cfg, boolean ena);
-S12Sci_StatusType   S12Sci_SetBaud(S12Sci_ConfigType const * const Cfg, uint32 baud);
-S12Sci_StatusType   S12Sci_SetFormat(S12Sci_ConfigType const * const Cfg, uint32 baudrate, uint8 parity, uint8 nbits);
-S12Sci_StatusType   S12Sci_Get(S12Sci_ConfigType const * const Cfg, /*@out@*/ uint8 * ch);
-S12Sci_StatusType   S12Sci_Put(S12Sci_ConfigType const * const Cfg, uint8 ch);
-S12Sci_StatusType   S12Sci_PutString(S12Sci_ConfigType const * const Cfg, /*@in@*/ uint8 const * str);
-S12Sci_StatusType   S12Sci_SendBuffer(S12Sci_ConfigType const * const Cfg, /*@in@*/ uint8 const * buf, uint8 len);
-S12Sci_StatusType   S12Sci_SendBreak(S12Sci_ConfigType const * const Cfg);
+void    S12Sci_Init(uint8 Controller);
+void    S12Sci_EnableInterrupts(uint8 Controller, boolean ena);
+void    S12Sci_SetBaud(uint8 Controller, uint32 baud);
+void    S12Sci_SetFormat(uint8 Controller, uint32 baudrate, uint8 parity, uint8 nbits);
+void    S12Sci_Get(uint8 Controller, /*@out@*/ uint8 * ch);
+void    S12Sci_Put(uint8 Controller, uint8 ch);
+void    S12Sci_PutString(uint8 Controller, /*@in@*/ uint8 const * str);
+void    S12Sci_SendBuffer(uint8 Controller, /*@in@*/ uint8 const * buf, uint8 len);
+void    S12Sci_SendBreak(uint8 Controller);
 
 S12Sci_StatusType S12Sci_TxReady(S12Sci_ConfigType const * const Cfg, /*@out@*/ boolean * ready);
 
-S12Sci_StatusType   S12Sci_SetRxBuffer(S12Sci_ConfigType const * const Cfg, uint8 * buf, uint8 len);
-S12Sci_StatusType   S12Sci_SetTxBuffer(S12Sci_ConfigType const * const Cfg, uint8 * buf, uint8 len);
+void    S12Sci_SetRxBuffer(S12Sci_ConfigType const * const Cfg, uint8 * buf, uint8 len);
+void    S12Sci_SetTxBuffer(S12Sci_ConfigType const * const Cfg, uint8 * buf, uint8 len);
 
 S12Sci_StatusType   S12Sci_RxBufIsEmpty(S12Sci_ConfigType const * const Cfg, /*@out@*/ boolean * empty);
 S12Sci_StatusType   S12Sci_RxBufGetCh(S12Sci_ConfigType const * const Cfg, /*@out@*/ uint8 * ch);

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -31,31 +31,29 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-
 #include "Std_Types.h"
 #include "KDK_ModuleIDs.h"
 
 /*
 **  Global Macros.
 */
-#define KDK_DEV_ERROR_DETECT(mod)    GLUE2(mod,_DEV_ERROR_DETECT)
-
+#define KDK_DEV_ERROR_DETECT(mod) GLUE2(mod, _DEV_ERROR_DETECT)
 
 /*
 **  Global Types.
 */
-typedef void (*KDKError_Hook)(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
+typedef void (*KDKError_Hook)(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 ErrorId);
 
 /*
 **  Global Functions.
 */
-void KDKError_Init(void);
-void KDKError_ReportError(uint16 ModuleId,uint8 InstanceId,uint8 ApiId,uint8 ErrorId);
-void KDKError_Start(void);
+void    KDKError_Init(void);
+void    KDKError_ReportError(uint16 ModuleId, uint8 InstanceId, uint8 ApiId, uint8 ErrorId);
+void    KDKError_Start(void);
 
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __KDK_ERROR_H */
+#endif  /* __KDK_ERROR_H */

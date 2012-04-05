@@ -141,8 +141,6 @@ typedef enum tagHC12Pwm_OutputStateType {
 } HC12Pwm_OutputStateType;
 
 typedef struct tagHC12Pwm_ConfigType {
-    uint16 BaseAddr;
-
     uint8   DdrP;
     uint8   PortP;
     uint8   PwEn;
@@ -191,8 +189,8 @@ uint16  HC12Pwm_GetDutyCycle(HC12Pwm_ChannelType ChannelNumber);
 
 uint8 HC12Pwm_GetPolarity(HC12Pwm_ChannelType ChannelNumber);
 
-void HC12Pwm_ActivateChannel(HC12Pwm_ChannelType ChannelNumber);
-void HC12Pwm_DeactivateChannel(HC12Pwm_ChannelType ChannelNumber);
+void    HC12Pwm_ActivateChannel(HC12Pwm_ChannelType ChannelNumber);
+void    HC12Pwm_DeactivateChannel(HC12Pwm_ChannelType ChannelNumber);
 boolean HC12Pwm_ChannelActivated(HC12Pwm_ChannelType ChannelNumber);
 
 void HC12Pwm_ResetCounter(HC12Pwm_ChannelType ChannelNumber);

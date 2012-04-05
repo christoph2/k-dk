@@ -88,7 +88,7 @@ extern "C"
 **  global Types.
 */
 typedef struct tagS12Iic_ConfigType {
-    uint8   Prescaler;
+    uint8 Prescaler;
 } S12Iic_ConfigType;
 
 typedef enum taS12Iic_StatusType {

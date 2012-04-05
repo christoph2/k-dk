@@ -25,19 +25,18 @@
 #if !defined( __PLATFORM_TYPES_H)
 #define __PLATFORM_TYPES_H
 
+#define CPU_TYPE_8      8
+#define CPU_TYPE_16     16
+#define CPU_TYPE_32     32
 
-#define CPU_TYPE_8          8
-#define CPU_TYPE_16         16
-#define CPU_TYPE_32         32
+#define MSB_FIRST       0
+#define LSB_FIRST       1
 
-#define MSB_FIRST           0
-#define LSB_FIRST           1
-
-#define HIGH_BYTE_FIRST     0
-#define LOW_BYTE_FIRST      1
+#define HIGH_BYTE_FIRST 0
+#define LOW_BYTE_FIRST  1
 
 #if !defined(NULL)
-    #define NULL            0
+    #define NULL        0
 #endif
 
 #if defined(_MSC_VER)
@@ -61,6 +60,5 @@
     #endif
 
 #endif
-
 
 #endif /* __PLATFORM_TYPES_H  */

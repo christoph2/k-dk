@@ -15,10 +15,10 @@
 /*
     The CRC according to FT3 of IEC 870-5-1 uses
     X^16+X^13+X^12+X^11+X^10+X^8+X^6+X^5+X^2+1
-*/
+ */
 #define GENPOLY ((uint16)0x3D65)
 
-static uint16 crctab[256]={
+static uint16 crctab[256] = {
     0x0000, 0x3d65, 0x7aca, 0x47af, 0xf594, 0xc8f1, 0x8f5e, 0xb23b,
     0xd64d, 0xeb28, 0xac87, 0x91e2, 0x23d9, 0x1ebc, 0x5913, 0x6476,
     0x91ff, 0xac9a, 0xeb35, 0xd650, 0x646b, 0x590e, 0x1ea1, 0x23c4,
@@ -57,13 +57,15 @@ static uint16 accumulator;
 
 void CRCInit(uint16 data)
 {
-    accumulator=data;
+    accumulator = data;
 }
+
 
 void CRCUpdate(uint16 data)
 {
-    accumulator=(accumulator<<8)^crctab[(accumulator>>8)^data];
+    accumulator = (accumulator << 8) ^ crctab[(accumulator >> 8) ^ data];
 }
+
 
 uint16 CRCGet(void)
 {
@@ -71,27 +73,29 @@ uint16 CRCGet(void)
 }
 
 
-uint16 CRCCalculate(uint16 genpoly,uint16 data,uint16 accum)
+uint16 CRCCalculate(uint16 genpoly, uint16 data, uint16 accum)
 {
     uint16 i;
 
-    data<<=8;
+    data <<= 8;
 
-    for (i=8;i>0;i--) {
-        if ((data^accum) & 0x8000) {
-            accum=(accum<<1)^genpoly;
+    for (i = 8; i > 0; i--) {
+        if ((data ^ accum) & 0x8000) {
+            accum = (accum << 1) ^ genpoly;
         } else {
-            accum<<=1;
+            accum <<= 1;
         }
-        data<<=1;
+
+        data <<= 1;
     }
 
     return accum;
 }
 
+
 /*
-void CRCGenerateTable(void)
-{
+   void CRCGenerateTable(void)
+   {
     uint16 i,j;
     FILE *out;
 
@@ -99,7 +103,7 @@ void CRCGenerateTable(void)
 
     out=fopen("CRCTab.txt","w+");
     fprintf(out,"\nunsigned short crctab[256] = \n\t{");
-        
+
     for (j=0;j<=31;j++) {
         fprintf(out,"\n\t");
             for (i=8*j;i<8*j+8;i++) {
@@ -108,5 +112,5 @@ void CRCGenerateTable(void)
     }
     fprintf(out,"\n};");
     fclose(out);
-}
-*/
+   }
+ */

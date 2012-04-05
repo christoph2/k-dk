@@ -267,6 +267,6 @@ __root void(* const interrupt_vectors[]) (void) =
     (IISR_IVF)RTI_VECTOR,       /* Real Time Interrupt              */
 
     #include "HC12_Common_Vectors.h"
-};
+}
 
 

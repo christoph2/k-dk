@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -93,33 +93,37 @@ S12Mebi_ModeType S12Mebi_GetMode(void)
 
 boolean S12Mebi_SpecialMode(void)
 {
-    uint8 mode=(S12MEBI_REG8(MODE) & (uint8)0xe0) >> 5;
+    uint8 mode = (S12MEBI_REG8(MODE) & (uint8)0xe0) >> 5;
 
-    return !(((mode & ((uint8)0x04))==((uint8)0x04)) && !((mode & ((uint8)0x06))==((uint8)0x06)));
+    return !(((mode & ((uint8)0x04)) == ((uint8)0x04)) && !((mode & ((uint8)0x06)) == ((uint8)0x06)));
 }
 
 
 /*
 **  Implementation of common functions.
 */
-IMPLEMENT_IO_WRITE_PORT(S12MEBI,S12Mebi)
-IMPLEMENT_IO_READ_PORT(S12MEBI,S12Mebi)
+IMPLEMENT_IO_WRITE_PORT(S12MEBI, S12Mebi)
+IMPLEMENT_IO_READ_PORT(S12MEBI, S12Mebi)
 
-IMPLEMENT_IO_WRITE_CHANNEL(S12MEBI,S12Mebi)
-IMPLEMENT_IO_READ_CHANNEL(S12MEBI,S12Mebi)
+IMPLEMENT_IO_WRITE_CHANNEL(S12MEBI, S12Mebi)
+IMPLEMENT_IO_READ_CHANNEL(S12MEBI, S12Mebi)
 
-IMPLEMENT_IO_WRITE_CHANNEL_GROUP(S12MEBI,S12Mebi)
-IMPLEMENT_IO_READ_CHANNEL_GROUP(S12MEBI,S12Mebi)
+IMPLEMENT_IO_WRITE_CHANNEL_GROUP(S12MEBI, S12Mebi)
+IMPLEMENT_IO_READ_CHANNEL_GROUP(S12MEBI, S12Mebi)
 
-IMPLEMENT_IO_SET_PIN_DIRECTION(S12MEBI,S12Mebi)
+IMPLEMENT_IO_SET_PIN_DIRECTION(S12MEBI, S12Mebi)
 
 #if defined(__K_AUTOSAR)
 void S12Mebi_RefreshPortDirection(S12Mebi_ConfigType const * ConfigPtr)
 {
-    // todo: Interrupts sperren!!!
-    S12MEBI_REG8(DDRA)=Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[0],ConfigPtr->DdrA,S12MEBI_REG8(DDRA));
-    S12MEBI_REG8(DDRB)=Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[1],ConfigPtr->DdrB,S12MEBI_REG8(DDRB));
-    S12MEBI_REG8(DDRE)=Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[2],ConfigPtr->DdrE,S12MEBI_REG8(DDRE));
-    S12MEBI_REG8(DDRK)=Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[3],ConfigPtr->DdrK,S12MEBI_REG8(DDRK));
+    /* todo: Interrupts sperren!!! */
+    S12MEBI_REG8(DDRA) = Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[0], ConfigPtr->DdrA, S12MEBI_REG8(DDRA));
+    S12MEBI_REG8(DDRB) = Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[1], ConfigPtr->DdrB, S12MEBI_REG8(DDRB));
+    S12MEBI_REG8(DDRE) = Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[2], ConfigPtr->DdrE, S12MEBI_REG8(DDRE));
+    S12MEBI_REG8(DDRK) = Kdk_CalculatePinDirection(ConfigPtr->DirectionChangeable[3], ConfigPtr->DdrK, S12MEBI_REG8(DDRK));
 }
+
+
 #endif /* __K_AUTOSAR */
+
+/* todo: IRQ- and  XIRQ-Handler!!! */

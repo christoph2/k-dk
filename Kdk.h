@@ -35,27 +35,29 @@ extern "C"
 #include "Sys_Cfg.h"
 
 /*
-**  Templates.
+**  Function-like Macros.
 */
-
+#define KDK_MAKE_BASE_ADDR(addr)    (BASE_ADDR_REGISTERS + (uint16)(addr))
 #define IMPL_PORT_MAP(nameLower)    GLUE2( nameLower , _Ports[port])
 #define IMPL_REGISTER(nameUpper)    GLUE2( nameUpper , _REG8)
 
-
-#define IMPLEMENT_IO_READ_PORT(nameUpper, nameLower)                                \
-    Kdk_PortLevelType GLUE2(nameLower, _ReadPort(Kdk_PortType port))                \
-    {                                                                               \
-        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                                \
-                                                                                    \
-        return IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) );               \
+/*
+**  Templates.
+*/
+#define IMPLEMENT_IO_READ_PORT(nameUpper, nameLower)                  \
+    Kdk_PortLevelType GLUE2(nameLower, _ReadPort(Kdk_PortType port))  \
+    {                                                                 \
+        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                  \
+                                                                      \
+        return IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ); \
     }
 
-#define IMPLEMENT_IO_WRITE_PORT(nameUpper, nameLower)                               \
-    void GLUE2(nameLower, _WritePort(Kdk_PortType port, Kdk_PortLevelType value))   \
-    {                                                                               \
-        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                                \
-                                                                                    \
-        IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ) = value;              \
+#define IMPLEMENT_IO_WRITE_PORT(nameUpper, nameLower)                             \
+    void GLUE2(nameLower, _WritePort(Kdk_PortType port, Kdk_PortLevelType value)) \
+    {                                                                             \
+        GLUE2(nameUpper, _ASSERT_VALID_PORT(port); )                              \
+                                                                                  \
+        IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ) = value;            \
     }
 
 #if defined(__K_AUTOSAR)
@@ -75,49 +77,49 @@ extern "C"
         CPU_RESTORE_INTERRUPTS(state);                                                                \
     }
 #else
-#define IMPLEMENT_IO_WRITE_CHANNEL(nameUpper, nameLower)                                    \
-    void GLUE2(nameLower, _WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level))      \
-    {                                                                                       \
-        uint8               port;                                                           \
-        uint8               bit;                                                            \
-        InterruptStateType  state;                                                          \
-                                                                                            \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                  \
-                                                                                            \
-        port   = channel / (uint8)8;                                                        \
-        bit    = channel % (uint8)8;                                                        \
-                                                                                            \
-        CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                             \
-        if (level == KDK_HIGH) {                                                            \
-            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);      \
-        } else {                                                                            \
-            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);    \
-        }                                                                                   \
-        CPU_RESTORE_INTERRUPTS(state);                                                      \
+#define IMPLEMENT_IO_WRITE_CHANNEL(nameUpper, nameLower)                                 \
+    void GLUE2(nameLower, _WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level))   \
+    {                                                                                    \
+        uint8               port;                                                        \
+        uint8               bit;                                                         \
+        InterruptStateType  state;                                                       \
+                                                                                         \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                               \
+                                                                                         \
+        port   = channel / (uint8)8;                                                     \
+        bit    = channel % (uint8)8;                                                     \
+                                                                                         \
+        CPU_SAVE_AND_DISABLE_INTERRUPTS(state);                                          \
+        if (level == KDK_HIGH) {                                                         \
+            UTL_BIT_SET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit);   \
+        } else {                                                                         \
+            UTL_BIT_RESET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit); \
+        }                                                                                \
+        CPU_RESTORE_INTERRUPTS(state);                                                   \
     }
 #endif /* __K_AUTOSAR */
 
 #if defined(__K_AUTOSAR)
-#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                             \
-    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_PortType port, Kdk_ChannelType bit))                            \
-    {                                                                                                               \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                          \
-                                                                                                                    \
-        return (UTL_BIT_GET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW;    \
+#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                          \
+    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_PortType port, Kdk_ChannelType bit))                         \
+    {                                                                                                            \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                       \
+                                                                                                                 \
+        return (UTL_BIT_GET8( IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW; \
     }
 #else
-#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                             \
-    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_ChannelType channel))                                           \
-    {                                                                                                               \
-        uint8   port;                                                                                               \
-        uint8   bit;                                                                                                \
-                                                                                                                    \
-        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                          \
-                                                                                                                    \
-        port   = channel / (uint8)8;                                                                                \
-        bit    = channel % (uint8)8;                                                                                \
-                                                                                                                    \
-        return (UTL_BIT_GET8(  IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW;   \
+#define IMPLEMENT_IO_READ_CHANNEL(nameUpper, nameLower)                                                           \
+    Kdk_LevelType GLUE2(nameLower, _ReadChannel(Kdk_ChannelType channel))                                         \
+    {                                                                                                             \
+        uint8   port;                                                                                             \
+        uint8   bit;                                                                                              \
+                                                                                                                  \
+        GLUE2(nameUpper, _ASSERT_VALID_CHANNEL(channel); )                                                        \
+                                                                                                                  \
+        port   = channel / (uint8)8;                                                                              \
+        bit    = channel % (uint8)8;                                                                              \
+                                                                                                                  \
+        return (UTL_BIT_GET8(  IMPL_REGISTER(nameUpper) ( IMPL_PORT_MAP(nameLower) ), bit)) ? KDK_HIGH : KDK_LOW; \
     }
 #endif
 

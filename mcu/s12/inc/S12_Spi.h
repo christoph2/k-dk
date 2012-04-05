@@ -1,8 +1,8 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -78,26 +78,25 @@
 */
 
 typedef struct tagS12Spi_VariablesType {
-    uint8 *IOBufAddr;
-    uint8 IOBufLength;
-    uint8 IOBufPtr;
+    uint8 * IOBufAddr;
+    uint8   IOBufLength;
+    uint8   IOBufPtr;
 } S12Spi_VariablesType;
 
-
 typedef struct tagS12Spi_ConfigType {
-    uint16 BaseAddr;
-/*    uint32 BaudRate;  */
-    uint8 BaudRateDivisor;
-    S12Spi_VariablesType * const Vars;
+    uint8                           num;
+    uint8                           BaudRateDivisor;
+    S12Spi_VariablesType * const    Vars;
 } S12Spi_ConfigType;
 
+void    S12Spi_InitController(uint8 Controller);
+void    S12Spi_SetPrescaler(uint8 Controller, uint8 prescaler);
+void    S12Spi_SetFormat(uint8 Controller, boolean cpol, boolean cpha, boolean lsbfe);
 
-void S12Spi_Init(S12Spi_ConfigType const * const Cfg);
-void S12Spi_SetSpeed(S12Spi_ConfigType const * const Cfg,uint8 prescaler);
-void S12Spi_SetFormat(S12Spi_ConfigType const * const Cfg,boolean cpol,boolean cpha,boolean lsbfe);
+boolean S12Spi_TxReady(uint8 Controller);
 
-uint8 S12Spi_IOByte(S12Spi_ConfigType const * const Cfg,uint8 data);
+uint8   S12Spi_IOByte(uint8 Controller, uint8 data);
+void    S12Spi_IOBuffer(uint8 Controller, uint8 * data, uint8 len, boolean use_interrupt);
 
-void S12Spi_IOBuffer(S12Spi_ConfigType const * const Cfg,uint8 *data,uint8 len,boolean use_interrupt);
 
 #endif  /* __S12_SPI_H */

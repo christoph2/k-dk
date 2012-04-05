@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,23 +23,25 @@
  */
 
 #if defined(__ICCARM__)
-    #define II_INC_TARGET_C   "./arm/ISR_IAR_ARM.c"
+    #define II_INC_TARGET_C "./arm/ISR_IAR_ARM.c"
 #elif defined(__ICCHCS12__)
 
 #else
     #error Unsupported Target for IAR-Compiler.
 #endif
 
-#if CPU_FAMILY==CPU12_HC12
+#if CPU_FAMILY == CPU12_HC12
 
-    #if CPU_DERIVATE==CPU12_HC12B32 || CPU_DERIVATE==CPU12_HC12BC32
-        #define II_INC_TARGET_C   "./hc12/ISR_IAR_HC12B.c"
-    #elif CPU_DERIVATE==CPU12_HC12DG128A || CPU_DERIVATE==CPU12_HC12DT128A
-        #define II_INC_TARGET_C   "./hc12/ISR_IAR_HC12Dx128.c"
+    #if CPU_DERIVATE == CPU12_HC12B32 || CPU_DERIVATE == CPU12_HC12BC32
+        #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12B.c"
+    #elif CPU_DERIVATE == CPU12_HC12DG128A || CPU_DERIVATE == CPU12_HC12DT128A
+        #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12Dx128.c"
+    #elif CPU_DERIVATE == CPU12_HC12A4
+        #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12A4.c"
     #endif
 
-#elif CPU_FAMILY==CPU12_S12
-    #define II_INC_TARGET_C   "./s12/ISR_IAR_HCS12.c"
+#elif CPU_FAMILY == CPU12_S12
+    #define II_INC_TARGET_C     "./s12/ISR_IAR_HCS12.c"
 #else
 
 #endif

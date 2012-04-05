@@ -29,8 +29,8 @@
 
 #if 0
 Setup:
-  MSBFirst,
-  ClkPol    CLK_ACTIVE_HIGH|CLK_ACTIVE_LOW
+MSBFirst,
+ClkPol CLK_ACTIVE_HIGH | CLK_ACTIVE_LOW
 #endif
 
 /*
@@ -50,77 +50,88 @@ Setup:
 **
 */
 
-
-void SpiBB_SetFormat(uint8 polarity,uint8 phase);
+void SpiBB_SetFormat(uint8 polarity, uint8 phase);
 
 
 void SpiBB_Init(SpiBB_HWConfigType * const Hw)
 {
-    *Hw->Port&=~(Hw->ClkMsk|Hw->MosiMsk);  /* todo: je nach Polarität! */
+    *Hw->Port &= ~(Hw->ClkMsk | Hw->MosiMsk);  /* todo: je nach Polarität! */
 
-    *Hw->Ddr&=~(Hw->MisoMsk);
-    *Hw->Ddr|=(Hw->ClkMsk|Hw->MosiMsk);
+    *Hw->Ddr  &= ~(Hw->MisoMsk);
+    *Hw->Ddr  |= (Hw->ClkMsk | Hw->MosiMsk);
 }
 
-uint8 SpiBB_ExgBit(SpiBB_HWConfigType * const Hw,uint8 bit)
+
+uint8 SpiBB_ExgBit(SpiBB_HWConfigType * const Hw, uint8 bit)
 {
-    if (bit==STD_ON) {
-        *Hw->Port|=Hw->MosiMsk;
-    } else if (bit==STD_OFF) {
-        *Hw->Port&=~Hw->MosiMsk;
+    if (bit == STD_ON) {
+        *Hw->Port |= Hw->MosiMsk;
+    } else if (bit == STD_OFF) {
+        *Hw->Port &= ~Hw->MosiMsk;
     } else {
         return (uint8)STD_ON;
     }
+
 #if 0
+
     /* todo: Polarity!  */
-    if (bit==STD_OFF) {
-        *Hw->Port&=~Hw->MosiMsk;
-    } else if (bit==STD_ON) {
-        *Hw->Port|=Hw->MosiMsk;
+    if (bit == STD_OFF) {
+        *Hw->Port &= ~Hw->MosiMsk;
+    } else if (bit == STD_ON) {
+        *Hw->Port |= Hw->MosiMsk;
     }
+
 #endif
     Hw->DelayFct(5);
-    *Hw->Port|=Hw->ClkMsk;
+    *Hw->Port |= Hw->ClkMsk;
 
     Hw->DelayFct(5);
-    *Hw->Port&=~Hw->ClkMsk;
+    *Hw->Port &= ~Hw->ClkMsk;
 
-    return (*Hw->Port & Hw->MisoMsk)==Hw->MisoMsk;
+    return (*Hw->Port & Hw->MisoMsk) == Hw->MisoMsk;
 }
 
-uint8 SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw,uint8 data,uint8 nbits)
+
+uint8 SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw, uint8 data, uint8 nbits)
 {
     uint8 idx;
 
-    uint8 BitsRx=(uint8)0x00;
+    uint8 BitsRx = (uint8)0x00;
 
-    for (idx=nbits;idx>(uint8)0x00;--idx) { /* MSB first. */
-        BitsRx|=SpiBB_ExgBit(Hw,Utl_BitGet((uint16)data,idx-1));
-        if (idx>1) {
-            BitsRx<<=1;
+    for (idx = nbits; idx > (uint8)0x00; --idx) { /* MSB first. */
+        BitsRx |= SpiBB_ExgBit(Hw, Utl_BitGet((uint16)data, idx - 1));
+
+        if (idx > 1) {
+            BitsRx <<= 1;
         }
     }
 
     return BitsRx;
 }
 
-uint16 SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw,uint16 data,uint8 nbits)
+
+uint16 SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw, uint16 data, uint8 nbits)
 {
-    uint8 idx;
-    uint16 BitsRx=(uint16)0x0000U;
+    uint8   idx;
+    uint16  BitsRx = (uint16)0x0000U;
+
     /* ASSERT(nbits<=(uint8)16); */
 
-    for (idx=nbits;idx>(uint8)0x00;--idx) { /* MSB first. */
-        BitsRx|=SpiBB_ExgBit(Hw,Utl_BitGet((uint16)data,idx-1));
-        if (idx>1) {
-            BitsRx<<=1;
+    for (idx = nbits; idx > (uint8)0x00; --idx) { /* MSB first. */
+        BitsRx |= SpiBB_ExgBit(Hw, Utl_BitGet((uint16)data, idx - 1));
+
+        if (idx > 1) {
+            BitsRx <<= 1;
         }
     }
 
     return BitsRx;
 }
 
-void SpiBB_SetFormat(uint8 polarity,uint8 phase)
+
+void SpiBB_SetFormat(uint8 polarity, uint8 phase)
 {
 
 }
+
+

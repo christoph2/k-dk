@@ -1,5 +1,5 @@
 /*
- * k_dk - Driver Kit for k_os (Konnex Operating-System based on the 
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
  * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
@@ -36,25 +36,26 @@ extern "C"
 typedef void (*DelayFunctionType)(uint16 uS);
 
 typedef struct tagSpiBB_HWConfigType {
-    uint8 volatile * const Port;
-    uint8 volatile * const Ddr; /* todo: not needed!?*/
+    uint8 volatile * const  Port;
+    uint8 volatile * const  Ddr; /* todo: not needed!?*/
 
     DelayFunctionType DelayFct;
 
-    uint8 ClkMsk;
-    uint8 MosiMsk;
-    uint8 MisoMsk;
-} SpiBB_HWConfigType ;
+    uint8   ClkMsk;
+    uint8   MosiMsk;
+    uint8   MisoMsk;
+} SpiBB_HWConfigType;
 
-void SpiBB_Init(SpiBB_HWConfigType * const Hw);
-uint8 SpiBB_ExgBit(SpiBB_HWConfigType * const Hw,uint8 bit);
-uint8 SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw,uint8 data,uint8 nbits);
-uint16 SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw,uint16 data,uint8 nbits);
-uint8 SpiBB_GetQ(SpiBB_HWConfigType * const Hw);
+void    SpiBB_Init(SpiBB_HWConfigType * const Hw);
+uint8   SpiBB_ExgBit(SpiBB_HWConfigType * const Hw, uint8 bit);
+uint8   SpiBB_ExgBits8(SpiBB_HWConfigType * const Hw, uint8 data, uint8 nbits);
+uint16  SpiBB_ExgBits16(SpiBB_HWConfigType * const Hw, uint16 data, uint8 nbits);
+uint8   SpiBB_GetQ(SpiBB_HWConfigType * const Hw);
+
 
 #if defined(__cplusplus)
 }
 #endif  /* __cplusplus */
 
-#endif /* __SPI_BB_H */
+#endif  /* __SPI_BB_H */
 

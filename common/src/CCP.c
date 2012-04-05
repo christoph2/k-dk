@@ -77,23 +77,23 @@
 /*  Code    Description                         Error       State transition to */
 /*                                              category                        */
 0x00        acknowledge / no error              -
-0x01        DAQ processor overload              C0
-0x10        command processor busy              C1          NONE (wait until ACK or timeout)
-0x11        DAQ processor busy                  C1          NONE (wait until ACK or timeout)
-0x12        internal timeout                    C1          NONE (wait until ACK or timeout)
-0x18        key request                         C1          NONE (embedded seed&key)
-0x19        session status request              C1          NONE (embedded SET_S_STATUS)
-0x20        cold start request                  C2          COLD START
-0x21        cal. data init. request             C2          cal. data initialization
-0x22        DAQ list init. request              C2          DAQ list initialization
-0x23        code update request                 C2          (COLD START)
-0x30        unknown command                     C3          (FAULT)
-0x31        command syntax                      C3          FAULT
-0x32        parameter(s) out of range           C3          FAULT
-0x33        access denied                       C3          FAULT
-0x34        overload                            C3          FAULT
-0x35        access locked                       C3          FAULT
-0x36        resource/function not available     C3          FAULT
+0x01        DAQ processor overload C0
+0x10        command processor busy C1          NONE(wait until ACK or timeout)
+0x11        DAQ processor busy C1          NONE(wait until ACK or timeout)
+0x12        internal timeout C1          NONE(wait until ACK or timeout)
+0x18        key request C1          NONE(embedded seed&key)
+0x19        session status request C1          NONE(embedded SET_S_STATUS)
+0x20        cold start request C2 COLD START
+0x21        cal.data init.request C2 cal.data initialization
+0x22        DAQ list init.request C2 DAQ list initialization
+0x23        code update request                 C2(COLD START)
+0x30        unknown command                     C3(FAULT)
+0x31        command syntax C3 FAULT
+0x32        parameter(s) out of range C3 FAULT
+0x33        access denied C3 FAULT
+0x34        overload C3 FAULT
+0x35        access locked C3 FAULT
+0x36        resource / function not available C3 FAULT
 #endif
 
 /*
@@ -102,11 +102,11 @@
 **    (Packet ID 0xFE).
 */
 #if 0
-Category    Description                         Action          Retries
-=========================================================================
-timeout     no handshake message                retry                   2
-C0          warning                             -                       -
-C1          spurious (comm error, busy, ...)    wait (ACK or timeout)   2
-C2          resolvable (temp. power loss, ...)  reinitialize            1
-C3          unresolvable (setup, overload, ...) terminate               -
+Category Description Action Retries
+== == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == =
+    timeout no handshake message retry                   2
+    C0 warning                             -                       -
+    C1          spurious(comm error, busy, ...)    wait(ACK or timeout)   2
+    C2          resolvable(temp.power loss, ...)  reinitialize            1
+    C3          unresolvable(setup, overload, ...) terminate               -
 #endif

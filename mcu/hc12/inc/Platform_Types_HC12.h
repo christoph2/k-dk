@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -39,7 +39,7 @@
 typedef unsigned char boolean;
 
 typedef /*@signed-integral-type@*/ int8_t       sint8;
-typedef /*@unsigned-integral-type@*/ int8_t     uint8;
+typedef /*@unsigned-integral-type@*/ uint8_t    uint8;
 typedef /*@signed-integral-type@*/ int16_t      sint16;
 typedef /*@unsigned-integral-type@*/ uint16_t   uint16;
 typedef /*@signed-integral-type@*/ int32_t      sint32;

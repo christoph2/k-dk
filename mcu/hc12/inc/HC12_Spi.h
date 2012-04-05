@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -76,18 +76,18 @@ typedef struct tagHC12Spi_VariablesType {
 } HC12Spi_VariablesType;
 
 typedef struct tagHC12Spi_ConfigType {
-    uint16                          BaseAddr;
-    uint32                          BaudRate;
+    uint8                           BaudRateDivisor;
     HC12Spi_VariablesType * const   Vars;
 } HC12Spi_ConfigType;
 
-void    HC12Spi_Init(HC12Spi_ConfigType const * const Cfg);
-void    HC12Spi_SetSpeed(HC12Spi_ConfigType const * const Cfg, uint8 prescaler);
-void    HC12Spi_SetFormat(HC12Spi_ConfigType const * const Cfg, boolean cpol, boolean cpha, boolean lsbfe);
+void    HC12Spi_InitController(uint8 Controller);
+void    HC12Spi_SetPrescaler(uint8 Controller, uint8 prescaler);
+void    HC12Spi_SetFormat(uint8 Controller, boolean cpol, boolean cpha, boolean lsbfe);
 
-boolean HC12Spi_Ready(HC12Spi_ConfigType const * const Cfg);
-uint8   HC12Spi_IOByte(HC12Spi_ConfigType const * const Cfg, uint8 data);
+boolean HC12Spi_Ready(uint8 Controller);
 
-void HC12Spi_IOBuffer(HC12Spi_ConfigType const * const Cfg, uint8 * data, uint8 len, boolean use_interrupt);
+uint8   HC12Spi_IOByte(uint8 Controller, uint8 data);
+void    HC12Spi_IOBuffer(uint8 Controller, uint8 * data, uint8 len, boolean use_interrupt);
+
 
 #endif  /* __HC12_SPI_H */

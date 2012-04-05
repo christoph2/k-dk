@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -95,7 +95,6 @@ extern "C"
     #define RDPB                ((uint8)0x02)
     #define RDPA                ((uint8)0x01)
 
-
 /*
 ** Symbolic Names for Port-Pins.
 */
@@ -136,8 +135,6 @@ extern "C"
 */
 
 typedef struct tagHC12BcIo_ConfigType {
-    uint16 BaseAddr;
-
     uint8   DdrA;
     uint8   DdrB;
     uint8   DdrE;
@@ -167,24 +164,30 @@ boolean             HC12BcIo_SpecialMode(void);
 void                HC12BcIo_WritePort(Kdk_PortType port, Kdk_PortLevelType value);
 Kdk_PortLevelType   HC12BcIo_ReadPort(Kdk_PortType port);
 
+
 #if defined(__K_AUTOSAR)
 void            HC12BcIo_WriteChannel(Kdk_PortType port, Kdk_ChannelType bit, Kdk_LevelType level);
 Kdk_LevelType   HC12BcIo_ReadChannel(Kdk_PortType port, Kdk_ChannelType bit);
 
+
 #else
-void            S12Mebi_WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level);
-Kdk_LevelType   S12Mebi_ReadChannel(Kdk_ChannelType channel);
+void            HC12BcIo_WriteChannel(Kdk_ChannelType channel, Kdk_LevelType level);
+Kdk_LevelType   HC12BcIo_ReadChannel(Kdk_ChannelType channel);
+
 
 #endif /* __K_AUTOSAR */
 
 void                HC12BcIo_WriteChannelGroup(Kdk_ChannelGroupType const * group, Kdk_PortLevelType level);
 Kdk_PortLevelType   HC12BcIo_ReadChannelGroup(Kdk_ChannelGroupType const * group);
 
+
 #if defined(__K_AUTOSAR)
 void HC12BcIo_SetPinDirection(Kdk_PortType port, Kdk_ChannelType bit, Kdk_PinDirectionType Direction);
 
+
 #else
 void HC12BcIo_SetPinDirection(Kdk_PinType Pin, Kdk_PinDirectionType Direction);
+
 
 #endif /* __K_AUTOSAR */
 

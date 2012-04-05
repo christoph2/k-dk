@@ -101,6 +101,7 @@ void                HC12Eep_Protect(boolean on);
 void                HC12Eep_LockProtectionState(void);
 HC12Eep_StatusType  HC12Eep_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 data);
 
+
 #define HC12Eep_ProgramWord(addr, data) HC12Eep_DoCmd(HC12EE_PROG_WORD, FALSE, (addr), (data))
 #define HC12Eep_ProgramByte(addr, data) HC12Eep_DoCmd(HC12EE_PROG_BYTE, TRUE, (addr), (data))
 
@@ -114,6 +115,7 @@ HC12Eep_StatusType  HC12Eep_DoCmd(uint8 cmd, boolean b8, uint16 addr, uint16 dat
 */
 HC12Eep_StatusType  HC12Eep_WriteByte(uint16 addr, uint8 data);
 HC12Eep_StatusType  HC12Eep_WriteWord(uint16 addr, uint16 data);
+
 
 #if defined(__cplusplus)
 }

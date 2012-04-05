@@ -22,41 +22,46 @@
  */
 #include "vt100.h"
 
-void VT100_CUU(uint8 distance,char *buf)  /* Cursor Up */
+void VT100_CUU(uint8 distance, char * buf)  /* Cursor Up */
 {
     /*  <ESC>[ {Pn} A */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(distance,10,buf+2);
-    Utl_StrCat(buf,"A");
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(distance, 10, buf + 2);
+    Utl_StrCat(buf, "A");
 }
 
-void VT100_CUD(uint8 distance,char *buf)  /* Cursor Down */
+
+void VT100_CUD(uint8 distance, char * buf)  /* Cursor Down */
 {
     /*  <ESC>[ {Pn} B */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(distance,10,buf+2);
-    Utl_StrCat(buf,"B");
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(distance, 10, buf + 2);
+    Utl_StrCat(buf, "B");
 }
 
-void VT100_CUF(uint8 distance,char *buf)  /* Cursor Foreward */
+
+void VT100_CUF(uint8 distance, char * buf)  /* Cursor Foreward */
 {
     /*  <ESC>[ {Pn} C */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(distance,10,buf+2);
-    Utl_StrCat(buf,"C");
-}
-            
-void VT100_CUB(uint8 distance,char *buf)  /* Cursor Backward */
-{
-    /*  <ESC>[ {Pn} D */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(distance,10,buf+2);
-    Utl_StrCat(buf,"D");
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(distance, 10, buf + 2);
+    Utl_StrCat(buf, "C");
 }
 
-void VT100_CUP(uint8 line,uint8 column,char *buf) /* Cursor Position */
+
+void VT100_CUB(uint8 distance, char * buf)  /* Cursor Backward */
+{
+    /*  <ESC>[ {Pn} D */
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(distance, 10, buf + 2);
+    Utl_StrCat(buf, "D");
+}
+
+
+void VT100_CUP(uint8 line, uint8 column, char * buf) /* Cursor Position */
 {
     uint8 len;
+
     /*  <ESC>[ {Pn} ; {Pn} H */
     /*
         The CUP sequence moves the curor to the position specified by the
@@ -68,19 +73,20 @@ void VT100_CUP(uint8 line,uint8 column,char *buf) /* Cursor Position */
 
         The numbering of the lines depends upon the state of the Origin Mode
         (DECOM).  Editor Function.
-    */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(line,10,buf+2);
-    Utl_StrCat(buf,";");
-    len=Utl_StrLen(buf);
-    Utl_Itoa(column,10,buf+len);
-    Utl_StrCat(buf,"H");
+     */
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(line, 10, buf + 2);
+    Utl_StrCat(buf, ";");
+    len = Utl_StrLen(buf);
+    Utl_Itoa(column, 10, buf + len);
+    Utl_StrCat(buf, "H");
 }
 
 
-void VT100_SGR(const uint8 *attrs,uint8 len,char *buf)
+void VT100_SGR(const uint8 * attrs, uint8 len, char * buf)
 {
     uint8 pos;
+
 /*
         <ESC>[ {Ps} ; {Ps} m
 
@@ -106,32 +112,38 @@ void VT100_SGR(const uint8 *attrs,uint8 len,char *buf)
 
         [Update:  DP6429 defines parameters in the 30-37 range to change
         foreground color and in the 40-47 range to change background.]
-*/    
-    Utl_StrCpy(buf,VT100_CSI);
+ */
+    Utl_StrCpy(buf, VT100_CSI);
 
-    pos=2;
+    pos = 2;
+
     while (len--) {
-        Utl_Itoa(*(attrs++),10,buf+pos);
-        if (len>0) {
-            Utl_StrCat(buf,";");
+        Utl_Itoa(*(attrs++), 10, buf + pos);
+
+        if (len > 0) {
+            Utl_StrCat(buf, ";");
         }
-        pos=Utl_StrLen(buf);
+
+        pos = Utl_StrLen(buf);
     }
-    
-    Utl_StrCat(buf,"m");
+
+    Utl_StrCat(buf, "m");
 }
 
-void VT100_CHOME(char *buf)
+
+void VT100_CHOME(char * buf)
 {
-   /*  <ESC>[  H */
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_StrCat(buf,"H");    
+    /*  <ESC>[  H */
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_StrCat(buf, "H");
 }
 
-void VT100_HVP(uint8 line,uint8 column,char *buf)
+
+void VT100_HVP(uint8 line, uint8 column, char * buf)
 {
     uint8 len;
-/*    
+
+/*
         <ESC>[ {Pn} ; {Pn} f
 
         Moves the cursor to the position specified by the parameters.  The
@@ -141,22 +153,24 @@ void VT100_HVP(uint8 line,uint8 column,char *buf)
         behaves identically with it's editor counterpart, CUP.  The numbering
         of hte lines depends upon the state of the Origin Mode (DECOM).  Format
         Effector.
-*/            
-    Utl_StrCpy(buf,VT100_CSI);
-    Utl_Itoa(line,10,buf+2);
-    Utl_StrCat(buf,";");
-    len=Utl_StrLen(buf);
-    Utl_Itoa(column,10,buf+len);
-    Utl_StrCat(buf,"f");    
+ */
+    Utl_StrCpy(buf, VT100_CSI);
+    Utl_Itoa(line, 10, buf + 2);
+    Utl_StrCat(buf, ";");
+    len = Utl_StrLen(buf);
+    Utl_Itoa(column, 10, buf + len);
+    Utl_StrCat(buf, "f");
 }
 
-void VT100_Send(const SCI_ConfigType *Cfg,const char *buf)
-{
-    uint8 len=Utl_StrLen(buf);
 
-    SCI_SendBuffer(Cfg,(uint8*)buf,len);
+void VT100_Send(const SCI_ConfigType * Cfg, const char * buf)
+{
+    uint8 len = Utl_StrLen(buf);
+
+    SCI_SendBuffer(Cfg, (uint8 *)buf, len);
     WAIT_FOR(SCI_TxReady(SCI0));   /* Blocking, to prevent 'buf' from being overwritten. */
 }
+
 
 /*
 **
@@ -166,48 +180,54 @@ void VT100_Send(const SCI_ConfigType *Cfg,const char *buf)
 
 static char VT100_TxBuffer[VT100_BUFFER_LEN];
 
-void VT100_CursorUp(const SCI_ConfigType *Cfg,uint8 distance)
+void VT100_CursorUp(const SCI_ConfigType * Cfg, uint8 distance)
 {
-    VT100_CUU(distance,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);
+    VT100_CUU(distance, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
-void VT100_CursorDown(const SCI_ConfigType *Cfg,uint8 distance)
+
+void VT100_CursorDown(const SCI_ConfigType * Cfg, uint8 distance)
 {
-    VT100_CUD(distance,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);
+    VT100_CUD(distance, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
-void VT100_CursorRight(const SCI_ConfigType *Cfg,uint8 distance)
+
+void VT100_CursorRight(const SCI_ConfigType * Cfg, uint8 distance)
 {
-    VT100_CUF(distance,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);    
+    VT100_CUF(distance, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
-void VT100_CursorLeft(const SCI_ConfigType *Cfg,uint8 distance)
+
+void VT100_CursorLeft(const SCI_ConfigType * Cfg, uint8 distance)
 {
-    VT100_CUB(distance,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);
+    VT100_CUB(distance, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
-void VT100_CursorPosition(const SCI_ConfigType *Cfg,uint8 line,uint8 column)
+
+void VT100_CursorPosition(const SCI_ConfigType * Cfg, uint8 line, uint8 column)
 {
-    VT100_HVP(line,column,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);    
+    VT100_HVP(line, column, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
-void VT100_CursorHome(const SCI_ConfigType *Cfg)
+
+void VT100_CursorHome(const SCI_ConfigType * Cfg)
 {
     VT100_CHOME(VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
 
 
-void VT100_CharAttributes(const SCI_ConfigType *Cfg,const uint8 *attrs,uint8 len)
+void VT100_CharAttributes(const SCI_ConfigType * Cfg, const uint8 * attrs, uint8 len)
 {
-    VT100_SGR(attrs,len,VT100_TxBuffer);
-    VT100_Send(Cfg,VT100_TxBuffer);
+    VT100_SGR(attrs, len, VT100_TxBuffer);
+    VT100_Send(Cfg, VT100_TxBuffer);
 }
+
 
 /*
 **
@@ -215,34 +235,36 @@ void VT100_CharAttributes(const SCI_ConfigType *Cfg,const uint8 *attrs,uint8 len
 **
 */
 
-enum {START,ESC,CSI};
+enum {START, ESC, CSI};
 
 void VT100_RxHandler(char ch)
 {
-    static uint8 state=START;
-    
-    if (ch==ASCII_ESC) {
-        if (state==START) {
-            state=ESC;
+    static uint8 state = START;
+
+    if (ch == ASCII_ESC) {
+        if (state == START) {
+            state = ESC;
         } else {
-            state=START;
+            state = START;
         }
     }
 
     switch (state) {
         case ESC:
-            if (ch=='[') {
-                state=CSI;
+
+            if (ch == '[') {
+                state = CSI;
             } else {
-            
+
             }
+
             break;
         case CSI:
-          /*
-          **    HOME: ESC[H
-          **    END: ESC[K
-          **
-          */
+            /*
+            **    HOME: ESC[H
+            **    END: ESC[K
+            **
+            */
             break;
         case START:
             break;
@@ -250,4 +272,5 @@ void VT100_RxHandler(char ch)
             ASSERT(FALSE);
     }
 }
+
 
