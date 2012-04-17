@@ -46,3 +46,4 @@ extern void(*const interrupt_vectors[]) (void);
 #define IISR_END_VECTOR_TABLE
 
 #endif /* __ISR_IAR_HCS12_H */
+

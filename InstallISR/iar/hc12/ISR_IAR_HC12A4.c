@@ -201,3 +201,4 @@ __root void(* const interrupt_vectors[]) (void) =
 #include "HC12_Common_Vectors.h"
 
 };
+
