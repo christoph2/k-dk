@@ -23,7 +23,7 @@
  */
 /*
 **
-**  Interrupt-Vectors HC12B-Series.
+**  Interrupt-Vectors HC12A4.
 **
 */
 
@@ -177,12 +177,12 @@ __root void(* const interrupt_vectors[]) (void) =
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC4                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC6                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC8                   */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCA		    */
-    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCC		    */
-    (IISR_IVF)KWUH_VECTOR,      /* KWUH		                    */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCA                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFCC                   */
+    (IISR_IVF)KWUH_VECTOR,      /* KWUH                             */
     (IISR_IVF)KWUJ_VECTOR,      /* KWUJ                             */
     (IISR_IVF)ATD_VECTOR,       /* ATD                              */
-    (IISR_IVF)SCI1_VECTOR,      /* SCI1				    */
+    (IISR_IVF)SCI1_VECTOR,      /* SCI1                             */
     (IISR_IVF)SCI0_VECTOR,      /* SCI0                             */
     (IISR_IVF)SPI_VECTOR,       /* SPI                              */
     (IISR_IVF)PAIE_VECTOR,      /* Pulse Accumulator A Input Edge   */

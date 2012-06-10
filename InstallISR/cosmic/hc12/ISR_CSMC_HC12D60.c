@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,7 +23,7 @@
  */
 /*
 **
-**       Interrupt-Vectors HC12D128x-Series.
+**       Interrupt-Vectors HC12D60.
 **
 */
 
@@ -155,50 +155,12 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #define CGM_VECTOR          DUMMY_VECTOR
 #endif  /*  CGM_VECTOR */
 
-#if !defined(IIC_VECTOR)
-#define IIC_VECTOR          DUMMY_VECTOR
-#endif  /*  IIC_VECTOR */
-
-#if !defined(CAN1W_VECTOR)
-#define CAN1W_VECTOR        DUMMY_VECTOR
-#endif  /*  CAN1W_VECTOR  */
-
-#if !defined(CAN1E_VECTOR)
-#define CAN1E_VECTOR        DUMMY_VECTOR
-#endif  /*  CAN1E_VECTOR  */
-
-#if !defined(CAN1R_VECTOR)
-#define CAN1R_VECTOR        DUMMY_VECTOR
-#endif  /*  CAN1R_VECTOR  */
-
-#if !defined(CAN1T_VECTOR)
-#define CAN1T_VECTOR        DUMMY_VECTOR
-#endif  /*  CAN1T_VECTOR  */
-
-#if CPU_DERIVATE == CPU12_HC12DT128A
-    #if !defined(CAN2W_VECTOR)
-    #define CAN2W_VECTOR    DUMMY_VECTOR
-    #endif  /*  CAN2W_VECTOR  */
-
-    #if !defined(CAN2E_VECTOR)
-    #define CAN2E_VECTOR    DUMMY_VECTOR
-    #endif  /*  CAN2E_VECTOR  */
-
-    #if !defined(CAN2R_VECTOR)
-    #define CAN2R_VECTOR    DUMMY_VECTOR
-    #endif  /*  CAN2R_VECTOR  */
-
-    #if !defined(CAN2T_VECTOR)
-    #define CAN2T_VECTOR    DUMMY_VECTOR
-    #endif  /*  CAN2T_VECTOR  */
-#endif      /* CPU12_HC12DT128A */
-
 ISR1(DUMMY_VECTOR)
 {
 }
 
-#pragma abs_address:0xFF80
-void(*const interrupt_vectors[]) (void) = {
+#pragma section const {vector}
+void(*const interrupt_vectors[]) (void) /* @0xFF80*/ = {
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF82                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FF84                   */
@@ -223,22 +185,15 @@ void(*const interrupt_vectors[]) (void) = {
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAA                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAC                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFAE                   */
-#if CPU_DERIVATE == CPU12_HC12DT128A
-    (IISR_IVF)CAN2T_VECTOR,     /* MSCAN2  Transmit                 */
-    (IISR_IVF)CAN2R_VECTOR,     /* MSCAN2  Receive                  */
-    (IISR_IVF)CAN2E_VECTOR,     /* MSCAN2  Error                    */
-    (IISR_IVF)CAN2W_VECTOR,     /* MSCAN2  Wake-up                  */
-#else
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB0                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB2                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB4                   */
     (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB6                   */
-#endif
-    (IISR_IVF)CAN1T_VECTOR,     /* MSCAN1  Transmit                 */
-    (IISR_IVF)CAN1R_VECTOR,     /* MSCAN1  Receive                  */
-    (IISR_IVF)CAN1E_VECTOR,     /* MSCAN1  Error                    */
-    (IISR_IVF)CAN1W_VECTOR,     /* MSCAN1  Wake-up                  */
-    (IISR_IVF)IIC_VECTOR,       /* IIC-Bus                          */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFB8                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBA                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBC                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFBE                   */
+    (IISR_IVF)DUMMY_VECTOR,     /* Reserved $FFC0                   */	
     (IISR_IVF)CGM_VECTOR,       /* RCGM lock and limp home          */
     (IISR_IVF)CAN0T_VECTOR,     /* MSCAN0  Transmit                 */
     (IISR_IVF)CAN0R_VECTOR,     /* MSCAN0  Receive                  */
@@ -267,5 +222,5 @@ void(*const interrupt_vectors[]) (void) = {
     #include "HC12_Common_Vectors.h"
 };
 
-#pragma end_abs_address
+#pragma section const {}
 
