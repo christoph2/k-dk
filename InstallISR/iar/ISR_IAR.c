@@ -38,6 +38,8 @@
         #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12Dx128.c"
     #elif CPU_DERIVATE == CPU12_HC12A4
         #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12A4.c"
+    #elif CPU_DERIVATE == CPU12_HC12D60 || CPU_DERIVATE == CPU12_HC12D60A
+	    #define II_INC_TARGET_C "./hc12/ISR_IAR_HC12D60"
     #endif
 
 #elif CPU_FAMILY == CPU12_S12

@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -26,7 +26,23 @@
 #elif defined(__AVR__)
     #define II_INC_TARGET_C "./avr/ISR_GCC_AVR.c"
 #elif defined(MC6812)
-    #define II_INC_TARGET_C "./s12/ISR_GCC_HCS12.c"
+
+    #if CPU_FAMILY == CPU12_HC12
+
+        #if CPU_DERIVATE == CPU12_HC12B32 || CPU_DERIVATE == CPU12_HC12BC32
+            #define II_INC_TARGET_C "./hc12/ISR_GCC_HC12B.c"
+        #elif CPU_DERIVATE == CPU12_HC12DG128A || CPU_DERIVATE == CPU12_HC12DT128A
+            #define II_INC_TARGET_C "./hc12/ISR_GCC_HC12Dx128.c"
+        #elif CPU_DERIVATE == CPU12_HC12A4
+            #define II_INC_TARGET_C "./hc12/ISR_GCC_HC12A4.c"
+	#elif CPU_DERIVATE == CPU12_HC12D60 || CPU_DERIVATE == CPU12_HC12D60A
+	    #define II_INC_TARGET_C "./hc12/ISR_GCC_HC12D60.c"
+        #endif
+
+    #elif CPU_FAMILY == CPU12_S12
+        #define II_INC_TARGET_C     "./s12/ISR_GCC_HCS12.c"
+    #else
+
 #elif defined(__MSP430__)
     #define II_INC_TARGET_C "./msp430/ISR_GCC_MSP430.c"
 #elif defined(_X86_)
@@ -36,3 +52,4 @@
 #endif
 
 #include II_INC_TARGET_C
+

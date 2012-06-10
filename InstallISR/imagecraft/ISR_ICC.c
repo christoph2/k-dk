@@ -32,7 +32,9 @@
             #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12Dx128.c"
         #elif CPU_DERIVATE == CPU12_HC12A4
             #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12A4.c"
-        #endif
+	#elif CPU_DERIVATE == CPU12_HC12D60 || CPU_DERIVATE == CPU12_HC12D60A
+	    #define II_INC_TARGET_C "imagecraft/hc12/ISR_ICC_HC12D60"
+	#endif
 
     #elif CPU_FAMILY == CPU12_S12
         #define II_INC_TARGET_C     "imagecraft/s12/ISR_ICC_HCS12.c"
