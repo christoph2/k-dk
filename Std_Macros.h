@@ -130,6 +130,10 @@
 #define SIZEOF_ARRAY(arr)           (sizeof((arr)) / sizeof((arr[0])))
 #define BEYOND_ARRAY(arr)           ((arr) + SIZE_OF_ARRAY((arr)))
 
+#if !defined(_countof)
+#define _countof(arr)		    SIZEOF_ARRAY(arr)
+#endif
+
 #define __HEX(n)                    0x ## n ## LU
 #define __BIN8(x)                       \
     (( (x) & 0x0000000FLU) ? 1   : 0)   \
