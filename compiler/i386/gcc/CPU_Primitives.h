@@ -1,7 +1,7 @@
 /*
    k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
 
-   (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+   (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
                                         cpu12.gems@googlemail.com>
 
    All Rights Reserved
@@ -24,14 +24,6 @@
 #if !defined(__CPU_PRIMITIVES_MCU_H)
 #define __CPU_PRIMITIVES_MCU_H
 
-
-boolean OsPort_InitializeCriticalSection(void);
-void OsPort_DeleteCriticalSection(void);
-void OsPort_EnterCriticalSection(void);
-void OsPort_LeaveCriticalSection(void);
-boolean OsPort_InCriticalSection(void);
-void OsPort_EnterPowerdownMode(void);
-
 /*
 **
 **  CPU-Primitives.
@@ -41,7 +33,7 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_ENTER_POWERDOWN_MODE()	OsPort_EnterPowerdownMode()
+#define CPU_POWERDOWN_MODE()
 
 /*
 **  Software-Interrupt.
@@ -78,17 +70,24 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Check for Interrupts disabled.
 */
-#define CPU_INTERRUPTS_DISABLED()		        OsPort_InCriticalSection()
+#define CPU_INTERRUPTS_DISABLED(void)           (FALSE)
 
 /*
 **  Save Interrupt-State before Disabling.
 */
-#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)  OsPort_EnterCriticalSection()
+#define CPU_SAVE_AND_DISABLE_INTERRUPTS(state)
 
 /*
 **  Restore Interrupt-State.
 */
-#define CPU_RESTORE_INTERRUPTS(state)           OsPort_LeaveCriticalSection();
+#define CPU_RESTORE_INTERRUPTS(state) \
+    _BEGIN_BLOCK                      \
+    if ((state) == TRUE) {            \
+        CPU_ENABLE_ALL_INTERRUPTS();  \
+    } else {                          \
+        CPU_DISABLE_ALL_INTERRUPTS(); \
+    }                                 \
+    _END_BLOCK
 
 #endif /* __CPU_PRIMITIVES_MCU_H */
 

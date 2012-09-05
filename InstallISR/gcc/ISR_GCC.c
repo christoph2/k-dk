@@ -21,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
+
 #if defined(__arm__)
     #define II_INC_TARGET_C "./arm/ISR_GCC_ARM.c"
 #elif defined(__AVR__)

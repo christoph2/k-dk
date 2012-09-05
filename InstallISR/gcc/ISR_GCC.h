@@ -36,7 +36,9 @@
     #define II_INC_TARGET_H "./msp430/ISR_GCC_MSP430.h"
 #elif defined(_X86_) /* defined( __CYGWIN32__) && defined(__I386__) */
 /* Dummy-Target */
-
+    #if defined( __CYGWIN32__)
+	#define II_INC_TARGET_H "cygwin/ISR_GCC_CYGWIN.h"
+    #endif
 #else
     #error Unsupported Target for GCC.
 #endif
