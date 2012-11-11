@@ -190,7 +190,7 @@
     if (!(expr)) {                         \
         return (value);                    \
     }                                      \
-    _END_BLOCK                             \
+    _END_BLOCK                             
 
 
 #define _BEGIN_BLOCK    do {

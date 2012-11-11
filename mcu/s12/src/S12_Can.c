@@ -22,6 +22,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * s. FLOSS-EXCEPTION.txt
+ *
  */
 
 /*
@@ -49,7 +50,7 @@ CAN3 x x
 CAN4 x x x x x x x x
 #endif
 
-#define S12CAN_NUMBER_OF_BUSSES ((uint8)0x05)
+#define S12CAN_NUMBER_OF_BUSSES ((uint8)0x05)   /* TODO: CFG!!! */
 
 #include "mcu/s12/inc/S12_Can.h"
 #include "Hw_Cfg.h"
@@ -59,12 +60,12 @@ CAN4 x x x x x x x x
 */
 
 /*
-** Global Variables.
+**  Global Variables.
 */
 S12Can_ConfigType const * CAN;
 
 /*
-** Local Defines.
+**  Local Defines.
 */
 #define S12CAN_RSTAT_OK     ((uint8)0x00)       /* RxOK: 0 <= Receive Error Counter <= 96       */
 #define S12CAN_RSTAT_WRN    ((uint8)0x10)       /* RxWRN: 96 < Receive Error Counter <= 127     */
@@ -77,9 +78,9 @@ S12Can_ConfigType const * CAN;
 #define S12CAN_TSTAT_BUSOFF ((uint8)0x0C)       /* Bus-Off: Transmit Error Counter > 255        */
 
 /*
-** Local Constants.
+**  Local Constants.
 */
-static uint16 S12Can_ControllerMapping[] = {   /* depends on derivate!!! */
+static uint16 S12Can_ControllerMapping[SC12_CAN_NUM_CONTROLLERS] = {   /* depends on derivate!!! */
     BASE_ADDR_CAN0,
     BASE_ADDR_CAN1,
     BASE_ADDR_CAN2,
@@ -94,7 +95,7 @@ static MSCan_IdType S12Can_TxBufferToID[S12CAN_NUMBER_OF_BUSSES][3];
 static uint8        S12Can_AbortRequests[S12CAN_NUMBER_OF_BUSSES];
 
 /*
-** Local Function Prototypes.
+**  Local Function Prototypes.
 */
 static void S12Can_SetIdentifier(uint16 addr, MSCan_IdentifierOverlayType value);
 static void S12Can_GetIdentifier(uint16 addr, MSCan_IdentifierOverlayType * /*@out@*/ value);
@@ -112,7 +113,7 @@ static void S12Can_GetIdentifier(uint16 addr, MSCan_IdentifierOverlayType * /*@o
 #define S12CAN_ACKNOWLEDGE_WUP_INTR(n)  S12CAN_REG8(n, CANRFLG)    = WUPIF
 
 /*
-**	Global Functions.
+**  Global Functions.
 */
 
  #if 0
@@ -129,7 +130,7 @@ typedef enum tagS12Can_ModeType {
 } S12Can_ModeType;
 #endif
 
-/* Refactored common stuff to 'mscan'. */
+/*  Refactored common stuff to 'mscan'. */
 
 void S12Can_Init(S12Can_ConfigType const * const ConfigPtr)
 {
@@ -241,7 +242,7 @@ boolean S12Can_Transmit(uint8 Controller, MSCan_MessageType const * Message, uin
 
 void S12Can_AbortTransmission(uint8 Controller, uint8 Number)
 {
-/*    static boolean AbortRequest[5][3]; */
+/*  static boolean AbortRequest[5][3]; */
     uint16 Base = S12Can_ControllerMapping[Controller];
 
     /* Hinweis: der Transmit-Interrupt muss enabled sein!!! */
@@ -282,7 +283,7 @@ void  S12Can_LeaveInitialisationMode(uint8 Controller)
 }
 
 
-/* Request_SleepMode | Request_WakeUp */
+/*  Request_SleepMode | Request_WakeUp */
 void  S12Can_RequestEnterSleepMode(uint8 Controller)
 {
     uint16 Base = S12Can_ControllerMapping[Controller];
@@ -355,7 +356,7 @@ boolean S12Can_ControllerSynchedToBus(uint8 Controller)
 
 
 /*
-**	Local Functions.
+**  Local Functions.
 */
 static void S12Can_SetIdentifier(uint16 addr, MSCan_IdentifierOverlayType value)
 {
@@ -380,9 +381,14 @@ void S12Can_SetSDU()
 
 }
 
+void S12Can_GetSDU()
+{
+
+}
+
 
 /*
-**		ISRs.
+**  ISRs.
 */
 
 void TxCallback(uint8 Controller, MSCan_IdType id)
@@ -571,3 +577,4 @@ ISR1(S12Can2_WupHandler)
 {
     S12Can_HandleWakeUp(2);
 }
+

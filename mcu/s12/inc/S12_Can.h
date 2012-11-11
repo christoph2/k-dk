@@ -21,6 +21,8 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
+ *
  */
 #if !defined(__S12CAN_H)
 #define __S12CAN_H
@@ -336,3 +338,4 @@ void    Can_HandleIrqWup(S12Can_ConfigType const * const Cfg);
 #endif  /* __cplusplus */
 
 #endif  /* __S12CAN_H */
+
