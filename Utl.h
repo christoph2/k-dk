@@ -74,7 +74,7 @@ uint16          Utl_BitGetLowest(uint16 w);
 uint16          Utl_BitSetLowest(uint16 w);
 uint16          Utl_BitResetLowest(uint16 w);
 uint8           Utl_Log2(uint16 num);
-void            Utl_Itoa(uint32 value, uint8 base, uint8 * buf);
+void            Utl_Itoa(sint32 value, uint8 base, uint8 * buf);
 void            Utl_MemCopy(void * RESTRICT dst, void * RESTRICT src, SizeType len);
 void            Utl_MemSet(void * dest, uint8 fill_char, SizeType len);
 SizeType        Utl_StrLen(const uint8 * src);

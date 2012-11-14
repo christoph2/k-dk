@@ -251,7 +251,7 @@ const uint8 * Utl_StrChr(const uint8 * str, uint8 ch)
 }
 
 
-void Utl_Itoa(uint32 value, uint8 base, uint8 * buf)
+void Utl_Itoa(sint32 value, uint8 base, uint8 * buf)
 {
     uint32  mod;
     uint8   pos = (uint8)0x00, swap_pos = (uint8)0x00;
