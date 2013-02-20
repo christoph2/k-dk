@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2010 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -44,6 +44,14 @@
 
 /*
 **
+**	Local Types.
+**
+**
+*/
+typedef unsigned char * CHAR_PTR;
+
+/*
+**
 **  Lolevel-Functions.
 **
 */
@@ -52,17 +60,17 @@
 ** Cursor-Functions.
 */
 
-void    VT100_CUU(uint8 distance, char * buf);              /* Cursor Up */
-void    VT100_CUD(uint8 distance, char * buf);              /* Cursor Down */
-void    VT100_CUF(uint8 distance, char * buf);              /* Cursor Foreward */
-void    VT100_CUB(uint8 distance, char * buf);              /* Cursor Backward */
-void    VT100_CUP(uint8 line, uint8 column, char * buf);    /* Cursor Position */
-void    VT100_CHOME(char * buf);                            /* Cursor Home */
-void    VT100_HVP(uint8 line, uint8 column, char * buf);    /* Cursor Position */
+void    VT100_CUU(uint8 distance, CHAR_PTR buf);              /* Cursor Up */
+void    VT100_CUD(uint8 distance, CHAR_PTR buf);              /* Cursor Down */
+void    VT100_CUF(uint8 distance, CHAR_PTR buf);              /* Cursor Foreward */
+void    VT100_CUB(uint8 distance, CHAR_PTR buf);              /* Cursor Backward */
+void    VT100_CUP(uint8 line, uint8 column, CHAR_PTR buf);    /* Cursor Position */
+void    VT100_CHOME(CHAR_PTR buf);                            /* Cursor Home */
+void    VT100_HVP(uint8 line, uint8 column, CHAR_PTR buf);    /* Cursor Position */
 
-void VT100_SGR(const uint8 * attrs, uint8 len, char * buf); /* Select Graphic Rendition */
+void VT100_SGR(const uint8 * attrs, uint8 len, CHAR_PTR buf); /* Select Graphic Rendition */
 
-void VT100_Send(const SCI_ConfigType * Cfg, const char * buf);
+void VT100_Send(const SCI_ConfigType * Cfg, const CHAR_PTR buf);
 
 
 /*

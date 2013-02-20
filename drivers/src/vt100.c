@@ -22,7 +22,7 @@
  */
 #include "vt100.h"
 
-void VT100_CUU(uint8 distance, char * buf)  /* Cursor Up */
+void VT100_CUU(uint8 distance, CHAR_PTR buf)  /* Cursor Up */
 {
     /*  <ESC>[ {Pn} A */
     Utl_StrCpy(buf, VT100_CSI);
@@ -31,7 +31,7 @@ void VT100_CUU(uint8 distance, char * buf)  /* Cursor Up */
 }
 
 
-void VT100_CUD(uint8 distance, char * buf)  /* Cursor Down */
+void VT100_CUD(uint8 distance, CHAR_PTR buf)  /* Cursor Down */
 {
     /*  <ESC>[ {Pn} B */
     Utl_StrCpy(buf, VT100_CSI);
@@ -40,7 +40,7 @@ void VT100_CUD(uint8 distance, char * buf)  /* Cursor Down */
 }
 
 
-void VT100_CUF(uint8 distance, char * buf)  /* Cursor Foreward */
+void VT100_CUF(uint8 distance, CHAR_PTR buf)  /* Cursor Foreward */
 {
     /*  <ESC>[ {Pn} C */
     Utl_StrCpy(buf, VT100_CSI);
@@ -49,7 +49,7 @@ void VT100_CUF(uint8 distance, char * buf)  /* Cursor Foreward */
 }
 
 
-void VT100_CUB(uint8 distance, char * buf)  /* Cursor Backward */
+void VT100_CUB(uint8 distance, CHAR_PTR buf)  /* Cursor Backward */
 {
     /*  <ESC>[ {Pn} D */
     Utl_StrCpy(buf, VT100_CSI);
@@ -58,7 +58,7 @@ void VT100_CUB(uint8 distance, char * buf)  /* Cursor Backward */
 }
 
 
-void VT100_CUP(uint8 line, uint8 column, char * buf) /* Cursor Position */
+void VT100_CUP(uint8 line, uint8 column, CHAR_PTR buf) /* Cursor Position */
 {
     uint8 len;
 
@@ -83,7 +83,7 @@ void VT100_CUP(uint8 line, uint8 column, char * buf) /* Cursor Position */
 }
 
 
-void VT100_SGR(const uint8 * attrs, uint8 len, char * buf)
+void VT100_SGR(const uint8 * attrs, uint8 len, CHAR_PTR buf)
 {
     uint8 pos;
 
@@ -131,7 +131,7 @@ void VT100_SGR(const uint8 * attrs, uint8 len, char * buf)
 }
 
 
-void VT100_CHOME(char * buf)
+void VT100_CHOME(CHAR_PTR buf)
 {
     /*  <ESC>[  H */
     Utl_StrCpy(buf, VT100_CSI);
@@ -139,7 +139,7 @@ void VT100_CHOME(char * buf)
 }
 
 
-void VT100_HVP(uint8 line, uint8 column, char * buf)
+void VT100_HVP(uint8 line, uint8 column, CHAR_PTR buf)
 {
     uint8 len;
 
@@ -163,7 +163,7 @@ void VT100_HVP(uint8 line, uint8 column, char * buf)
 }
 
 
-void VT100_Send(const SCI_ConfigType * Cfg, const char * buf)
+void VT100_Send(const SCI_ConfigType * Cfg, const CHAR_PTR buf)
 {
     uint8 len = Utl_StrLen(buf);
 
