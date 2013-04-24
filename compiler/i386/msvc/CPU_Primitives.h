@@ -1,25 +1,25 @@
 /*
-   k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
-
-   (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
-                                        cpu12.gems@googlemail.com>
-
-   All Rights Reserved
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; version 2 of the License.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-   s. FLOSS-EXCEPTION.txt
+ *  k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ *
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ *                                      cpu12.gems@googlemail.com>
+ *
+ * All Rights Reserved
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__CPU_PRIMITIVES_MCU_H)
 #define __CPU_PRIMITIVES_MCU_H
@@ -41,7 +41,7 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Powerdown(Wait)-Mode.
 */
-#define CPU_ENTER_POWERDOWN_MODE()	OsPort_EnterPowerdownMode()
+#define CPU_ENTER_POWERDOWN_MODE()              OsPort_EnterPowerdownMode()
 
 /*
 **  Software-Interrupt.
@@ -56,7 +56,7 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Software-Breakpoint.
 */
-#define CPU_BREAKPOINT()
+#define CPU_BREAKPOINT()                        __debugbreak()
 
 /*
 **  No-Operation.
@@ -78,7 +78,7 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Check for Interrupts disabled.
 */
-#define CPU_INTERRUPTS_DISABLED()		        OsPort_InCriticalSection()
+#define CPU_INTERRUPTS_DISABLED()               OsPort_InCriticalSection()
 
 /*
 **  Save Interrupt-State before Disabling.

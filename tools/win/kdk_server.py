@@ -40,22 +40,65 @@ import threading
 import win32api
 
 
+CMD_CONNECT 	= 0
+CMD_FILTERS	= 1
+
+
+def TenaryCompare(id1, id2, mask):
+    return (~(id1 ^ id2) | (~mask))
+
+
+class Bus(object):
+    def __init__(self, name, maxLPDULength):
+	self.name = name
+	self.maxLPDULength = maxLPDULength
+
+'''
+Mask Bit n | Filter Bit n | MsgID Bit | Result
+-----------+--------------+-----------+-------
+0		X		X	Accept
+1		0		0	Accept
+1		0		1	Reject
+1		1		0	Reject
+1		1		1	Accept
+'''
+
+
 class Server(object):
     def __init__(self, logger = logging.getLogger("k_os.server"), level = logging.INFO):
         self._logger = logger
         self._level = level
         self._logger.setLevel(level)
         self._logger.info('Starting K_OS server.')
+	self._busses = dict()
 
     def waitConnect(self):
         pipe = pipes.NamedPipeServer.create(ur'\KOS\SERVER', blocking = True, level = self._level)
         return pipe
 
+    def processConnect(self, subCommand, requ):
+	nodeAddress = struct.unpack('<L', requ[ : 4])
+	busName = ''.join(struct.unpack('16s', requ[4 : 20]))
+	busName = busName[ : busName.find('\x00')]
+	print "#", nodeAddress,
+	print "~%s~" % busName
+
+    def processFilters(self, subCommand, req):
+	filterType = requ[0]
+	fltMsk = req[1 : 9]
+	flrAcc = req[9 : 17]
+
+
+    DISPATCH_MAP = {
+       CMD_CONNECT: processConnect,
+       CMD_FILTERS: processFilters,
+    }		    
+
     def _clientThread(self, pipe):
         storage = threading.local()
         while True:
             try:
-                res = pipe.read()
+                requ = pipe.read()
             except win32api.error as error:
                 ec, fct, msg = error.args
                 if ec == pipes.ipc.ERROR_BROKEN_PIPE:
@@ -70,11 +113,13 @@ class Server(object):
                 break
             #print "LEN: %u" % len(res)
             print
-            command, subCommand = res[0], res[1]
-            payload = struct.unpack('<L', res[2 : ])
-            print "CMD: %s SC: %s PAYLOAD: %s" % (command, subCommand, payload)
-#            for h in res:
-#                print ord(h),
+            command, subCommand = requ[0], requ[1]
+	    if self.DISPATCH_MAP.has_key(command):
+		self.DISPATCH_MAP[command](subCommand, requ[2 : ])
+	    #payload, name = struct.unpack('<L', res[2 : ])
+            #print "CMD: %s SC: %s PAYLOAD: %s" % (command, subCommand, payload)
+            #for h in res:
+            #    print ord(h),
             print
 
     def createClientThread(self, pipe):
@@ -82,10 +127,18 @@ class Server(object):
         #thread.start()
         return thread
 
+    def registerBus(self, bus):
+	if not isinstance(bus, Bus):
+	    raise TypeError('Parameter bus must be of type Bus')
+        ## Check if already registered!!!
+	self._busses[bus.name.lower()] = bus
+	self._logger.info("Registered bus '%s'." % bus.name)
+
 
 def main():
     threadList = []
     srv = Server(level = logging.DEBUG)
+    srv.registerBus(Bus('CAN', 8))
     pipe = srv.waitConnect()
     thread =  srv.createClientThread(pipe)
     threadList.append(thread)
