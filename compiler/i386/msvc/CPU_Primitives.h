@@ -39,9 +39,21 @@ void OsPort_EnterPowerdownMode(void);
 */
 
 /*
-**  Powerdown(Wait)-Mode.
+**  Enter Powerdown-Mode.
 */
 #define CPU_ENTER_POWERDOWN_MODE()              OsPort_EnterPowerdownMode()
+
+/*
+**  Leave Powerdown-Mode.
+*/
+#define CPU_LEAVE_POWERDOWN_MODE()
+
+
+/*
+**  Disable Watchdog Timer.
+*/
+#define CPU_DISABLE_WATCHDOG_TIMER()
+
 
 /*
 **  Software-Interrupt.

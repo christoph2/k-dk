@@ -1,7 +1,7 @@
 /*
    k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
 
-   (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+   (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
                                         cpu12.gems@googlemail.com>
 
    All Rights Reserved
@@ -31,9 +31,22 @@
 */
 
 /*
-**  Powerdown(Wait)-Mode.
+**  Enter Powerdown-Mode.
 */
 #define CPU_ENTER_POWERDOWN_MODE()      _asm("wai")
+
+
+/*
+**  Leave Powerdown-Mode.
+*/
+#define CPU_LEAVE_POWERDOWN_MODE()
+
+
+/*
+**  Disable Watchdog Timer.
+*/
+#define CPU_DISABLE_WATCHDOG_TIMER()
+
 
 /*
 **  Software-Interrupt.
