@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -41,6 +41,11 @@ extern "C"
 #define IMPL_PORT_MAP(nameLower)    GLUE2( nameLower , _Ports[port])
 #define IMPL_REGISTER(nameUpper)    GLUE2( nameUpper , _REG8)
 
+#if !defined(KDK_TOS)
+#define KDK_TOS(mem, size) ((uint8 *)(mem) + ((size) - (uint8)1))
+#endif /* KDK_TOS */
+
+	
 /*
 **  Templates.
 */
