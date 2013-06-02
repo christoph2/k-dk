@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -31,6 +31,7 @@ extern "C" {
 #endif
 
 #include "Sys_Cfg.h"
+
 /* todo: using #include "Compiler.h" would be a very good idea!!! */
 
 #if !defined(CPU_FAMILY)
@@ -42,6 +43,9 @@ extern "C" {
 #if !defined(CPU_DERIVATE)
     #error CPU_DERIVATE must be specified (depends on CPU_FAMILY) !!!
 #else
+
+#include "port/s12/S12_Vectors.c"
+
     #if CPU_FAMILY == CPU12_HC12
         #if CPU_DERIVATE != CPU12_HC12B32 && CPU_DERIVATE != CPU12_HC12BC32 && CPU_DERIVATE != CPU12_HC12DG128A && \
     CPU_DERIVATE != CPU12_HC12DT128A && CPU_DERIVATE != CPU12_HC12A4
@@ -89,7 +93,7 @@ CPU12_S12:    CPU12_S12DP256B
     #error Unsupported Compiler.
 #endif
 
-typedef  void (*const IISR_IVF)(void);
+typedef  void ( * const IISR_IVF)(void);
 
 /*
 **  OSEK-ISR2-Wrapper.
@@ -103,7 +107,7 @@ typedef  void (*const IISR_IVF)(void);
 #define DEFINE_ISR2_VECTOR DECLARE_ISR2_VECTOR
 
 /*
-**  ISR2_HANDLER: Handler, that is implemented /w 'ISR()'.
+**  ISR2_HANDLER: Handler implemented /w 'ISR()' macro.
 */
 #define DECLARE_ISR2_USER_HANDLER(IsrName) void IsrName ## _Handler(void)
 
@@ -111,11 +115,11 @@ typedef  void (*const IISR_IVF)(void);
     DEFINE_ISR2_VECTOR(IsrName)          \
     {                                    \
         _BEGIN_BLOCK                     \
-        OSEnterISR();                    \
+        Os_EnterISR();                   \
         OS_SET_ISRID(ISRID_ ## IsrName); \
         IsrName ## _Handler();           \
         OS_SET_ISRID(ISRID_NONE);        \
-        OSLeaveISR();                    \
+        Os_LeaveISR();                   \
         _END_BLOCK;                      \
     }
 

@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -24,16 +24,16 @@
 #if !defined(__ISR_MW_HCS12_H)
 #define __ISR_MW_HCS12_H
 
-#define DECLARE_ISR2_VECTOR(IsrName)    __interrupt void IsrName(void)
-#define DECLARE_ISR1_VECTOR(IsrName)    __interrupt void IsrName(void)
-#define ISR1(IsrName)                   __interrupt void IsrName(void)
+#define DECLARE_ISR2_VECTOR(IsrName)    __interrupt void __near IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName)    __interrupt void __near IsrName(void)
+#define ISR1(IsrName)                   __interrupt void __near IsrName(void)
 
 void __near _Startup(void);
 
 
 #define IISR_ENTRY_POINT _Startup
 
-extern void(*const interrupt_vectors[]) (void);
+extern const void( * __near  const interrupt_vectors[]) (void);
 
 #define IISR_DECLARE_VECTOR_TABLE()
 #define IISR_BEGIN_VECTOR_TABLE()

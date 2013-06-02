@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -29,6 +29,8 @@
     #define II_INC_TARGET_H "arm/ISR_IAR_ARM.h"
 #elif defined(__ICCHCS12__)
     #define II_INC_TARGET_H "s12/ISR_IAR_HCS12.h"
+#elif defined(__ICC430__)
+    #define II_INC_TARGET_H "msp430/ISR_IAR_MSP430.h"
 #else
     #error Unsupported Target for IAR-ICC.
 #endif

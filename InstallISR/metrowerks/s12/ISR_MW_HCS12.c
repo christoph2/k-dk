@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -261,12 +261,22 @@
 #define PWMES_VECTOR    DUMMY_VECTOR
 #endif  /*  PWMES_VECTOR  */
 
+#if 0
 ISR1(DUMMY_VECTOR)
 {
 }
+#endif
 
-#pragma CONST_SEG VECTORS
-void(*const interrupt_vectors[]) (void) = {
+void __near DUMMY_VECTOR(void)
+{
+  
+  
+}
+
+#define DOWN_CAST(value)    (value)
+#pragma push
+#pragma CONST_SEG __SHORT_SEG MY_VECTORS
+const void ( * __near const interrupt_vectors[]) (void) @ 0xff80 = {
     (IISR_IVF)DUMMY_VECTOR,         /* Reserved $FF80                   */
     (IISR_IVF)DUMMY_VECTOR,         /* Reserved $FF82                   */
     (IISR_IVF)DUMMY_VECTOR,         /* Reserved $FF84                   */
@@ -316,16 +326,18 @@ void(*const interrupt_vectors[]) (void) = {
     (IISR_IVF)PAOF_VECTOR,          /* Pulse Accumulator A Overflow     */
     (IISR_IVF)TOF_VECTOR,           /* Timer Overflow                   */
     (IISR_IVF)TC7_VECTOR,           /* Timer Channel 7                  */
-    (IISR_IVF)TC6_VECTOR,           /* Timer Channel 6                  */
-    (IISR_IVF)TC5_VECTOR,           /* Timer Channel 5                  */
-    (IISR_IVF)TC4_VECTOR,           /* Timer Channel 4                  */
-    (IISR_IVF)TC3_VECTOR,           /* Timer Channel 3                  */
-    (IISR_IVF)TC2_VECTOR,           /* Timer Channel 2                  */
-    (IISR_IVF)TC1_VECTOR,           /* Timer Channel 1                  */
-    (IISR_IVF)TC0_VECTOR,           /* Timer Channel 0                  */
+    (IISR_IVF)DOWN_CAST(TC6_VECTOR),           /* Timer Channel 6                  */
+    (IISR_IVF)DOWN_CAST(TC5_VECTOR),           /* Timer Channel 5                  */
+    (IISR_IVF)DOWN_CAST(TC4_VECTOR),           /* Timer Channel 4                  */
+    (IISR_IVF)DOWN_CAST(TC3_VECTOR),           /* Timer Channel 3                  */
+    (IISR_IVF)DOWN_CAST(TC2_VECTOR),           /* Timer Channel 2                  */
+    (IISR_IVF)DOWN_CAST(TC1_VECTOR),           /* Timer Channel 1                  */
+    (IISR_IVF)DOWN_CAST(TC0_VECTOR),           /* Timer Channel 0                  */
     (IISR_IVF)RTI_VECTOR,           /* Real Time Interrupt              */
 
     #include "HC12_Common_Vectors.h"
 };
 
-#pragma CONST_SEG DEFAULT
+//#pragma CONST_SEG DEFAULT
+#pragma pop
+
