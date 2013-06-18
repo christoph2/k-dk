@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -48,29 +48,36 @@
 /*  FSEC-Bits.  */
     #define KEYEN1  ((uint8)0x80)
     #define KEYEN0  ((uint8)0x40)
-    #define NV5     ((uint8)0x20)
-    #define NV4     ((uint8)0x10)
-    #define NV3     ((uint8)0x08)
-    #define NV2     ((uint8)0x04)
+    #define RNV5    ((uint8)0x20)
+    #define RNV4    ((uint8)0x10)
+    #define RNV3    ((uint8)0x08)
+    #define RNV2    ((uint8)0x04)
     #define SEC1    ((uint8)0x02)
     #define SEC0    ((uint8)0x01)
 
 #define FTSTMOD     ((uint8)0x02)
 /*  FTSTMOD-Bits. */
+#if defined(S12_FLS_HAS_ECC_FLASH)
+    #define FDFD    ((uint8)0x08)
+#else
     #define WRALL   ((uint8)0x10)
+#endif
 
 #define FCNFG       ((uint8)0x03)
 /*  FCNFG-Bits. */
     #define CBEIE   ((uint8)0x80)
     #define CCIE    ((uint8)0x40)
     #define KEYACC  ((uint8)0x20)
+#if defined(S12_FLS_HAS_ECC_FLASH)
+    #define DFDIE   ((uint8)0x08)
+#endif
     #define BKSEL1  ((uint8)0x02)
     #define BKSEL0  ((uint8)0x01)
 
 #define FPROT       ((uint8)0x04)
 /*  FPROT-Bits. */
     #define FPOPEN  ((uint8)0x80)
-    #define NV6     ((uint8)0x40)
+    #define RNV6    ((uint8)0x40)
     #define FPHDIS  ((uint8)0x20)
     #define FPHS1   ((uint8)0x10)
     #define FPHS0   ((uint8)0x08)
@@ -84,6 +91,9 @@
     #define CCIF    ((uint8)0x40)
     #define PVIOL   ((uint8)0x20)
     #define ACCERR  ((uint8)0x10)
+#if defined(S12_FLS_HAS_ECC_FLASH)
+    #define DFDIF   ((uint8)0x08)
+#endif
     #define BLANK   ((uint8)0x04)
 
 #define FCMD        ((uint8)0x06)
@@ -106,7 +116,7 @@
 #define FDATALO     ((uint8)0x0B)
 
 /*
-**  0x08-0x0F Reserved for Factory Test
+**  0x0C - 0x0F Reserved for Factory Test
 */
 
 /*
@@ -152,3 +162,4 @@ Fls_StatusType  S12Fls_BurstProgram(uint8 page, uint16 start_addr, uint16 const 
 
 
 #endif /* __S12_FLS_H */
+
