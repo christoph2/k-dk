@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -171,6 +171,36 @@ uint16 Utl_Random(void)
     NextRandomNumber = NextRandomNumber * (uint32)0x41C64E6DUL + (uint32)0x3039UL;
     return (uint16)(NextRandomNumber / (uint32)0x10000UL) % (uint32)0x8000UL;
 
+}
+
+
+uint16 Utl_Sqrt16(uint16 x) 
+{
+   uint16 res = 1U;
+   uint16 sqr = 1U;
+   uint16 delta = 3U;
+   
+   while (sqr <= x) {
+      res += 1U;
+      sqr += delta;
+      delta += 2U;
+   }
+   return res - 1U;  
+}
+
+
+uint32 Utl_Sqrt32(uint32 x) 
+{
+   uint32 res = 1UL;
+   uint32 sqr = 1UL;
+   uint32 delta = 3UL;
+   
+   while (sqr <= x) {
+      res += 1UL;
+      sqr += delta;
+      delta += 2UL;
+   }
+   return res - 1UL;  
 }
 
 

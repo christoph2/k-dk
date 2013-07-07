@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -74,6 +74,9 @@ uint16          Utl_BitGetLowest(uint16 w);
 uint16          Utl_BitSetLowest(uint16 w);
 uint16          Utl_BitResetLowest(uint16 w);
 uint8           Utl_Log2(uint16 num);
+uint16          Utl_Sqrt16(uint16 x);
+uint32          Utl_Sqrt32(uint32 x);
+
 void            Utl_Itoa(sint32 value, uint8 base, uint8 * buf);
 void            Utl_MemCopy(void * RESTRICT dst, void * RESTRICT src, SizeType len);
 void            Utl_MemSet(void * dest, uint8 fill_char, SizeType len);
