@@ -1,7 +1,9 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <chris@konnex-tools.de>
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
  *
@@ -19,7 +21,9 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
+ * s. FLOSS-EXCEPTION.txt
  */
+
 #include "vt100.h"
 
 void VT100_CUU(uint8 distance, CHAR_PTR buf)  /* Cursor Up */
