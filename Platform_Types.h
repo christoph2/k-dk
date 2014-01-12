@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -35,30 +35,44 @@
 #define HIGH_BYTE_FIRST 0
 #define LOW_BYTE_FIRST  1
 
-#if !defined(NULL)
-    #define NULL        0
-#endif
-
 #if defined(_MSC_VER)
-    #include "mcu/i386/inc/Platform_Types_i386.h"
+    #include "kdk/mcu/i386/inc/Platform_Types_i386.h"
 #else
 
     #if CPU_FAMILY == CPU12_HC12
 
-       #include "mcu/hc12/inc/Platform_Types_HC12.h"
+       #include "kdk/mcu/hc12/inc/Platform_Types_HC12.h"
 
     #elif CPU_FAMILY == CPU12_S12
 
-       #include "mcu/s12/inc/Platform_Types_S12.h"
+       #include "kdk/mcu/s12/inc/Platform_Types_S12.h"
 
     #elif CPU_FAMILY == PIC_F18
 
-       #include "mcu/pic/inc/Platform_Types_PIC.h"
+       #include "kdk/mcu/pic/inc/Platform_Types_PIC.h"
 
+//    #elif CPU_FAMILY == __430_CORE__
+//       #error "__430_CORE__"
+    #elif CPU_FAMILY == __430X_CORE__
+      //#error "__430X_CORE__"
+      #include "kdk/mcu/msp430/inc/Platform_Types_MSP430.h"
     #else
        #error Unknown CPU family.
     #endif
 
 #endif
+
+#if !defined(NULL)
+    #define NULL    ((void *) 0)
+#endif
+
+#if !defined(TRUE)
+    #define TRUE    (1u)
+#endif
+
+#if !defined(FALSE)
+    #define FALSE   (0u)
+#endif
+
 
 #endif /* __PLATFORM_TYPES_H  */
