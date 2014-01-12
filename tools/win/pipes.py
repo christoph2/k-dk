@@ -7,7 +7,7 @@ __copyright__ = """
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -56,18 +56,22 @@ class NamedPipeServer(ipc.IPC):
     def __init__(self, logger, level):
         super(NamedPipeServer, self).__init__(logger, level)
 
+    def close(self):
+        super(NamedPipeServer, self).close()
+        self.numberOfInstances -= 1
+
     @classmethod
     def create(cls, name, path = '', host = PIPE_LOCALHOST, blocking = True, msgLimit = 0,
                logger = logging.getLogger("k_os.ipc"), level = logging.INFO):
         pname = cls.getCanoicalName(host, path, name)
         sa = pywintypes.SECURITY_ATTRIBUTES()
         instance = cls(logger, level)
+        blockingMode = win32pipe.PIPE_WAIT if blocking else win32pipe.PIPE_NOWAIT
+        pmode = win32pipe.PIPE_TYPE_MESSAGE | win32pipe.PIPE_READMODE_MESSAGE | blockingMode
         instance.name = name
         instance.handle = win32pipe.CreateNamedPipe(pname,
             win32pipe.PIPE_ACCESS_DUPLEX,
-            win32pipe.PIPE_TYPE_MESSAGE or win32pipe.PIPE_READMODE_MESSAGE or (
-                blocking and win32pipe.PIPE_WAIT or win32pipe.PIPE_NOWAIT
-            ),
+            pmode,
             win32pipe.PIPE_UNLIMITED_INSTANCES,
             100,
             100,
@@ -96,15 +100,12 @@ class NamedPipeClient(ipc.IPC):
     def peek(self):
         win32pipe.peek()
 
-
     @classmethod
     def call(cls, name, data, inBufferSize, timeOut = win32pipe.NMPWAIT_USE_DEFAULT_WAIT, \
              path = '', host = PIPE_LOCALHOST):
         pipeName = cls.getCanoicalName(host, path, name)
         result = win32pipe.CallNamedPipe(pipeName, data , inBufferSize, timeOut)
         return result
-
-
 
     def transact(self, name, writeData):
         buf = win32file.AllocateReadBuffer(length)
@@ -133,9 +134,6 @@ class NamedPipeClient(ipc.IPC):
         """
         pass
 
-##
-##
-##
 
 def main():
     if sys.argv[ 1 : ] and sys.argv[1].upper() == 'S':
