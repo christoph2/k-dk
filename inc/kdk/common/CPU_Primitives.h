@@ -59,6 +59,8 @@
         #define CP_TARGET   "compiler/arm/iar/CPU_Primitives.h"
     #elif defined(__ICCHCS12__)
         #define CP_TARGET   "compiler/cpu12/iar/CPU_Primitives.h"
+    #elif defined(__ICC430__)
+        #define CP_TARGET   "compiler/msp430/iar/CPU_Primitives.h"
     #else
         #error Unsupported Target for IAR-ICC.
     #endif
