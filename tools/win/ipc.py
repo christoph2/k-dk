@@ -7,7 +7,7 @@ __copyright__ = """
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -73,8 +73,13 @@ class IPC(object):
     def __init__(self, logger = logging.getLogger("k_os.ipc"), level = logging.INFO):
         self._logger = logger
         self._logger.setLevel(level)
+        self._opened = False
 
     def __del__(self):
+        if self._opened:
+            self.close()
+
+    def close(self):
         win32api.CloseHandle(self.handle)
 
     def read(self, length = 1024):
@@ -141,5 +146,6 @@ class IPC(object):
         except pywintypes.error as exc:
             if exc.args[0] == ERROR_FILE_NOT_FOUND:
                 raise RuntimeError("Server for %s '%s' not started." % (cls.objType, name))
+        self._opened = True
         return instance
 
