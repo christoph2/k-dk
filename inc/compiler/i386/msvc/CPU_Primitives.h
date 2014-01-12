@@ -68,7 +68,7 @@ void OsPort_EnterPowerdownMode(void);
 /*
 **  Software-Breakpoint.
 */
-#define CPU_BREAKPOINT()                        __debugbreak()
+#define CPU_BREAKPOINT()                        __debugbreak()	/* DebugBreak() */
 
 /*
 **  No-Operation.
