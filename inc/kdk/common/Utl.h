@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -24,8 +24,8 @@
 #if !defined(__UTL_H)
 #define __UTL_H
 
-#include "Std_Types.h"
-#include "CPU_Primitives.h"
+#include "kdk/common/Std_Types.h"
+#include "kdk/common/CPU_Primitives.h"
 
 #if defined(__cplusplus)
 extern "C"
