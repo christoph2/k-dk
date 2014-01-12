@@ -7,7 +7,7 @@ __copyright__ = """
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -34,7 +34,7 @@ import os
 import sys
 
 if sys.platform != 'win32':
-    print "Sorry, you a not using Windows!"
+    print "Sorry, you are not using Windows!"
     sys.exit(1)
 
 import win32api
