@@ -7,7 +7,7 @@ __copyright__ = """
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -40,8 +40,8 @@ import threading
 import win32api
 
 
-CMD_CONNECT 	= 0
-CMD_FILTERS	= 1
+CMD_CONNECT     = 0
+CMD_FILTERS     = 1
 
 
 def TenaryCompare(id1, id2, mask):
@@ -50,17 +50,17 @@ def TenaryCompare(id1, id2, mask):
 
 class Bus(object):
     def __init__(self, name, maxLPDULength):
-	self.name = name
-	self.maxLPDULength = maxLPDULength
+        self.name = name
+        self.maxLPDULength = maxLPDULength
 
 '''
 Mask Bit n | Filter Bit n | MsgID Bit | Result
 -----------+--------------+-----------+-------
-0		X		X	Accept
-1		0		0	Accept
-1		0		1	Reject
-1		1		0	Reject
-1		1		1	Accept
+0               X               X       Accept
+1               0               0       Accept
+1               0               1       Reject
+1               1               0       Reject
+1               1               1       Accept
 '''
 
 
@@ -70,29 +70,29 @@ class Server(object):
         self._level = level
         self._logger.setLevel(level)
         self._logger.info('Starting K_OS server.')
-	self._busses = dict()
+        self._busses = dict()
 
     def waitConnect(self):
         pipe = pipes.NamedPipeServer.create(ur'\KOS\SERVER', blocking = True, level = self._level)
         return pipe
 
     def processConnect(self, subCommand, requ):
-	nodeAddress = struct.unpack('<L', requ[ : 4])
-	busName = ''.join(struct.unpack('16s', requ[4 : 20]))
-	busName = busName[ : busName.find('\x00')]
-	print "#", nodeAddress,
-	print "~%s~" % busName
+        nodeAddress = struct.unpack('<L', requ[ : 4])
+        busName = ''.join(struct.unpack('16s', requ[4 : 20]))
+        busName = busName[ : busName.find('\x00')]
+        print "#", nodeAddress,
+        print "~%s~" % busName
 
     def processFilters(self, subCommand, req):
-	filterType = requ[0]
-	fltMsk = req[1 : 9]
-	flrAcc = req[9 : 17]
+        filterType = requ[0]
+        fltMsk = req[1 : 9]
+        flrAcc = req[9 : 17]
 
 
     DISPATCH_MAP = {
        CMD_CONNECT: processConnect,
        CMD_FILTERS: processFilters,
-    }		    
+    }
 
     def _clientThread(self, pipe):
         storage = threading.local()
@@ -114,9 +114,9 @@ class Server(object):
             #print "LEN: %u" % len(res)
             print
             command, subCommand = requ[0], requ[1]
-	    if self.DISPATCH_MAP.has_key(command):
-		self.DISPATCH_MAP[command](subCommand, requ[2 : ])
-	    #payload, name = struct.unpack('<L', res[2 : ])
+            if self.DISPATCH_MAP.has_key(command):
+                self.DISPATCH_MAP[command](subCommand, requ[2 : ])
+            #payload, name = struct.unpack('<L', res[2 : ])
             #print "CMD: %s SC: %s PAYLOAD: %s" % (command, subCommand, payload)
             #for h in res:
             #    print ord(h),
@@ -128,12 +128,13 @@ class Server(object):
         return thread
 
     def registerBus(self, bus):
-	if not isinstance(bus, Bus):
-	    raise TypeError('Parameter bus must be of type Bus')
+        if not isinstance(bus, Bus):
+            raise TypeError('Parameter bus must be of type Bus')
         ## Check if already registered!!!
-	self._busses[bus.name.lower()] = bus
-	self._logger.info("Registered bus '%s'." % bus.name)
+        self._busses[bus.name.lower()] = bus
+        self._logger.info("Registered bus '%s'." % bus.name)
 
+import time
 
 def main():
     threadList = []
@@ -141,10 +142,13 @@ def main():
     srv.registerBus(Bus('CAN', 8))
     pipe = srv.waitConnect()
     thread =  srv.createClientThread(pipe)
-    threadList.append(thread)
     thread.start()
+    threadList.append(thread)
 
-    thread.join()
+    time.sleep(1.5)
+
+    #thread.join()
+    map(lambda t: t.join(), threadList)
     print "Finished."
 
     # supervisor = threading.Thread(target = self._supervisor, args = (self,), name= 'supervisor')
