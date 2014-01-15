@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,7 +23,7 @@
  *
  * s. FLOSS-EXCEPTION.txt
  */
-#include "ft12.h"
+#include "kdk/common/Ft12.h"
 #include <stdio.h>
 #include <assert.h>
 
@@ -40,7 +40,7 @@ void Ft12_Init(Ft12_BufferType * buf)
     buf->fcb = 0x00;
     buf->len = 0x00;
 
-    for (idx = 0x00; idx < FT12_BUF_SIZE; ++idx) {
+    for (idx = 0x00; idx < FT12_BUFFER_SIZE; ++idx) {
         buf->data[idx] = 0x00;
     }
 }
@@ -169,22 +169,34 @@ void Ft12_StatusReq(uint8 address, Ft12_BufferType * buf, uint8 sndFCB)
     Ft12_MakeFixedLenFrame(address, FT12_CF_PRM | FT12_FC_REQ_STATUS | buf->fcb, buf);
 }
 
-void Ft12_FrameInd(Ft12_BufferType const * buf)
+Ft12_FrameIndType Ft12_FrameInd(Ft12_BufferType const * buf, Ft12_Frame * frame)
 {
-    assert(buf->len > 0);
+    Ft12_FrameIndType result = FT_ERR_OK;
 
+    assert(buf->len > 0);
+    // TODO: Check framing and checksum!
     switch (buf->data[0]) {
         case FT12_FT_ACK:
-            printf("ACK.\n");
+            frame->frameType = FT_ACK_FRAME;
+            printf("FT12-ACK.\n");
             break;
         case FT12_FT_FIXED:
-            printf("FIXED.\n");
+            if (buf->data[3] != ((buf->data[2] + buf->data[1]) % 256)) {
+                result = FT_ERR_CHECKSUM;
+            } else {
+                frame->frameType = FT_FIXED_FRAME;
+                frame->frame.fixed.address = buf->data[2];
+                frame->frame.fixed.control = buf->data[1];
+                printf("FT12-FIXED.\n");
+            }
             break;
         case FT12_FT_VAR:
-            printf("VAR.\n");
+            frame->frameType = FT_VAR_FRAME;
+            printf("FT12-VAR.\n");
             break;
         default:
-            break;  /* Ignore garbage. */
+            result = FT_ERR_INVALID;  /* Ignore garbage. */
     }
+    return result;
 }
 
