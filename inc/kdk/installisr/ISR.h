@@ -44,8 +44,6 @@ extern "C" {
     #error CPU_DERIVATE must be specified (depends on CPU_FAMILY) !!!
 #else
 
-#include "port/s12/S12_Vectors.c"
-
     #if CPU_FAMILY == CPU12_HC12
         #if CPU_DERIVATE != CPU12_HC12B32 && CPU_DERIVATE != CPU12_HC12BC32 && CPU_DERIVATE != CPU12_HC12DG128A && \
     CPU_DERIVATE != CPU12_HC12DT128A && CPU_DERIVATE != CPU12_HC12A4
