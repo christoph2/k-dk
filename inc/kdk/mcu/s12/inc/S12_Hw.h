@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -30,14 +30,14 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-#include "Kdk.h"
-#include "CPU_Primitives.h"
-#include "InstallISR/ISR.h"
+#include "kdk/common/Kdk.h"
+#include "kdk/common/CPU_Primitives.h"
+#include "kdk/installisr/ISR.h"
 #include "Sys_Cfg.h"
 
 #if CPU_FAMILY == CPU12_S12
-    #include "mcu/inc/Derivatives.h"
-    #include "mcu/s12/inc/device/Devices.h"
+    #include "kdk/mcu/Derivatives.h"
+    #include "kdk/mcu/s12/inc/device/Devices.h"
 #endif /* CPU_FAMILY */
 
 #define S12_REG8(mod, reg)          (BYTE_REG(KDK_BASE_ADDRESS(mod), (reg)))

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -29,7 +29,7 @@
  *                                     INCLUDE-FILES                                       *
  *******************************************************************************************/
 
-#include "S12_Crg.h"
+#include "kdk/mcu/s12/inc/S12_Crg.h"
 
 #if defined(__cplusplus)
 extern "C"

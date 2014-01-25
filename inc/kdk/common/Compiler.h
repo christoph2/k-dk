@@ -140,8 +140,8 @@
 */
 #define VAR(type, memclass)                         memclass type
 
-#include "Std_Macros.h"
-#include "Compiler_Cfg.h"
+#include "kdk/common/Std_Macros.h"
+#include "kdk/common/Compiler_Cfg.h"
 
 /*
 **  Other Compilers.

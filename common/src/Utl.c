@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "Utl.h"
+#include "kdk/common/Utl.h"
 
 const uint8 Utl_SetBitTab8[8] = {
     (uint8)0x01, (uint8)0x02, (uint8)0x04, (uint8)0x08, (uint8)0x10, (uint8)0x20, (uint8)0x40, (uint8)0x80

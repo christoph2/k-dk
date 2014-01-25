@@ -35,24 +35,40 @@ typedef void * ComWinsock_HandleType;
 
 #define CWS_EVT_RECEIVED        (0)
 #define CWS_EVT_QUIT            (1)
+#define CWS_EVT_CLIENT          (2)
 
 #define CWS_NUM_CLIENT_EVENTS   (2)
+#define CWS_NUM_SERVER_EVENTS   (3)
 
 typedef boolean ( * ComWinsock_CallbackType)(char * buffer, ULONG len);
 
-typedef struct tagComWinSock_Type {
+typedef struct tagComWinSock_ClientType {
     char serverAddress[128];
     USHORT serverPort;
     SOCKET socket;
     WSAEVENT waitEvents[CWS_NUM_CLIENT_EVENTS];
     HANDLE hReceiverThread;
     ComWinsock_CallbackType callback;
-} ComWinSock_Type;
+} ComWinSock_ClientType;
+
+typedef struct tagComWinSock_ServerType {
+    //char serverAddress[128];
+    USHORT serverPort;
+    SOCKET listenSocket;
+    SOCKET clientSocket;
+    WSAEVENT waitEvents[CWS_NUM_SERVER_EVENTS];
+    HANDLE hReceiverThread;
+    ComWinsock_CallbackType callback;
+} ComWinSock_ServerType;
 
 boolean ComWinsock_InitWinsock(void);
 boolean ComWinsock_DeinitWinsock(void);
-boolean ComWinsock_StartClient(ComWinSock_Type * com);
-void ComWinsock_StopClient(ComWinSock_Type * com);
+boolean ComWinsock_StartClient(ComWinSock_ClientType * com);
+void ComWinsock_StopClient(ComWinSock_ClientType * com);
+
+boolean ComWinsock_StartServer(ComWinSock_ServerType * com);
+void ComWinsock_StopServer(ComWinSock_ServerType * com);
+
 boolean ComWinsock_CloseSocket(ComWinsock_SocketType so);
 ComWinsock_SocketType ComWinsock_CreateTCPSocket(void);
 boolean ComWinsock_ReuseSocket(ComWinsock_SocketType so);

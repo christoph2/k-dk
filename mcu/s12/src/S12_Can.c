@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -52,7 +52,7 @@ CAN4 x x x x x x x x
 
 #define S12CAN_NUMBER_OF_BUSSES ((uint8)0x05)   /* TODO: CFG!!! */
 
-#include "mcu/s12/inc/S12_Can.h"
+#include "kdk/mcu/s12/inc/S12_Can.h"
 #include "Hw_Cfg.h"
 
 /*
@@ -80,12 +80,15 @@ S12Can_ConfigType const * CAN;
 /*
 **  Local Constants.
 */
-static uint16 S12Can_ControllerMapping[SC12_CAN_NUM_CONTROLLERS] = {   /* depends on derivate!!! */
+static uint16 S12Can_ControllerMapping[S12_CAN_NUM_CONTROLLERS] = {   /* depends on derivate!!! */
+    S12_IMPLEMENT_CAN_CONTROLLER_MAPPING
+#if 0        
     BASE_ADDR_CAN0,
     BASE_ADDR_CAN1,
     BASE_ADDR_CAN2,
     BASE_ADDR_CAN3,
     BASE_ADDR_CAN4,
+#endif
 };
 
 /*

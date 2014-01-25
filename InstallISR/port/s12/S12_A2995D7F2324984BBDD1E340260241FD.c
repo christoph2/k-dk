@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -30,7 +30,7 @@
  *
  */
 
-#include "ISR.h"
+#include "kdk/installisr/ISR.h"
 
 DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 
@@ -307,14 +307,30 @@ DECLARE_ISR1_VECTOR(DUMMY_VECTOR);
 #endif  /* RESET_VECTOR         */
 
 
+#pragma CODE_SEG NON_BANKED
 ISR1(DUMMY_VECTOR)
 {
 }
+#pragma CODE_SEG DEFAULT
 
+#if defined(__IAR_SYSTEMS_ICC__)
 #pragma constseg = INTVEC
 #pragma required = interrupt_vectors
 #pragma location = 0xff10
-__root void(* const interrupt_vectors[]) (void) = {
+__root void ( * const interrupt_vectors[])(void) = {
+#elif defined(__HIWARE__) 
+#pragma push
+#pragma CONST_SEG __SHORT_SEG MY_VECTORS
+const void ( * __near const interrupt_vectors[])(void) @ 0xff10 = {
+#elif defined(__CSMC__)
+#pragma section const {vector}
+void ( * const interrupt_vectors[])(void) /* @ 0xff10 */ = {
+#elif defined(__GNUC__)
+void ( * const interrupt_vectors[])(void) __attribute__((section(".vectors"))) = {
+#elif defined(__IMAGECRAFT__)
+#pragma abs_address:0xff10
+void ( * const interrupt_vectors[])(void) = {
+#endif
     (IISR_IVF)SI_VECTOR,           
     (IISR_IVF)XSRAMAV_VECTOR,      
     (IISR_IVF)XSEI_VECTOR,         
@@ -439,5 +455,15 @@ __root void(* const interrupt_vectors[]) (void) = {
 #endif
 };
 
-#pragma constseg=default
+#if defined(__HIWARE__)
+#pragma pop
+#pragma CONST_SEG DEFAULT
+#elif defined(__CSMC__)
+#pragma section const {}
+#elif defined(__IMAGECRAFT__)
+#pragma end_abs_address
+#endif
+
+
+
 

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -22,7 +22,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "mcu/s12/inc/S12_Ect.h"
+#include "kdk/mcu/s12/inc/S12_Ect.h"
 #include "Hw_Cfg.h"
 
 S12Ect_ConfigType const * ECT;
@@ -72,19 +72,20 @@ void S12Ect_ForceOutputCompare(S12Ect_ChannelType channel)
 
 void S12Ect_SetMode(S12Ect_ChannelType channel, S12Ect_ModeType mode)
 {
-
+  UNREFERENCED_PARAMETER(channel);
+  UNREFERENCED_PARAMETER(mode);
 }
 
 
 void S12Ect_EnableInterrupt(S12Ect_InterruptSourceType Source)
 {
-
+  UNREFERENCED_PARAMETER(Source);
 }
 
 
 void S12Ect_DisableInterrupt(S12Ect_InterruptSourceType Source)
 {
-
+  UNREFERENCED_PARAMETER(Source);
 }
 
 

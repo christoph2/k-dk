@@ -45,7 +45,8 @@
 
 typedef void (__cdecl * Win_ThreadFunc) (void *);
 
-static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com);
+static void __cdecl ComWinsock_ClientThread(ComWinSock_ClientType * com);
+static void __cdecl ComWinsock_ServerThread(ComWinSock_ServerType * com);
 
 
 boolean ComWinsock_InitWinsock(void)
@@ -205,7 +206,6 @@ boolean ComWinsock_ListenSocket(ComWinsock_SocketType so, unsigned short queueLe
 
 ComWinsock_SocketType ComWinsock_AcceptSocket(ComWinsock_SocketType so)   /* TODO: returns bool!!! */
 {
-    int res;
     ComWinsock_SocketType peerSocket;
     SOCKADDR_IN clientAddr;
     int addrLen;
@@ -236,7 +236,7 @@ boolean ComWinsock_EventSelect(ComWinsock_SocketType so, ComWinsock_HandleType e
     return TRUE;
 }
 
-boolean ComWinsock_StartClient(ComWinSock_Type * com)
+boolean ComWinsock_StartClient(ComWinSock_ClientType * com)
 {
     int idx;
 
@@ -269,9 +269,8 @@ boolean ComWinsock_StartClient(ComWinSock_Type * com)
     return TRUE;
 }
 
-void ComWinsock_StopClient(ComWinSock_Type * com)
+void ComWinsock_StopClient(ComWinSock_ClientType * com)
 {
-    int result;
     int idx;
 
     WSASetEvent(com->waitEvents[CWS_EVT_QUIT]);
@@ -284,40 +283,67 @@ void ComWinsock_StopClient(ComWinSock_Type * com)
     ComWinsock_CloseSocket(com->socket);
 }
 
-boolean ComWinsock_StartServer(void)
+boolean ComWinsock_StartServer(ComWinSock_ServerType * com)
 {
-    ComWinsock_SocketType so;
+    //ComWinsock_SocketType so;
 
-    so = ComWinsock_CreateTCPSocket();
-    if (!so) {
+    int idx;
+
+    com->clientSocket = (SOCKET)NULL;
+    for (idx = 0; idx < CWS_NUM_SERVER_EVENTS; ++idx) {
+        com->waitEvents[idx] = WSACreateEvent();
+    }
+
+    com->listenSocket = ComWinsock_CreateTCPSocket();
+    if (!com->listenSocket) {
         return FALSE;
     }
 
-    if (!ComWinsock_ReuseSocket(so)) {
-        ComWinsock_CloseSocket(so);
+    if (!ComWinsock_ReuseSocket(com->listenSocket)) {
+        ComWinsock_CloseSocket(com->listenSocket);
         return FALSE;
     }
 
-    if (!ComWinsock_BindSocket(so, 42244)) {
+    if (!ComWinsock_BindSocket(com->listenSocket, com->serverPort)) {   // 42244
         return FALSE;
     }
 
-    if (!ComWinsock_ListenSocket(so, 1)) {
+    if (!ComWinsock_ListenSocket(com->listenSocket, 1)) {
         return FALSE;
     }
-
+#if 0
     if (!ComWinsock_AcceptSocket(so)) {
         return FALSE;
     }
+#endif
+    if (!ComWinsock_EventSelect(com->listenSocket, com->waitEvents[CWS_EVT_RECEIVED], FD_ACCEPT | FD_CLOSE)) {
+        ComWinsock_CloseSocket(com->listenSocket);
+        return FALSE;
+    }
+
+    com->hReceiverThread = (HANDLE)_beginthread((Win_ThreadFunc)&ComWinsock_ServerThread, 0, (void*)com);
 
     return TRUE;
 }
 
-//////////////////////////
-//////////////////////////
-//////////////////////////
 
-static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com)
+void ComWinsock_StopServer(ComWinSock_ServerType * com)
+{
+    int idx;
+
+    WSASetEvent(com->waitEvents[CWS_EVT_QUIT]);
+    WaitForSingleObject(com->hReceiverThread, 5000);
+
+    for (idx = 0; idx < CWS_NUM_SERVER_EVENTS; ++idx) {
+        WSACloseEvent(com->waitEvents[idx]);
+    }
+    //result = shutdown(vbus->socket, SD_BOTH);
+    ComWinsock_CloseSocket(com->listenSocket);
+}
+//////////////////////////
+//////////////////////////
+//////////////////////////
+static void __cdecl ComWinsock_ClientThread(ComWinSock_ClientType * com)
 {
     DWORD index;
     DWORD result;
@@ -326,7 +352,7 @@ static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com)
     WSAEVENT eventObject;
 
     while (1) {
-        result = WSAWaitForMultipleEvents(CWS_NUM_CLIENT_EVENTS, com->waitEvents, FALSE, WSA_INFINITE, FALSE/*TRUE*/);
+        result = WSAWaitForMultipleEvents(CWS_NUM_CLIENT_EVENTS, com->waitEvents, FALSE, WSA_INFINITE, FALSE);
         if ((result != WSA_WAIT_FAILED) && (result != WSA_WAIT_TIMEOUT)) {
             index = result - WSA_WAIT_EVENT_0;
             printf("WaitEvent [%u]\n", index);
@@ -338,7 +364,8 @@ static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com)
                 break;
             }
 
-            result = WSAEnumNetworkEvents(com->socket, eventObject, &networkEvents);
+            result = WSAEnumNetworkEvents(com->socket, eventObject, &networkEvents);    /* The hEventObject parameter is optional in case you wish to reset */
+                                                                                        /* the event manually via the WSAResetEvent function*/
             printf("Network-Event: [%u]\n", networkEvents.lNetworkEvents);
             if (result == SOCKET_ERROR) {
                 Win_Error("ComWinsock_ClientThread/WSAEnumNetworkEvents");
@@ -352,6 +379,7 @@ static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com)
                 _endthread();
                 break;
             }
+
             if ((networkEvents.lNetworkEvents & FD_READ) == FD_READ) {
                 if (networkEvents.iErrorCode[FD_READ_BIT] != 0) {
                     printf("FD_READ failed with error %d\n", networkEvents.iErrorCode[FD_READ_BIT]);
@@ -377,3 +405,110 @@ static void __cdecl ComWinsock_ClientThread(ComWinSock_Type * com)
         }
     }
 }
+
+//////////////////////////
+//////////////////////////
+//////////////////////////
+static void __cdecl ComWinsock_ServerThread(ComWinSock_ServerType * com)
+{
+    DWORD index;
+    DWORD result;
+    char buffer[COMM_BUFFER_SIZE];
+    WSANETWORKEVENTS networkEvents;
+    WSAEVENT eventObject;
+    SOCKADDR_IN addr;
+    int addrlen;
+
+    while (1) {
+        result = WSAWaitForMultipleEvents(CWS_NUM_SERVER_EVENTS, com->waitEvents, FALSE, WSA_INFINITE, FALSE);
+        if ((result != WSA_WAIT_FAILED) && (result != WSA_WAIT_TIMEOUT)) {
+            index = result - WSA_WAIT_EVENT_0;
+            printf("WaitEvent [%u]\n", index);
+            eventObject = com->waitEvents[index];
+
+            if (index == CWS_EVT_QUIT) {
+                printf("Finishing thread.\n");
+                _endthread();
+                break;
+            } else if (index == CWS_EVT_RECEIVED) { // TODO: CWS_EVT_LISTENER!!!
+                result = WSAEnumNetworkEvents(com->listenSocket, eventObject, &networkEvents);
+                printf("Network-Event: [%u]\n", networkEvents.lNetworkEvents);
+                if (result == SOCKET_ERROR) {
+                    Win_Error("ComWinsock_ClientThread/WSAEnumNetworkEvents");
+                }
+                if ((networkEvents.lNetworkEvents & FD_CLOSE) == FD_CLOSE) {
+                    if (networkEvents.iErrorCode[FD_CLOSE_BIT] != 0) {
+                        printf("FD_CLOSE failed with error %d\n", networkEvents.iErrorCode[FD_CLOSE_BIT]);
+                    } else {
+                        printf("FD_CLOSE\n");
+                    }
+                    _endthread();
+                    break;
+                }
+
+                if ((networkEvents.lNetworkEvents & FD_ACCEPT) == FD_ACCEPT) {
+                    if (networkEvents.iErrorCode[FD_ACCEPT_BIT] != 0) {
+                        printf("FD_ACCEPT failed with error %d\n", networkEvents.iErrorCode[FD_ACCEPT_BIT]);
+                    } else {
+                        //com->clientSocket = accept(com->listenSocket, NULL, NULL);
+                        addrlen = sizeof(SOCKADDR_IN);
+                        com->clientSocket = WSAAccept(com->listenSocket, &addr, &addrlen, NULL, 0);
+                        result = WSAEventSelect(com->clientSocket, com->waitEvents[CWS_EVT_CLIENT], FD_READ | FD_WRITE | FD_CLOSE);
+                        if (result == SOCKET_ERROR) {
+                            Win_Error("ComWinsock_ClientThread/WSAEnumNetworkEvents");
+                        }
+                        printf("FD_ACCEPT\n");
+                    }
+                }
+            } else if (index == CWS_EVT_CLIENT) {
+                result = WSAEnumNetworkEvents(com->clientSocket, eventObject, &networkEvents);
+                printf("Network-Event: [%u]\n", networkEvents.lNetworkEvents);
+
+                if ((networkEvents.lNetworkEvents & FD_WRITE) == FD_WRITE) {
+                    if (networkEvents.iErrorCode[FD_WRITE_BIT] != 0) {
+                        printf("FD_WRITE failed with error %d\n", networkEvents.iErrorCode[FD_WRITE_BIT]);
+                    } else {
+                        printf("FD_WRITE\n");
+                    }
+                }
+
+                if ((networkEvents.lNetworkEvents & FD_CLOSE) == FD_CLOSE) {
+                    if (networkEvents.iErrorCode[FD_CLOSE_BIT] != 0) {
+                        printf("FD_CLOSE failed with error %d\n", networkEvents.iErrorCode[FD_CLOSE_BIT]);
+                    } else {
+                        printf("FD_CLOSE\n");
+                    }
+                    //_endthread();
+                    //break;
+                }
+
+                if ((networkEvents.lNetworkEvents & FD_READ) == FD_READ) {
+                    if (networkEvents.iErrorCode[FD_READ_BIT] != 0) {
+                        printf("FD_READ failed with error %d\n", networkEvents.iErrorCode[FD_READ_BIT]);
+                    } else {
+                        printf("FD_READ\n");
+                        result = recv(com->clientSocket, buffer, COMM_BUFFER_SIZE, 0);
+                        if (result == SOCKET_ERROR) { 
+                            Win_Error("recv");
+                        } else {
+                            buffer[result] = '\0';
+                            //printf("Received: %s\n", buffer);
+                            com->callback((char*)&buffer, result);
+                        }
+
+                    }
+                }
+            } else {
+                printf("Unknown event index.\n");
+            }
+
+            if (!WSAResetEvent(eventObject)) {
+                Win_Error("ComWinsock_ClientThread/WSAResetEvent");
+            }
+
+     } else {
+            Win_Error("ComWinsock_ClientThread/WSAWaitForMultipleEvents");
+        }
+    }
+}
+

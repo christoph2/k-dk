@@ -31,7 +31,7 @@ extern "C"
 {
 #endif  /* __cplusplus */
 
-#include "Std_Types.h"
+#include "kdk/common/Std_Types.h"
 #include "Sys_Cfg.h"
 
 /*

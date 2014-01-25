@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -27,10 +27,10 @@
 #if !defined(__S12CAN_H)
 #define __S12CAN_H
 
-#include "mcu/inc/mscan.h"
+#include "kdk/mcu/mscan.h"
 
-#include "S12_Hw.h"
-#include "Utl.h"
+#include "kdk/mcu/s12/inc/S12_Hw.h"
+#include "kdk/common/Utl.h"
 
 /* todo: 'mscan_common.h' für die Gemeinsamkeiten (Templates) der Motorola CAN-Module!!! */
 

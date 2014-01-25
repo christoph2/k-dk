@@ -27,7 +27,7 @@
 #if !defined(__MSCAN_H)
 #define __MSCAN_H
 
-#include "Std_Types.h"
+#include "kdk/common/Std_Types.h"
 
 #if defined(__cplusplus)
 extern "C"

@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -26,9 +26,9 @@
 #define __S12IIC_H
 
 #if CPU_FAMILY == CPU12_S12
-    #include "S12_Hw.h"
+    #include "kdk/mcu/s12/inc/S12_Hw.h"
 #elif CPU_FAMILY == CPU12_HC12
-    #include "HC12_Hw.h"
+    #include "kdk/mcu/hc12/inc/HC12_Hw.h"
 /*    #define S12_REG8    HC12_REG8 */
 #else
     #error Wrong CPU Family.

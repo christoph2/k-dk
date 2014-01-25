@@ -48,6 +48,14 @@
 **
 */
 
+/*!     Bus recovery sequence is done as following:
+ *          1 - Send 9 clock pulses on SCL line
+ *          2 - Ask the master to keep SDA High until the “Slave-Transmitter” releases the SDA line to perform the ACK operation
+ *          3 - Keeping SDA High during the ACK means that the “Master-Receiver” does not acknowledge the previous byte receive
+ *          4 - The “Slave-Transmitter” then goes in an idle state
+ *          5 - The master then sends a STOP command initializing completely the bus
+ */
+
 #define IIC_RW_BIT ((uint8)0x01)
 
 #define S12_IIC_ENABLED()   ((S12_REG8(Cfg, IBCR) & IBEN) == IBEN)
@@ -67,8 +75,25 @@ typedef struct tagIic_PrimitiveType {
     uint8 *         data;
 } Iic_PrimitiveType;
 
-void S12Iic_Init(S12Iic_ConfigType const * const Cfg)
+
+/*!
+ *
+ *  Local Variables.
+ *
+ */
+static const S12Iic_ConfigType Iic_Configuration = NULL;
+
+
+/*!
+ *
+ *  Global Functions.
+ *
+ */
+
+void S12Iic_Init(S12Iic_ConfigType const * const Config)
 {
+    Iic_Configuration = Config;
+
     S12_REG8(Cfg, IBCR) = (uint8)0x00;
 
     S12_REG8(Cfg, IBFD)    = Cfg->Prescaler;
@@ -211,33 +236,25 @@ boolean S12Iic_ModeReq(S12Iic_ConfigType const * const Cfg, uint8 slave_addr, bo
 }
 
 
-/*
-   ISR(iic_handler)
-   {
-    S12_REG8(Cfg,IBSR)|=IBIF;
-   }
- */
-#if 0
-#pragma TRAP_PROC
-void _I2CISR( void )
+ISR(Iic_Handler)
 {
-    volatile tU08 dummyibdrRead;                                        /* variable to allow dummy reads of IBDR */
+    volatile uint8 dummyByte;
 
-    Iic.ibsr.bit.ibif = 1;                                              /* reset the interrupt */
+    S12_REG8(Cfg, IBSR) |= IBIF;    /* Acknowledge Interrupt. */
 
-    if(Iic.ibcr.bit.mssl == SET) {                                      /* if module is in master mode */
-        if(Iic.ibcr.bit.txrx == SET) {                                  /* if module is to transmit */
-            if(TxCompleteflag == SET) {                                 /* if the last byte has been transmitted */
+    if ((S12_Reg8(Cfg, IBCR) & MS_SL) == MS_SL) {                                      /* if module is in master mode */
+        if ((S12_Reg8(Cfg, IBCR) & MS_SL) == TX_RX) {                                  /* if module is to transmit */
+            if (TxCompleteflag == SET) {                                 /* if the last byte has been transmitted */
                 TxCompleteflag     = CLEAR;                             /* clear the ISR transmit complete flag */
-                Iic.ibcr.byte      = (IBEN | TXRX);                     /* send stop signal (clear MSSL) */
+                S12_REG8(Cfg, IBCR)      = (IBEN | TX_RX);                     /* send stop signal (clear MSSL) */
                 TxBufferemptyflag  = SET;                               /* set the non-ISR transmit buffer empty flag */
             } else {                                                    /* last byte has not been transmitted */
-                if(Iic.ibsr.bit.rxak == CLEAR) {                        /* if the slave acknowledged last transfer */
-                    if(MasterRxFlag == SET) {                           /* if the last transfer was an address and master is now to Rx */
-                        Iic.ibcr.bit.txrx  = CLEAR;                     /* switch to Rx mode */
-                        dummyibdrRead      = Iic.ibdr.byte;             /* dummy read of IBDR register */
+                if ((S12_Reg8(Cfg, IBSR) & RXAK) == ((uint8)0x00)) {                        /* if the slave acknowledged last transfer */
+                    if (MasterRxFlag == SET) {                           /* if the last transfer was an address and master is now to Rx */
+                        S12_REG8(Cfg, IBCR) &= ~TX_RX;                     /* switch to Rx mode */
+                        dummyByte      = S12_REG8(Cfg, IBDR);             /* dummy read of IBDR register */
                     } else {                                            /* last transfer was to instruct other slave to receive */
-                        Iic.ibdr.byte = *TxPacketpositionptr;           /* write next byte to IBDR */
+                        S12_REG8(Cfg, IBDR) = *TxPacketpositionptr;           /* write next byte to IBDR */
 
                         if (TxPacketpositionptr == TxPacketendptr) {    /* if the last data has been Tx'd */
                             TxCompleteflag = SET;                       /* set the ISR transmit complete flag */
@@ -246,22 +263,22 @@ void _I2CISR( void )
                         }
                     }
                 } else {                            /* slave did not acknowledge last transfer */
-                    Iic.ibcr.byte = (IBEN | TXRX);  /* send stop signal (clear MSSL) */
+                    S12_REG8(Cfg, IBCR) = (IBEN | TX_RX);  /* send stop signal (clear MSSL) */
                 }
             }
         } else {                                                    /* module is to receive data */
-            if(RxPacketpositionptr == RxPacketendptr) {             /* if the last byte has been received */
-                Iic.ibcr.byte  = (IBEN);                            /* send stop signal (clear MSSL) */
+            if (RxPacketpositionptr == RxPacketendptr) {             /* if the last byte has been received */
+                S12_REG8(Cfg, IBCR)  = (IBEN);                            /* send stop signal (clear MSSL) */
                 RxCompleteflag = SET;                               /* set the ISR receive complete flag */
             } else {                                                /* last byte has not been received yet */
-                if(RxPacketpositionptr == (RxPacketendptr - 1)) {   /* if the second last byte has been received */
-                    Iic.ibcr.bit.txak = SET;                        /* disable active low acknowledge bit (signal to slave to stop Tx) */
+                if (RxPacketpositionptr == (RxPacketendptr - 1)) {   /* if the second last byte has been received */
+                    S12_REG8(Cfg, IBCR) |= TXAK;                        /* disable active low acknowledge bit (signal to slave to stop Tx) */
                 } else {                                            /* second last byte is still to be received */
                                                                     /* do nothing here */
                 }
             }
 
-            *RxPacketpositionptr = Iic.ibdr.byte;   /* read the data from the slave */
+            *RxPacketpositionptr = S12_REG8(Cfg, IBDR);   /* read the data from the slave */
 
             if (RxCompleteflag == SET) {            /* if the last byte of data has been received */
                 RxCompleteflag     = CLEAR;         /* clear the ISR receive complete flag */
@@ -271,59 +288,59 @@ void _I2CISR( void )
             }
         }
     } else {                                                        /* module is in slave mode */
-        if(Iic.ibsr.bit.ibal == SET) {                              /* if module is now in slave mode because arbitration has been lost */
-            Iic.ibsr.bit.ibal = 1;                                  /* reset the abritration flag */
+        if ((S12_Reg8(Cfg, IBSR) & IBAL) == IBAL) {                              /* if module is now in slave mode because arbitration has been lost */
+            S12_REG8(Cfg, IBSR) |= IBAL;                                  /* reset the abritration flag */
 
-            if(Iic.ibsr.bit.iaas == SET) {                          /* if this module has been addressed as slave */
-                if(Iic.ibsr.bit.srw == SET) {                       /* if module is to transmit */
-                    Iic.ibcr.bit.txrx  = SET;                       /* switch to Tx mode */
-                    Iic.ibdr.byte      = *TxPacketpositionptr;      /* write next byte to IBDR */
+            if ((S12_Reg8(Cfg, IBSR) & IAAS) == IAAS) {                          /* if this module has been addressed as slave */
+                if ((S12_Reg8(Cfg, IBSR) & SRW) == SRW) {                       /* if module is to transmit */
+                    S12_REG8(Cfg, IBCR) |= TX_RX;                       /* switch to Tx mode */
+                    S12_REG8(Cfg, IBDR)      = *TxPacketpositionptr;      /* write next byte to IBDR */
 
-                    if(TxPacketpositionptr == TxPacketendptr) {     /* if the last byte has been transmitted */
+                    if (TxPacketpositionptr == TxPacketendptr) {     /* if the last byte has been transmitted */
                         TxBufferemptyflag = SET;                    /* raise transmit complete flag */
                     } else {                                        /* last byte has not been transmitted */
                         TxPacketpositionptr++;                      /* move to next byte to Tx */
                     }
                 } else {                                            /* module is to receive */
-                    Iic.ibcr.bit.txrx  = CLEAR;                     /* switch to Rx mode */
-                    dummyibdrRead      = Iic.ibdr.byte;             /* dummy read of IBDR register */
+                    S12_REG8(Cfg, IBCR) &= ~TX_RX;                     /* switch to Rx mode */
+                    dummyByte      = S12_REG8(Cfg, IBDR);             /* dummy read of IBDR register */
                 }
             } else {                                                /* module has not been addressed as a slave */
                                                                     /* do nothing here */
             }
         } else {                                                    /* arbitration was not lost */
-            if(Iic.ibsr.bit.iaas == SET) {                          /* if this module has been addressed as slave */
-                if(Iic.ibsr.bit.srw == SET) {                       /* if module is to transmit */
-                    Iic.ibcr.bit.txrx  = SET;                       /* switch to Tx mode */
-                    Iic.ibdr.byte      = *TxPacketpositionptr;      /* write next byte to IBDR */
+            if ((S12_Reg8(Cfg, IBSR) & IAAS) == IAAS) {                          /* if this module has been addressed as slave */
+                if ((S12_Reg8(Cfg, IBSR) & SRW) == SRW) {                       /* if module is to transmit */
+                    S12_REG8(Cfg, IBCR) |= TX_RX;                       /* switch to Tx mode */
+                    S12_REG8(Cfg, IBDR)      = *TxPacketpositionptr;      /* write next byte to IBDR */
 
-                    if(TxPacketpositionptr == TxPacketendptr) {     /* if the last byte has been transmitted */
+                    if (TxPacketpositionptr == TxPacketendptr) {     /* if the last byte has been transmitted */
                         TxBufferemptyflag = SET;                    /* raise transmit complete flag */
                     } else {                                        /* last byte has not been transmitted */
                         TxPacketpositionptr++;                      /* move to next byte to Tx */
                     }
                 } else {                                            /* module is to receive */
-                    Iic.ibcr.bit.txrx  = CLEAR;                     /* switch to Rx mode */
-                    dummyibdrRead      = Iic.ibdr.byte;             /* dummy read of IBDR register */
+                    S12_REG8(Cfg, IBCR) &= ~TX_RX;                     /* switch to Rx mode */
+                    dummyByte      = S12_REG8(Cfg, IBDR);             /* dummy read of IBDR register */
                 }
             } else {                                                /* module has not been addressed as slave */
-                if(Iic.ibcr.bit.txrx == SET) {                      /* if module is to transmit */
-                    if(Iic.ibsr.bit.rxak == CLEAR) {                /* if the slave acknowledged last transfer */
-                        Iic.ibdr.byte = *TxPacketpositionptr;       /* write next byte to IBDR */
+                if ((S12_Reg8(Cfg, IBCR) & MS_SL) == TX_RX) {                      /* if module is to transmit */
+                    if ((S12_Reg8(Cfg, IBSR) & RXAK) == ((uint8)0x00)) {                /* if the slave acknowledged last transfer */
+                        S12_REG8(Cfg, IBDR) = *TxPacketpositionptr;       /* write next byte to IBDR */
 
-                        if(TxPacketpositionptr == TxPacketendptr) { /* if the last byte has been transmitted */
+                        if (TxPacketpositionptr == TxPacketendptr) { /* if the last byte has been transmitted */
                             TxBufferemptyflag = SET;                /* raise transmit complete flag */
                         } else {                                    /* last byte has not been transmitted */
                             TxPacketpositionptr++;                  /* move to next byte to Tx */
                         }
                     } else {                                        /* module is not to transmit */
-                        Iic.ibcr.bit.txrx  = CLEAR;                 /* switch to Rx mode */
-                        dummyibdrRead      = Iic.ibdr.byte;         /* dummy read of IBDR register */
+                        S12_REG8(Cfg, IBCR) &= ~TX_RX;                 /* switch to Rx mode */
+                        dummyByte      = S12_REG8(Cfg, IBDR);         /* dummy read of IBDR register */
                     }
                 } else {                                            /* module is to receive data */
-                    *RxPacketpositionptr = Iic.ibdr.byte;           /* read IBDR register and store in current buffer location */
+                    *RxPacketpositionptr = S12_REG8(Cfg, IBDR);           /* read IBDR register and store in current buffer location */
 
-                    if(RxPacketpositionptr == RxPacketendptr) {     /* if the last packet has been received */
+                    if (RxPacketpositionptr == RxPacketendptr) {     /* if the last packet has been received */
                         RxBufferfullflag = SET;                     /* set flag */
                     } else {                                        /* last packet has yet to be received */
                         RxPacketpositionptr++;                      /* move to next byte to transmit */
@@ -334,5 +351,3 @@ void _I2CISR( void )
     }
 }
 
-
-#endif

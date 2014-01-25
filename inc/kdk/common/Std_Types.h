@@ -25,9 +25,9 @@
 #if !defined(__STD_TYPES_H)
 #define   __STD_TYPES_H
 
-#include "Compiler.h"
-#include "Std_Macros.h"
-#include "Platform_Types.h"
+#include "kdk/common/Compiler.h"
+#include "kdk/common/Std_Macros.h"
+#include "kdk/common/Platform_Types.h"
 
 /* #include "Os_Types.h" */
 

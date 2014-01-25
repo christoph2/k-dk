@@ -2,7 +2,7 @@
  * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
  * OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -23,7 +23,7 @@
  *
  */
 
-#include "ISR.h"
+#include "kdk/installisr/ISR.h"
 
 #if defined(__CSMC__)               /* Cosmic               */
     #define II_INC_COMP_C   "cosmic/ISR_CSMC.c"
@@ -43,4 +43,6 @@
     #error Unsupported Compiler.
 #endif
 
-#include II_INC_COMP_C
+#include "port/s12/S12_Vectors.c"
+
+//#include II_INC_COMP_C
