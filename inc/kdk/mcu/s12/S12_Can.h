@@ -29,7 +29,7 @@
 
 #include "kdk/mcu/mscan.h"
 
-#include "kdk/mcu/s12/inc/S12_Hw.h"
+#include "kdk/mcu/s12/S12_Hw.h"
 #include "kdk/common/Utl.h"
 
 /* todo: 'mscan_common.h' für die Gemeinsamkeiten (Templates) der Motorola CAN-Module!!! */

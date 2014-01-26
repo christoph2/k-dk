@@ -26,9 +26,9 @@
 #define __S12IIC_H
 
 #if CPU_FAMILY == CPU12_S12
-    #include "kdk/mcu/s12/inc/S12_Hw.h"
+    #include "kdk/mcu/s12/S12_Hw.h"
 #elif CPU_FAMILY == CPU12_HC12
-    #include "kdk/mcu/hc12/inc/HC12_Hw.h"
+    #include "kdk/mcu/hc12/HC12_Hw.h"
 /*    #define S12_REG8    HC12_REG8 */
 #else
     #error Wrong CPU Family.

@@ -25,7 +25,7 @@
 #if !defined(__S12_FLS_H)
 #define __S12_FLS_H
 
-#include "kdk/mcu/s12/inc/S12_Mmc.h"
+#include "kdk/mcu/s12/S12_Mmc.h"
 
 /*
 **  Global Defines.

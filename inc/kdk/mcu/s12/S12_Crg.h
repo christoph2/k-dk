@@ -26,7 +26,7 @@
 #if !defined(__S12CRG_H)
 #define __S12CRG_H
 
-#include "kdk/mcu/s12/inc/S12_Mebi.h"
+#include "kdk/mcu/s12/S12_Mebi.h"
 
 #if defined(__cplusplus)
 extern "C"

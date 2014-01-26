@@ -25,7 +25,7 @@
 #if !defined(__S12_SPI_H)
 #define __S12_SPI_H
 
-#include "kdk/mcu/s12/inc/S12_Hw.h"
+#include "kdk/mcu/s12/S12_Hw.h"
 
 /*
 ** Register-Offsets.

@@ -36,26 +36,26 @@
 #define LOW_BYTE_FIRST  1
 
 #if defined(_MSC_VER)
-    #include "kdk/mcu/i386/inc/Platform_Types_i386.h"
+    #include "kdk/mcu/i386/Platform_Types_i386.h"
 #else
 
     #if CPU_FAMILY == CPU12_HC12
 
-       #include "kdk/mcu/hc12/inc/Platform_Types_HC12.h"
+       #include "kdk/mcu/hc12/Platform_Types_HC12.h"
 
     #elif CPU_FAMILY == CPU12_S12
 
-       #include "kdk/mcu/s12/inc/Platform_Types_S12.h"
+       #include "kdk/mcu/s12/Platform_Types_S12.h"
 
     #elif CPU_FAMILY == PIC_F18
 
-       #include "kdk/mcu/pic/inc/Platform_Types_PIC.h"
+       #include "kdk/mcu/pic/Platform_Types_PIC.h"
 
 //    #elif CPU_FAMILY == __430_CORE__
 //       #error "__430_CORE__"
     #elif CPU_FAMILY == __430X_CORE__
       //#error "__430X_CORE__"
-      #include "kdk/mcu/msp430/inc/Platform_Types_MSP430.h"
+      #include "kdk/mcu/msp430/Platform_Types_MSP430.h"
     #else
        #error Unknown CPU family.
     #endif

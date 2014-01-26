@@ -29,7 +29,7 @@
  *                                     INCLUDE-FILES                                       *
  *******************************************************************************************/
 
-#include "kdk/mcu/s12/inc/S12_Crg.h"
+#include "kdk/mcu/s12/S12_Crg.h"
 
 #if defined(__cplusplus)
 extern "C"

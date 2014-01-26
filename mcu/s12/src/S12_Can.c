@@ -52,7 +52,7 @@ CAN4 x x x x x x x x
 
 #define S12CAN_NUMBER_OF_BUSSES ((uint8)0x05)   /* TODO: CFG!!! */
 
-#include "kdk/mcu/s12/inc/S12_Can.h"
+#include "kdk/mcu/s12/S12_Can.h"
 #include "Hw_Cfg.h"
 
 /*

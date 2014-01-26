@@ -37,7 +37,7 @@ extern "C"
 
 #if CPU_FAMILY == CPU12_S12
     #include "kdk/mcu/Derivatives.h"
-    #include "kdk/mcu/s12/inc/device/Devices.h"
+    #include "kdk/mcu/s12/device/Devices.h"
 #endif /* CPU_FAMILY */
 
 #define S12_REG8(mod, reg)          (BYTE_REG(KDK_BASE_ADDRESS(mod), (reg)))

@@ -22,7 +22,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
-#include "kdk/mcu/s12/inc/S12_Ect.h"
+#include "kdk/mcu/s12/S12_Ect.h"
 #include "Hw_Cfg.h"
 
 S12Ect_ConfigType const * ECT;
