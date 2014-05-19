@@ -1,7 +1,8 @@
+=======
 K-OS Driver-Kit
 ===============
 The K-OS Driver Kit builds the foundation for K-AR; can
-also used stand-alone, and of cause, together with K-OS.
+also be used stand-alone, and of cause, together with K-OS.
 
 ### Supported MCUs:
    - Freescale/Motorola HC12/S12.

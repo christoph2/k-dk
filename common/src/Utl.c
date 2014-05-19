@@ -1,5 +1,6 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
  * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
@@ -85,25 +86,25 @@ uint16_t Utl_BitGetHighest(uint16_t w)
     w |= w >> 4;
     w |= w >> 8;
 
-    return (uint16_t)(w ^ (w >> 1));
+    return (uint16)(w ^ (w >> 1));
 }
 
 
 uint16_t Utl_BitGetLowest(uint16_t w)
 {
-    return (uint16_t)((~w + 1) & w);
+    return (uint16)((~w + 1) & w);
 }
 
 
 uint16_t Utl_BitSetLowest(uint16_t w)
 {
-    return (uint16_t)(w | (w + 1));
+    return (uint16)(w | (w + 1));
 }
 
 
 uint16_t Utl_BitResetLowest(uint16_t w)
 {
-    return (uint16_t)(w & (w - 1));
+    return (uint16)(w & (w - 1));
 }
 
 
@@ -176,9 +177,6 @@ uint16_t Utl_Random(void)
 
 uint16_t Utl_Sqrt16(uint16_t x)
 {
-   uint16_t res = 1U;
-   uint16_t sqr = 1U;
-   uint16_t delta = 3U;
 
    while (sqr <= x) {
       res += 1U;
