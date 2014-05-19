@@ -85,25 +85,25 @@ uint16 Utl_BitGetHighest(uint16 w)
     w |= w >> 4;
     w |= w >> 8;
 
-    return w ^ (w >> 1);
+    return (uint16)(w ^ (w >> 1));
 }
 
 
 uint16 Utl_BitGetLowest(uint16 w)
 {
-    return (~w + 1) & w;
+    return (uint16)((~w + 1) & w);
 }
 
 
 uint16 Utl_BitSetLowest(uint16 w)
 {
-    return w | (w + 1);
+    return (uint16)(w | (w + 1));
 }
 
 
 uint16 Utl_BitResetLowest(uint16 w)
 {
-    return w & (w - 1);
+    return (uint16)(w & (w - 1));
 }
 
 
@@ -174,33 +174,33 @@ uint16 Utl_Random(void)
 }
 
 
-uint16 Utl_Sqrt16(uint16 x) 
+uint16 Utl_Sqrt16(uint16 x)
 {
    uint16 res = 1U;
    uint16 sqr = 1U;
    uint16 delta = 3U;
-   
+
    while (sqr <= x) {
       res += 1U;
       sqr += delta;
       delta += 2U;
    }
-   return res - 1U;  
+   return res - 1U;
 }
 
 
-uint32 Utl_Sqrt32(uint32 x) 
+uint32 Utl_Sqrt32(uint32 x)
 {
    uint32 res = 1UL;
    uint32 sqr = 1UL;
    uint32 delta = 3UL;
-   
+
    while (sqr <= x) {
       res += 1UL;
       sqr += delta;
       delta += 2UL;
    }
-   return res - 1UL;  
+   return res - 1UL;
 }
 
 
