@@ -25,10 +25,7 @@
 #if !defined(__COMPILER_H)
 #define   __COMPILER_H
 
-#if 0
-#include "Std_Macros.h"
-#include "Compiler_Cfg.h"
-#endif
+
 
 /* TODO: specific include files! */
 
@@ -50,7 +47,8 @@
         #define _GNU_C_MSP430_
     #elif defined( __CYGWIN32__) /* && defined(__I386__) */
         #define KAR_DUMMY_TARGET
-    /*  mc68000  __m68k__  */
+    #elif defined(__m68k__) && defined( __mcf5200__ )
+        #define _GNU_C_COLDFIRE
     #elif defined(__clang__)
         #if defined(__i386__)
             #define KAR_DUMMY_TARGET
