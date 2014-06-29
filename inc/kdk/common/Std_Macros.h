@@ -1,5 +1,7 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
+ *
  *
  * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
@@ -131,7 +133,7 @@
 #define BEYOND_ARRAY(arr)           ((arr) + SIZE_OF_ARRAY((arr)))
 
 #if !defined(_countof)
-#define _countof(arr)		    SIZEOF_ARRAY(arr)
+#define _countof(arr)               SIZEOF_ARRAY(arr)
 #endif
 
 #define __HEX(n)                    0x ## n ## LU
