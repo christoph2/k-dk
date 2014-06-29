@@ -174,9 +174,11 @@ uint16_t Utl_Random(void)
 
 }
 
-
 uint16_t Utl_Sqrt16(uint16_t x)
 {
+   uint16_t res = 1U;
+   uint16_t sqr = 1U;
+   uint16_t delta = 3U;
 
    while (sqr <= x) {
       res += 1U;
@@ -390,5 +392,4 @@ uint32 Utl_Swap32(uint32 * dw)
 {
     return MAKEDWORD(MAKEWORD(LOBYTE(LOWORD(*dw)), HIBYTE(LOWORD(*dw))), MAKEWORD(LOBYTE(HIWORD(*dw)), HIBYTE(HIWORD(*dw))));
 }
-
 
