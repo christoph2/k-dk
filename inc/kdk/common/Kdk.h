@@ -1,7 +1,8 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                     cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -45,7 +46,7 @@ extern "C"
 #define KDK_TOS(mem, size) ((uint8 *)(mem) + ((size) - (uint8)1))
 #endif /* KDK_TOS */
 
-	
+
 /*
 **  Templates.
 */
@@ -246,3 +247,4 @@ uint8 Kdk_CalculatePinDirection(uint8 changeable, uint8 initialValue, uint8 Actu
 #endif  /* __cplusplus */
 
 #endif  /* __K_DK_H */
+

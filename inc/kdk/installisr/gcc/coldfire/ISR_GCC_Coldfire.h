@@ -21,53 +21,27 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
- *  s. FLOSS-EXCEPTION.txt
  */
+#if !defined(__ISR_GCC_CYGWIN_H)
+#define __ISR_GCC_CYGWIN_H
 
-#if !defined(__KDK_CPUS_H)
-#define __KDK_CPUS_H
 
-/*
-**  Supported CPU-Families.
-*/
-#define CPU12_HC12          1
-#define CPU12_S12           2
-#define CPU12_S12X          3
+#define DECLARE_ISR2_VECTOR(IsrName)    void IsrName(void)
+#define DECLARE_ISR1_VECTOR(IsrName)    void IsrName(void)
+#define ISR1(IsrName)                   void IsrName(void)
 
-#define COLDFIRE            4
+extern void(*const interrupt_vectors[]) (void);
 
-#define PIC_F18             5
+void _start(void);
 
-/*
-**  HC12-Family-Members.
-*/
-#define CPU12_HC12B32       1
-#define CPU12_HC12BC32      2
-#define CPU12_HC12DG128A    3
-#define CPU12_HC12DT128A    4
-#define CPU12_HC12A4        5
-#define CPU12_HC12BD32      6
-#define CPU12_HC12D60       7
-#define CPU12_HC12D60A      8
-#define CPU12_HC12DG128     9
 
-/*
-**  S12-Family-Members.
-*/
-#define CPU12_S12DP256B     1
-#define CPU12_S12DT256B     2
-#define CPU12_S12DJ256B     3
-#define CPU12_S12DG256B     4
-#define CPU12_S12A256B      5
-#define CPU12_S12DP256C     6
-#define CPU12_S12DT256C     7
-#define CPU12_S12DJ256C     8
-#define CPU12_S12DG256C     9
+#define IISR_ENTRY_POINT    _start
+#define IISR_INTERUPT
 
-/*!
-** Coldfire family members.
-*/
-#define MCF5225X
+#define IISR_DECLARE_VECTOR_TABLE
+#define IISR_BEGIN_VECTOR_TABLE
+#define IISR_END_VECTOR_TABLE
 
-#endif /* __KDK_CPUS_H */
+#endif /* __ISR_GCC_CYGWIN_H */
+
 

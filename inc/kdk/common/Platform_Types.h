@@ -1,5 +1,6 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+ * k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
  * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
@@ -41,23 +42,28 @@
 
     #if CPU_FAMILY == CPU12_HC12
 
-       #include "kdk/mcu/hc12/Platform_Types_HC12.h"
+        #include "kdk/mcu/hc12/Platform_Types_HC12.h"
 
     #elif CPU_FAMILY == CPU12_S12
 
-       #include "kdk/mcu/s12/Platform_Types_S12.h"
+        #include "kdk/mcu/s12/Platform_Types_S12.h"
 
     #elif CPU_FAMILY == PIC_F18
 
-       #include "kdk/mcu/pic/Platform_Types_PIC.h"
+        #include "kdk/mcu/pic/Platform_Types_PIC.h"
 
 //    #elif CPU_FAMILY == __430_CORE__
 //       #error "__430_CORE__"
     #elif CPU_FAMILY == __430X_CORE__
-      //#error "__430X_CORE__"
-      #include "kdk/mcu/msp430/Platform_Types_MSP430.h"
+        //#error "__430X_CORE__"
+        #include "kdk/mcu/msp430/Platform_Types_MSP430.h"
+
+    #elif CPU_FAMILY == COLDFIRE
+
+        #include "kdk/mcu/mcf5225/Platform_Types_mcf5225.h"
+
     #else
-       #error Unknown CPU family.
+        #error Unknown CPU family.
     #endif
 
 #endif

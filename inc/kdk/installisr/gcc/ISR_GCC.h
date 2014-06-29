@@ -1,7 +1,8 @@
 /*
- * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
+* k_dk - Driver Kit for k_os (Konnex Operating-System based on the
+ * OSEK/VDX-Standard).
  *
- * (C) 2007-2011 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -27,16 +28,18 @@
 #define IISR_ENTRY_POINT    _start
 
 #if defined(__arm__)
-    #define II_INC_TARGET_H "./arm/ISR_GCC_ARM.h"
+    #define II_INC_TARGET_H "arm/ISR_GCC_ARM.h"
 #elif defined(__AVR__)
-    #define II_INC_TARGET_H "./avr/ISR_GCC_AVR.h"
+    #define II_INC_TARGET_H "avr/ISR_GCC_AVR.h"
 #elif defined(MC6812)
     #define II_INC_TARGET_H "s12/ISR_GCC_HCS12.h"
 #elif defined(__MSP430__)
-    #define II_INC_TARGET_H "./msp430/ISR_GCC_MSP430.h"
+    #define II_INC_TARGET_H "msp430/ISR_GCC_MSP430.h"
+#elif defined(__m68k__) && defined( __mcf5200__ )
+    #define II_INC_TARGET_H "coldfire/ISR_GCC_coldfire.h"
 #elif defined(_X86_)
     #if defined( __CYGWIN32__)
-	#define II_INC_TARGET_H "cygwin/ISR_GCC_CYGWIN.h"
+        #define II_INC_TARGET_H "cygwin/ISR_GCC_CYGWIN.h"
     #endif
 #else
     #error Unsupported Target for GCC.
