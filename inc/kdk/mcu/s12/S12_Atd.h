@@ -176,7 +176,7 @@
 **  0x0E Unimplemented on ATD10B8.
 */
 #if S12ATD_MODULE == S12ATD_VARIANT_10B16
-#define PORTAD1     ((uint8)0x0E)
+#define PORTAD0     ((uint8)0x0E)
 #endif /* S12ATD_MODULE */
 
 #if S12ATD_MODULE == S12ATD_VARIANT_10B16
