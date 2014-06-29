@@ -1,7 +1,7 @@
 /*
  * k_os (Konnex Operating-System based on the OSEK/VDX-Standard).
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2014 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -30,7 +30,8 @@
 #include "Compiler_Cfg.h"
 #endif
 
-/* todo: spezifische Include-Files!!! */
+/* TODO: specific include files! */
+
 #if defined(__CSMC__)               /* Cosmic               */
     #if (CPU_FAMILY == CPU12_S12) || (CPU_FAMILY == CPU12_HC12)
 /*    #if defined(CPU12_HC12) || defined(CPU12_S12) */
@@ -49,6 +50,13 @@
         #define _GNU_C_MSP430_
     #elif defined( __CYGWIN32__) /* && defined(__I386__) */
         #define KAR_DUMMY_TARGET
+    /*  mc68000  __m68k__  */
+    #elif defined(__clang__)
+        #if defined(__i386__)
+            #define KAR_DUMMY_TARGET
+        #else
+            #error Unsupported Target for LLVM.
+        #endif
     #else
         #error Unsupported Target for GCC-Compiler.
     #endif
@@ -101,7 +109,6 @@
 #elif defined(_MSC_VER)
 /* Microsoft Visual C. */
     #define KAR_DUMMY_TARGET
-
 #else
     #error Unsupported Compiler.
 #endif
