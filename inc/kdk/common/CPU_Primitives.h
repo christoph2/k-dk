@@ -44,6 +44,8 @@
         #define CP_TARGET   "kdk/compiler/i386/gcc/CPU_Primitives.h"
     #elif defined(__m68k__) && defined( __mcf5200__ )
         #define CP_TARGET   "kdk/compiler/coldfire/gcc/CPU_Primitives.h"
+    #elif defined(__AVR__) && (__AVR_ARCH__ == 5)
+        #define CP_TARGET   "kdk/compiler/ATMEGA644/gcc/CPU_Primitives.h"
     #else
         #error Unsupported Target for GCC.
     #endif
