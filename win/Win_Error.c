@@ -41,14 +41,14 @@ void Win_Error(char * function)
 
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, err,
         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL );
-   
+
     len = lstrlen(lpMsgBuf) + 1;
     szBuf = (char *)_alloca((len * sizeof(lpMsgBuf[0])));
     for (idx = 0; idx < len; ++idx) {
         szBuf[idx] = lpMsgBuf[idx];
     }
-//_tprintf(szBuf, "%s failed with error %d: %s",  lpszFunction, err, szBuf); 
-    printf("%s failed with error %d: %s", function, err, szBuf); 
+//_tprintf(szBuf, "%s failed with error %d: %s",  lpszFunction, err, szBuf);
+    printf("%s failed with error %d: %s", function, err, szBuf);
 
     _freea(szBuf);
     LocalFree(lpMsgBuf);
