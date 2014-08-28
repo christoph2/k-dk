@@ -3,7 +3,7 @@
  * OSEK/VDX-Standard).
  *
  *
- * (C) 2007-2012 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -45,17 +45,13 @@
 #endif
 
 /* check for C1x-Compiler */
-/*
-   #if 0
-   #if defined(__STDC_VERSION__)
-   #if __STDC_VERSION__>=??????L
-   #define _C1x_COMPILER
-   #endif
-   #endif
-   #endif
- */
+#if defined(__STDC_VERSION__)
+#if __STDC_VERSION__>= 201112L
+#define _C11_COMPILER
+#endif
+#endif
 
-#if defined(_C99_COMPILER) || defined(_C1x_COMPILER)
+#if defined(_C99_COMPILER) || defined(_C11_COMPILER)
 #define _MODERN_C
 #else
 #define _LEGACY_C
