@@ -33,10 +33,10 @@
 
     #if defined(__arm__)
         #define CP_TARGET   "kdk/compiler/arm/gcc/CPU_Primitives.h"
-#if 0        
+//#if 0        
     #elif defined(__AVR__)
-        #define CP_TARGET   "kdk/compiler/avr/gcc/CPU_Primitives.h"
-#endif        
+        #define CP_TARGET   "kdk/compiler/ATMEGA644/gcc/CPU_Primitives.h"
+//#endif        
     #elif defined(MC6812)
         #define CP_TARGET   "kdk/compiler/cpu12/gcc/CPU_Primitives.h"
     #elif defined(__MSP430__)
