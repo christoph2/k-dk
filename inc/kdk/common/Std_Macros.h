@@ -3,7 +3,7 @@
  * OSEK/VDX-Standard).
  *
  *
- * (C) 2007-2013 by Christoph Schueler <github.com/Christoph2,
+ * (C) 2007-2025 by Christoph Schueler <github.com/Christoph2,
  *                                      cpu12.gems@googlemail.com>
  *
  * All Rights Reserved
@@ -68,16 +68,26 @@
 #endif
 
 #if defined(_C99_COMPILER)
+#if !defined(INLINE)
     #define INLINE      inline
-    #define RESTRICT    restrict
+#endif
+#if !defined(RESTRICT)
+	#define RESTRICT    restrict
+#endif
 #elif defined(_CPP_COMPILER)
+#if !defined(INLINE)
     #define INLINE      inline
+#endif
+#if !defined(RESTRICT)
     #define RESTRICT
+#endif
 #else
 #if !defined(INLINE)
     #define INLINE
 #endif
+#if !defined(RESTRICT)
     #define RESTRICT
+#endif
 #endif
 
 #if !defined(PROGRAM_STARTUP)

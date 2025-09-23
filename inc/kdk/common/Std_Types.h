@@ -23,24 +23,24 @@
  *  s. FLOSS-EXCEPTION.txt
  */
 #if !defined(__STD_TYPES_H)
-#define   __STD_TYPES_H
+#define __STD_TYPES_H
 
 #include "kdk/common/Compiler.h"
-#include "kdk/common/Std_Macros.h"
 #include "kdk/common/Platform_Types.h"
+#include "kdk/common/Std_Macros.h"
 
 /* #include "Os_Types.h" */
 
 /* #define E_NOT_OK    ((uint8)0x01) */
 
-#define STD_HIGH    ((uint8)0x01)
-#define STD_LOW     ((uint8)0x00)
+#define STD_HIGH ((uint8) 0x01)
+#define STD_LOW ((uint8) 0x00)
 
-#define STD_ACTIVE  ((uint8)0x01)
-#define STD_IDLE    ((uint8)0x00)
+#define STD_ACTIVE ((uint8) 0x01)
+#define STD_IDLE ((uint8) 0x00)
 
-#define STD_ON      0x01
-#define STD_OFF     0x00
+#define STD_ON 0x01
+#define STD_OFF 0x00
 
 /*
    #if !defined(__RTOS_K_OS__)
@@ -50,30 +50,19 @@
    #define E_NOT_OK    ((uint8)0x01)
  */
 
-#if !(defined(__RTOS_K_OS__) || defined(STATUSTYPEDEFINED))
-typedef enum tagStd_ReturnType {
-    E_OK,
-    E_NOT_OK
-} Std_ReturnType;
-#else
 typedef uint8 Std_ReturnType;
-#endif
 
 typedef struct tagStd_VersionInfoType {
-    uint16  vendorID;
-    uint16  moduleID;
-    uint8   instanceID;
-    uint8   sw_major_version;
-    uint8   sw_minor_version;
-    uint8   sw_patch_version;
+    uint16 vendorID;
+    uint16 moduleID;
+    uint8 instanceID;
+    uint8 sw_major_version;
+    uint8 sw_minor_version;
+    uint8 sw_patch_version;
 } Std_VersionInfoType;
 
 #if !(defined(__PCH__) || defined(__PCB__) || defined(__PCM__))
-typedef enum tagStd_LevelType {
-    Std_Low,
-    Std_High
-} Std_LevelType;
+typedef enum tagStd_LevelType { Std_Low, Std_High } Std_LevelType;
 #endif
 
-#endif   /* __STD_TYPES_H  */
-
+#endif /* __STD_TYPES_H  */
